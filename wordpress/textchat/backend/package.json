@@ -1,0 +1,26 @@
+{
+  "name": "YeptLiveTextChat",
+  "version": "0.0.1",
+  "description": "node.js realtime text chat for yept live",
+  "contributors": [
+    {
+      "name": "Arseny Vasilev",
+      "email": "arseny@fora-soft.com"
+    },
+	{
+      "name": "Dmitry Kostromin",
+      "email": "dmitry@fora-soft.com"
+    }
+  ],
+  "repository": {
+    "type": "svn",
+    "url": "https://svn.fora-soft.com/svn/YepLive"
+  },
+  "readmeFilename": "Readme.md",
+  "devDependencies": {
+    "escape-html": "^1.0.1",
+    "knex": "^0.6.22",
+    "mysql": "~2.3.2",
+    "socket.io": "~1.0.6"
+  }
+}

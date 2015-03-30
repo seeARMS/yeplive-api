@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Text chat for Yep live</title>
+    <link href="./styles/textChatStyle.css" rel="stylesheet"/>
+
+    <script src="./lib/socket.io.js"></script>
+    <script src="./lib/jquery-1.11.1.min.js"></script>
+    <script src="./scripts/textChat.js"></script>
+</head>
+<body>
+    <div class="textChatWrapper">
+         <div class="textChatHeader">
+              <div class="textChatHeaderLabelContainer">
+                  <span>CHAT</span>
+              </div>
+         </div>
+        <div id="textChatAreaWrapper" class="textChatAreaWrapper">
+
+        </div>
+        <div class="textChatFooter">
+            <button id="textChatSendButton" class="textChatSendButton">SEND</button>
+            <textarea id="textChatInput" class="textChatInput" maxlength="1000" placeholder="Write a message..." wrap="hard" ></textarea>
+			<!--<input type="text" value="" class="textChatInput" id="textChatInput" />-->
+        </div>
+    </div>
+</body>
+</html>
