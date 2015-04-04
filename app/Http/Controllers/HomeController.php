@@ -33,4 +33,12 @@ class HomeController extends Controller {
 		return view('home');
 	}
 
+	public function get_similar_videos()
+	{
+		$program_id = Input::get("program_id");
+		$user_id = Input::get("user_id");
+		
+		return $program_id." ".$user_id;
+	}
+
 }
