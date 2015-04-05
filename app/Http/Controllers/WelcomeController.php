@@ -30,7 +30,8 @@ class WelcomeController extends Controller {
 	 */
 	public function index()
 	{
-		return view('welcome');
+		$array = array ('status' => 'success');
+		return json_encode($array);
 	}
 
 }
