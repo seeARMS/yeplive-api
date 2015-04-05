@@ -19,6 +19,10 @@ Route::controllers([
 ]);
 
 //Transfering routes
+//XMLRPCRoute
+Route::get('xmlrpc.php', [
+	'uses' => 'XMLRPCController@index'
+]);
 //Directly handled HTTP Requests
 //PARAMS:
 //program_id, user_sender_id, action
