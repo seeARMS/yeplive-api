@@ -1,5 +1,4 @@
-<?php
-
+<?php 
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -11,13 +10,89 @@
 |
 */
 
+/*
 Route::get('/', 'WelcomeController@index');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
 ]);
+*/
 
+//RESTful API
+Route::group(array('prefix' => 'api/v1'), function()
+{ 
+	Route::post('authenticate', [
+		'uses' => 'UserController@authenticate'
+	]);
+	Route::post('user', [
+		'uses' => 'UserController@store'
+	]);
+	
+	//ALL THESE ROUTES REQURE A JWT TOKEN
+	Route::group(['middleware' => 'jwt.auth'], function(){
+		//Check authentication
+		Route::get('authenticate', [
+			'uses' => 'UserController@check_auth'
+		]);	
+		//RESTful Programs
+		Route::resource('program', 'ProgramController');
+		Route::get('program/{id}/similar', [
+			'uses' => 'ProgramController@similar'
+		]);
+		Route::get('program/{id}/tags', [
+			'uses' => 'ProgramController@tags'
+		]);
+		//TODO
+		Route::get('program/{id}/view_count',[
+			'uses' => 'ProgramController@viewCount'
+		]);
+		//TODO
+		Route::get('program/:id/votes',[
+			'uses' => 'ProgramController@votes'
+		]);
+		//TODO
+		Route::get('program/:id/negative_votes',[
+
+		]);
+		//TODO
+		Route::get('program/:id/my_vote',[
+
+		]);
+		//TODO
+		Route::post('program/:id/set_vote',[
+
+		]);
+		//TODO
+		Route::post('program/:id/report',[
+
+		]);
+		//RESTful Users
+		Route::get('user', [
+			'users' => 'UserController@show'
+		]);
+		//TODO
+		Route::get('user/:id/is_follow',[
+
+		]);
+		//TODO
+		Route::post('user/:id/become_fan',[
+
+		]);
+		//TODO
+		Route::post('user/:id/thumbnail',[
+
+		]);
+		//TODO
+		Route::post('user/:id/settings',[
+
+		]);
+	});
+});
+
+
+//LEAVING OLD WORDPRESS ROUTES IN FOR REFERENCE
+/*
 //Transfering routes
 //XMLRPCRoute
 Route::get('xmlrpc.php', [
@@ -106,3 +181,4 @@ Route::get('ajaxGetIsFollow.php',[
 Route::get('ajaxUpdateUserSettings.php',[ 
 	'uses' => 'UserController@update_user_settings'
 ]);
+*/

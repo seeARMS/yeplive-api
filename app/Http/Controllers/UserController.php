@@ -1,18 +1,67 @@
 <?php namespace App\Http\Controllers;
 use Illuminate\Http\Request;
+//ONLY USED BY SHITTY WORDPRESS CODE
+/* 
 const DB_HOST = "yeplive-dev.czc6detrzhw4.us-west-2.rds.amazonaws.com:3306";
 const DOMAIN_ROOT = "example.com";
 const DB_USER = "root";
 const DB_PASSWORD = "rootroot";
 const DB_NAME = "test";
+*/
 
 class UserController extends Controller {
 	public function __construct()
 	{
-		//Change error reporting to allow mysql functions
-		error_reporting(E_ALL ^ E_DEPRECATED);
 	}
 
+	public function authenticate(Request $request)
+	{
+		$credentials = $request->only('email', 'password');
+
+	 try {
+		// attempt to verify the credentials and create a token for the user
+		if (! $token = \JWTAuth::attempt($credentials)) {
+			return response()->json(['error' => 'invalid_credentials'], 401);
+		}
+	} catch (\JWTException $e) {
+		// something went wrong whilst attempting to encode the token
+		return response()->json(['error' => 'could_not_create_token'], 500);
+	}
+		// all good so return the token
+		return response()->json(compact('token'));
+	}
+
+	public function check_auth(Request $request)
+	{
+		try {
+		return \JWTAuth::parseToken()->toUser();
+		} catch (\JWTException $e){
+		return response()->json(['error' => 'no_token'], 401);	
+	}
+ 
+	}
+
+	public function index()
+	{
+		return \App\User::all();
+	}
+
+	public function me()
+	{
+		$user = \JWTAuth::parseToken()->toUser();
+		return $user;
+	}
+
+	public function store(Request $request)
+	{
+		$params = $request->only("email", "password");
+		$params["password"] = \Hash::make($params["password"]);
+		$user = \App\User::create($params);
+		return $user;
+	}
+
+//LEAVING OLD WORDPRESS CODE IN FOR REFERENCE PLS NO DELETEO
+/*
 	//MOBILE ALIAS METHODS
 	public function become_fan(Request $request)
 	{
@@ -145,7 +194,6 @@ class UserController extends Controller {
 		return $user_name . "&&" . $user_email . "&&" . $pan_id . "&&" . $picture_path . "&&" . $facebook_name . "&&" . $twitter_name . "&&" . $facebook_id . "&&" . $twitter_img;
 	}
 
-
 	}
 
 	public function is_follow(Request $request)
@@ -248,4 +296,5 @@ class UserController extends Controller {
     }
 
 	}	
+*/
 }

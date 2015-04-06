@@ -1,4 +1,6 @@
-<?php namespace App\Http\Controllers; use Illuminate\Http\Request;
+<?php namespace App\Http\Controllers;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 const DB_HOST = "yeplive-dev.czc6detrzhw4.us-west-2.rds.amazonaws.com:3306";
 const DOMAIN_ROOT = "example.com";
 const DB_USER = "root";
@@ -9,11 +11,89 @@ class ProgramController extends Controller {
 
 	public function __construct()
 	{
-		//USES mysql_* deprecated functions
-		//error_reporting = E_ALL ^ E_DEPRECATED to stop messages
-		error_reporting(E_ALL ^ E_DEPRECATED);
 	}
 
+	public function index()
+	{
+		return \App\Program::all();
+		try
+		{
+			$body = [
+			'programs' => []
+			];
+			$statusCode = 200;
+			$programs = \App\Program::all();//->take(10);
+			foreach($programs as $program)
+			{
+				$body['programs'][] = [
+					'id' => $program.id,
+					'title' => $program.title,
+					'description' => $program.description,
+					'latitude' => $program.latitude,
+					'longitude' => $program.longitude,
+					'location' => $program.location
+				];
+			}
+		} catch (Exception $e)
+		{
+			$statusCode = 404;
+		}
+		 finally
+	  {
+			return $body;
+		}
+	}
+
+	public function store(Request $request)
+	{
+		$input = $request->only('channel_id', 'title', 'latitude', 'longitude', 'location', 'description', 'end_time','start_time', 'tags');
+		$program = \App\Program::create($input);
+
+		$tags = explode(',',$input['tags']);
+		if($tags[0] != '' )
+		{
+			foreach($tags as $tagName)
+			{
+				$program->tag($tagName);
+			}
+		}
+		return $program;	
+	}
+
+	public function show(Request $request, $id)
+	{
+		return \App\Program::find($id);
+	}
+
+	public function all()
+	{
+	}
+
+	public function create(Request $request)
+	{
+		return "test";
+	}
+
+	public function similar(Request $request, $id)
+	{
+		$program = \App\Program::find($id);
+		$tags = $program->tagNames();
+		return \App\Program::withAnyTag($tags)->get()->filter(function ($currentProgram) use ($program)
+		{
+			return $currentProgram->id != $program->id;
+		})->values();
+	}
+
+	public function tags(Request $request, $id)
+	{
+		return \App\Program::find($id)->tagNames();
+	}
+
+	public function get_videos(Request $request)
+	{
+		$programs = Program::all();
+		return $programs;
+	}
 
 	//Mobile Methods 
 	public function get_similar_videos(Request $request)

@@ -55,6 +55,7 @@ return [
 		'mysql' => [
 			'driver'    => 'mysql',
 			'host'      => env('DB_HOST', 'yeplive-dev.czc6detrzhw4.us-west-2.rds.amazonaws.com:3306'),
+			'unix_socket' => env('DB_SOCKET', ''),
 			'database'  => env('DB_DATABASE', 'yeplive'),
 			'username'  => env('DB_USERNAME', 'root'),
 			'password'  => env('DB_PASSWORD', 'rootroot'),

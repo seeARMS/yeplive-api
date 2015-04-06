@@ -1,23 +1,102 @@
-## Laravel PHP Framework
+#Yeplive API
+##Configuration
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/downloads.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+run: `composer update`
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+to get all the new packages
 
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+####JSON Web Tokens
+change secret key in: `/vendor/tymon/jwt-wuth/src/config/config.php`
+`php artisan jwt:generate` (generates new secret key)
 
-## Official Documentation
+#####ADD TO .htaccess:
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
+````
+RewriteEngine On
+RewriteCond %{HTTP:Authorization} ^(.*)
+RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
+````
+##Plugins Used
+* [laravel-tagging](https://github.com/rtconner/laravel-tagging/tree/laravel-5)
+* [ jwt-auth ](https://github.com/tymondesigns/jwt-auth)
 
-## Contributing
+##API Methods
+#####NOTE: The only methods that you don't have to include the authentication token is `POST /authenticate` and `POST /user`
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+Root: `/api/v1/`
 
-### License
+Return Type: All calls return JSON
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+###Authentication
+
+#####`POST /authenticate`
+
+params: `email` `password`
+
+returns: `token`
+
+example output:
+
+```
+{
+	"token":"send this with all your requests"
+}
+```
+
+#####`GET /authenticate`
+
+parmas: none
+
+returns: the current user that the provided token is associated with
+
+example output:
+
+```
+{
+	"username":"someUsername",
+	"email":"some@email.com"
+}
+```
+
+###Programs
+
+#####`GET /program`
+
+Returns a list of programs
+
+#####`POST /program`
+
+upload a new program
+
+
+###User
+
+#####`GET /user`
+
+Returns a list of users
+
+#####`POST /user`
+
+create a new user
+
+
+##TODO:
+
+* make sure all functionality of old wordpress site is transfered
+* some models might not have all the data they need (havn't gone through all wordpress code)
+* Get voting working
+* Get a view counter working
+* Ensure that all models have the proper field
+* Integrate with amazon web services (s3 for uploads)
+* clean up old code (make sure not to throw out useful functionality)
+* document all routes with parameters and example returns
+* Reporting
+* Warnings
+* Settings
+
+
+##FAQs
+#####How does JSON Web Token Authentication work?
+a JSON web token is issued for all clients that after they authenticate.
+Using the token the clinet includes `Authorization: Bearer {yourtokenhere}` in all requests as a header. 
+The server then checks against the token and gets the proper user.
