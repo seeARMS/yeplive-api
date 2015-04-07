@@ -1458,6 +1458,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
 	 */
 	public function save(array $options = array())
 	{
+		
 		$query = $this->newQueryWithoutScopes();
 
 		// If the "saving" event returns false we'll bail out of the save and return
@@ -1483,7 +1484,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
 		{
 			$saved = $this->performInsert($query, $options);
 		}
-
+		
 		if ($saved) $this->finishSave($options);
 
 		return $saved;

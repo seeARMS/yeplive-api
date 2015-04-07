@@ -34,4 +34,10 @@ class WelcomeController extends Controller {
 		return json_encode($array);
 	}
 
+	public function testt()
+	{
+				$array = array ('status' => 'success');
+		return json_encode($array);
+	}
+
 }
