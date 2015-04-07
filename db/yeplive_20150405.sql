@@ -85,11 +85,11 @@ CREATE TABLE IF NOT EXISTS `yeplive_tags_program` (
   UNIQUE KEY `tag_id` (`tag_id`,`program_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
+/*
 CREATE TABLE IF NOT EXISTS `yeplive_users` (
-  `ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user_login` varchar(60) NOT NULL DEFAULT '',
-  `user_pass` varchar(64) NOT NULL DEFAULT '',
+  `user_password` varchar(64) NOT NULL DEFAULT '',
   `user_nicename` varchar(50) NOT NULL DEFAULT '',
   `user_email` varchar(100) NOT NULL DEFAULT '',
   `user_url` varchar(100) NOT NULL DEFAULT '',
@@ -101,7 +101,16 @@ CREATE TABLE IF NOT EXISTS `yeplive_users` (
   KEY `user_login_key` (`user_login`),
   KEY `user_nicename` (`user_nicename`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=104 ;
+*/
 
+CREATE TABLE IF NOT EXISTS `yeplive_users` (
+  `user_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `password` varchar(64) NOT NULL DEFAULT '',
+  `email` varchar(100) NOT NULL DEFAULT '',
+  `created_at` timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `updated_at` timestamp not null default '0000-00-00 00:00:00',
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=104 ;
 
 CREATE TABLE IF NOT EXISTS `yeplive_user_pans` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

@@ -19,15 +19,24 @@ Route::controllers([
 ]);
 */
 
+
 //RESTful API
 //ALL {id} tags only accept [0-9]+ see app/providers/RouteServiceProvider.php
 Route::group(array('prefix' => 'api/v1'), function()
 { 
+	Route::get('/', function(){
+		return 'Yeplive Web API v1.0';
+	});
+
 	Route::post('authenticate', [
 		'uses' => 'UserController@authenticate'
 	]);
+
+	/*
+	 * User Sign up
+	 */
 	Route::post('user', [
-		'uses' => 'UserController@store'
+		'uses' => 'UserController@signup'
 	]);
 	
 	//ALL THESE ROUTES REQURE A JWT TOKEN
