@@ -20,6 +20,7 @@ Route::controllers([
 */
 
 //RESTful API
+//ALL {id} tags only accept [0-9]+ see app/providers/RouteServiceProvider.php
 Route::group(array('prefix' => 'api/v1'), function()
 { 
 	Route::post('authenticate', [
@@ -36,7 +37,8 @@ Route::group(array('prefix' => 'api/v1'), function()
 			'uses' => 'UserController@check_auth'
 		]);	
 		//RESTful Programs
-		Route::resource('program', 'ProgramController');
+		Route::resource('program', 'ProgramController',
+			['except' => ['destroy', 'create', 'edit']]);
 		Route::get('program/{id}/similar', [
 			'uses' => 'ProgramController@similar'
 		]);
@@ -44,27 +46,27 @@ Route::group(array('prefix' => 'api/v1'), function()
 			'uses' => 'ProgramController@tags'
 		]);
 		//TODO
-		Route::get('program/{id}/view_count',[
+		Route::get('program/{id}/views',[
 			'uses' => 'ProgramController@viewCount'
 		]);
 		//TODO
-		Route::get('program/:id/votes',[
+		Route::get('program/{id}/votes',[
 			'uses' => 'ProgramController@votes'
 		]);
 		//TODO
-		Route::get('program/:id/negative_votes',[
+		Route::get('program/{id}/negative_votes',[
 
 		]);
 		//TODO
-		Route::get('program/:id/my_vote',[
-
+		Route::get('program/{id}/my_vote',[
+			'uses' => 'ProgramController@userVote'
 		]);
 		//TODO
-		Route::post('program/:id/set_vote',[
-
+		Route::post('program/{id}/vote',[
+			'uses' => 'ProgramController@vote'
 		]);
 		//TODO
-		Route::post('program/:id/report',[
+		Route::post('program/{id}/report',[
 
 		]);
 		//RESTful Users
@@ -72,19 +74,19 @@ Route::group(array('prefix' => 'api/v1'), function()
 			'users' => 'UserController@show'
 		]);
 		//TODO
-		Route::get('user/:id/is_follow',[
+		Route::get('user/{id}/is_follow',[
 
 		]);
 		//TODO
-		Route::post('user/:id/become_fan',[
+		Route::post('user/{id}/become_fan',[
 
 		]);
 		//TODO
-		Route::post('user/:id/thumbnail',[
+		Route::post('user/{id}/thumbnail',[
 
 		]);
 		//TODO
-		Route::post('user/:id/settings',[
+		Route::post('user/{id}/settings',[
 
 		]);
 	});

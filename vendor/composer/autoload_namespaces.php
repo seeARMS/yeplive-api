@@ -30,6 +30,8 @@ return array(
     'Math' => array($vendorDir . '/phpseclib/phpseclib/phpseclib'),
     'JakubOnderka\\PhpConsoleHighlighter' => array($vendorDir . '/jakub-onderka/php-console-highlighter/src'),
     'JakubOnderka\\PhpConsoleColor' => array($vendorDir . '/jakub-onderka/php-console-color/src'),
+    'Guzzle\\Tests' => array($vendorDir . '/guzzle/guzzle/tests'),
+    'Guzzle' => array($vendorDir . '/guzzle/guzzle/src'),
     'File' => array($vendorDir . '/phpseclib/phpseclib/phpseclib'),
     'Dotenv' => array($vendorDir . '/vlucas/phpdotenv/src'),
     'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src'),
@@ -39,4 +41,5 @@ return array(
     'Cron' => array($vendorDir . '/mtdowling/cron-expression/src'),
     'Conner\\Tagging\\' => array($vendorDir . '/rtconner/laravel-tagging/src'),
     'Carbon' => array($vendorDir . '/nesbot/carbon/src'),
+    'Aws' => array($vendorDir . '/aws/aws-sdk-php/src'),
 );

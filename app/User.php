@@ -52,4 +52,18 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		return $this->hasMany('App\Program');
 	}
 
+	//check if user is banned
+	public function isBanned()
+	{
+		if($this->bannedPermanently)
+		{
+			return true;
+		}
+		else if ($this->bannedUntil < \Carbon\Carbon::now())
+		{
+			return true;
+		}
+		return false;
+	}
+
 }

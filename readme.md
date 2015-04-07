@@ -35,7 +35,7 @@ params: `email` `password`
 
 returns: `token`
 
-example output:
+example response:
 
 ```
 {
@@ -49,7 +49,7 @@ parmas: none
 
 returns: the current user that the provided token is associated with
 
-example output:
+example response:
 
 ```
 {
@@ -62,12 +62,163 @@ example output:
 
 #####`GET /program`
 
-Returns a list of programs
+params: none
+
+returns: a list of programs
+
+example response:
+
+```
+{
+	"programs":[
+		{
+			"title": "some title",
+			"description": "some description",
+			"latitude": 12.3,
+			"longitude": 100.3,
+			"location": "some location",
+			"displayName": "@someuser"
+		},
+		...
+	
+	]
+}
+```
 
 #####`POST /program`
 
-upload a new program
+create a new program
 
+params:
+
+* `title`
+* `description`
+* `location`
+* `longitude`
+* `latitude`
+* `channel_id`
+* `start_time`
+* `end_time`
+* `tags`
+
+#####Note: `tags` is a comma seperated string ex: `"these,are,each,tags"`
+
+returns: the newly created program
+
+example output:
+
+```
+{
+	"id": 412,
+	"title": "some title",
+	"description": "some description",
+	"latitude": 12.3,
+	"longitude": 100.3,
+	"location": "some location",
+	"displayName": "@someuser",
+	"views": 123
+}
+```
+
+#####`GET /program/{id}`
+
+returns: data about the specified program
+
+example output:
+
+```
+{
+	"program": {
+		"id": 412,
+		"title": "some title",
+		"description": "some description",
+		"latitude": 12.3,
+		"longitude": 100.3,
+		"location": "some location",
+		"displayName": "@someuser"
+		"views": 123
+	}
+}
+```
+
+#####`GET /program/{id}/tags`
+
+returns: an array of tags for the program with specified id
+
+example output:
+
+```
+{
+	"tags": [
+		"tag1",
+		"tag2",
+		"tag3",
+		...
+	];
+}
+```
+
+#####`GET /program/{id}/views`
+
+```
+{
+	"views": 12124
+}
+```
+
+#####Voting:
+
+#####`GET /program/{id}/votes`
+
+Get number of votes on the specified program
+
+params: none
+
+Example output:
+
+```
+{
+	"votes": 3214
+}
+```
+
+#####`GET /program/{id}/my_vote`
+
+get whether or not the user has voted on the program
+
+params: none
+
+Example output:
+
+```
+{
+	"vote": 0
+}
+```
+
+#####`POST /program/{id}/vote`
+
+params: none
+
+Example output:
+
+toggle vote on the program with specified ID
+
+```
+{
+	"vote": 1
+}
+```
+
+#####Reporting:
+
+#####`POST /program/{id}/report`
+
+```
+{
+	"reported": true
+}
+```
 
 ###User
 
@@ -79,6 +230,60 @@ Returns a list of users
 
 create a new user
 
+#####`GET /user/{id}`
+
+get a specific user by their id
+
+#####`GET /user/{id}/is_follow`
+
+determine if you are a follower of a specific 
+
+###Errors
+
+####400
+
+invalid parameters supplied
+
+```
+{
+	"statusCode": 400,
+	"error": "Invalid parameters"
+}
+```
+
+solution: make sure all your parameters are correct for the method
+
+
+
+####401
+
+invalid token supplied
+
+example response:
+
+```
+{
+	"statusCode": 401,
+	"error": "Unauthorized"
+}
+```
+
+solution: make sure that your token is still valid and if not request a new one. (Reauthenticate Client)
+
+####404
+
+api method not found
+
+example response:
+
+```
+{
+	"statusCode" 404,
+	"error": "Method not found"
+}
+```
+
+solution: make sure that the route you are trying to call exists
 
 ##TODO:
 
