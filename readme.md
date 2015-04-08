@@ -226,9 +226,51 @@ toggle vote on the program with specified ID
 
 Returns a list of users
 
+example response:
+
+```
+{
+	"users": [
+		
+	]
+}
+```
+
 #####`POST /user`
 
 create a new user
+
+params: `email` `password` `name`
+
+example response:
+
+```
+{
+	"user_id": 4,
+	"email": "example@gmail.com",
+	"success": {
+		"token": "thisisyourauthenticationtoken"
+	}
+}
+```
+
+#####`POST /user/{id}/thumbnail`
+
+upload a picture for the user
+
+params: `photo`
+
+example response:
+
+```
+{
+	"success":{
+		"url": "https:\/\/s3-us-west-2.amazonaws.com\/yeplive-api-dev\/1428504207jjfedora.jpg
+	}
+}
+```
+
+#####NOTE: remember to unescape the `\` before all `/` or else the url won't work
 
 #####`GET /user/{id}`
 
@@ -247,7 +289,11 @@ invalid parameters supplied
 ```
 {
 	"statusCode": 400,
-	"error": "Invalid parameters"
+	"messages": [
+		"array of messages as to why your input was incorrect",
+		...
+	],
+	"error": "invalid_input"
 }
 ```
 

@@ -6,6 +6,7 @@ use InvalidArgumentException;
 use Namshi\JOSE\Base64\Base64Encoder;
 use Namshi\JOSE\Base64\Base64UrlSafeEncoder;
 use Namshi\JOSE\Signer\SignerInterface;
+use Namshi\JOSE\Base64\Encoder;
 
 /**
  * Class representing a JSOn Web Signature.
@@ -84,9 +85,11 @@ class JWS extends JWT
      * @return JWS
      * @throws \InvalidArgumentException
      */
-    public static function load($jwsTokenString, $allowUnsecure = false)
+    public static function load($jwsTokenString, $allowUnsecure = false, Encoder $encoder = null)
     {
-        $encoder = strpbrk($jwsTokenString, '+/=') ? new Base64Encoder() : new Base64UrlSafeEncoder();
+        if ($encoder === null) {
+            $encoder = strpbrk($jwsTokenString, '+/=') ? new Base64Encoder() : new Base64UrlSafeEncoder();
+        }
         $parts   = explode('.', $jwsTokenString);
 
         if (count($parts) === 3) {
@@ -115,10 +118,15 @@ class JWS extends JWT
      * signature previously stored (@see JWS::load).
      *
      * @param resource|string $key
+     * @param string $algo The algorithms this JWS should be signed with. Use it if you want to restrict which algorithms you want to allow to be validated.
      * @return bool
      */
-    public function verify($key)
+    public function verify($key, $algo = null)
     {
+        if (empty($key) || ($algo && $this->header['alg'] !== $algo)) {
+            return false;
+        }
+
         $decodedSignature = $this->encoder->decode($this->getEncodedSignature());
         $signinInput      = $this->generateSigninInput();
 
@@ -130,11 +138,13 @@ class JWS extends JWT
      * and the token is not expired.
      *
      * @param resource|string $key
+     * @param string $algo The algorithms this JWS should be signed with. Use it if you want to restrict which algorithms you want to allow to be validated.
+     * 
      * @return bool
      */
-    public function isValid($key)
+    public function isValid($key, $algo = null)
     {
-        return $this->verify($key) && ! $this->isExpired();
+        return $this->verify($key, $algo) && ! $this->isExpired();
     }
 
     /**

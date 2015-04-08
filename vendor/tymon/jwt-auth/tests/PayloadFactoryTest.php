@@ -6,7 +6,6 @@ use Mockery;
 use Tymon\JWTAuth\Payload;
 use Tymon\JWTAuth\PayloadFactory;
 use Illuminate\Http\Request;
-
 use Tymon\JWTAuth\Claims\Issuer;
 use Tymon\JWTAuth\Claims\IssuedAt;
 use Tymon\JWTAuth\Claims\Expiration;
@@ -36,16 +35,21 @@ class PayloadFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->validator->shouldReceive('setRefreshFlow->check');
 
+        $expTime = time() + 3600;
+
         $this->claimFactory->shouldReceive('get')->once()->with('sub', 1)->andReturn(new Subject(1));
         $this->claimFactory->shouldReceive('get')->once()->with('iss', Mockery::any())->andReturn(new Issuer('/foo'));
-        $this->claimFactory->shouldReceive('get')->once()->with('exp', time() + 3600)->andReturn(new Expiration(time() + 3600));
-        $this->claimFactory->shouldReceive('get')->once()->with('iat', time())->andReturn(new IssuedAt(time()));
+        $this->claimFactory->shouldReceive('get')->once()->with('iat', 123)->andReturn(new IssuedAt(123));
         $this->claimFactory->shouldReceive('get')->once()->with('jti', 'foo')->andReturn(new JwtId('foo'));
         $this->claimFactory->shouldReceive('get')->once()->with('nbf', time())->andReturn(new NotBefore(time()));
+        $this->claimFactory->shouldReceive('get')->once()->with('exp', $expTime)->andReturn(new Expiration($expTime));
 
-        $payload = $this->factory->make(['sub' => 1, 'jti' => 'foo']);
+        $payload = $this->factory->make(['sub' => 1, 'jti' => 'foo', 'iat' => 123]);
 
         $this->assertEquals($payload->get('sub'), 1);
+        $this->assertEquals($payload->get('iat'), 123);
+        $this->assertEquals($payload['exp'], $expTime);
+
         $this->assertInstanceOf('Tymon\JWTAuth\Payload', $payload);
     }
 
@@ -64,7 +68,7 @@ class PayloadFactoryTest extends \PHPUnit_Framework_TestCase
 
         $payload = $this->factory->sub(1)->foo('baz')->make();
 
-        $this->assertEquals($payload->get('sub'), 1);
+        $this->assertEquals($payload['sub'], 1);
         $this->assertEquals($payload->get('jti'), 'foo');
         $this->assertEquals($payload->get('foo'), 'baz');
 
@@ -82,12 +86,12 @@ class PayloadFactoryTest extends \PHPUnit_Framework_TestCase
         $this->claimFactory->shouldReceive('get')->once()->with('iat', Mockery::any())->andReturn(new IssuedAt(time()));
         $this->claimFactory->shouldReceive('get')->once()->with('jti', Mockery::any())->andReturn(new JwtId('foo'));
         $this->claimFactory->shouldReceive('get')->once()->with('nbf', Mockery::any())->andReturn(new NotBefore(time()));
-        $this->claimFactory->shouldReceive('get')->once()->with('foo', ['bar' => [0,0,0]])->andReturn(new Custom('foo', ['bar' => [0,0,0]]));
+        $this->claimFactory->shouldReceive('get')->once()->with('foo', ['bar' => [0, 0, 0]])->andReturn(new Custom('foo', ['bar' => [0, 0, 0]]));
 
-        $payload = $this->factory->sub(1)->foo(['bar' => [0,0,0]])->make();
+        $payload = $this->factory->sub(1)->foo(['bar' => [0, 0, 0]])->make();
 
         $this->assertEquals($payload->get('sub'), 1);
-        $this->assertEquals($payload->get('foo'), ['bar' => [0,0,0]]);
+        $this->assertEquals($payload->get('foo'), ['bar' => [0, 0, 0]]);
 
         $this->assertInstanceOf('Tymon\JWTAuth\Payload', $payload);
     }

@@ -69,7 +69,7 @@ Route::group(array('prefix' => 'api/v1'), function()
 
 		]);
 		//TODO
-		Route::get('program/{id}/my_vote',[
+		Route::get('program/{id}/vote',[
 			'uses' => 'ProgramController@userVote'
 		]);
 		//TODO
@@ -117,19 +117,22 @@ Route::group(array('prefix' => 'api/v1'), function()
 			'uses' => 'UserController@showAllFollower'
 		]);
 
-		//TODO
-		Route::post('user/{id}/thumbnail',[
-		]);
-		//TODO
-		Route::post('user/{id}/settings',[
-		]);
-
-		/*
-		 * Change password request by user_id {id}
-		 */
-		Route::post('user/{id}/settings/pwchange',[
-			'uses' => 'UserController@changePassword'
-		]);
+		//These routes all require the {id} to be the user in the json web token
+		Route::group(['middleware' => 'jwt.checkUser'], function(){
+			//TODO
+			Route::post('user/{id}/thumbnail',[
+				'uses' => 'UserController@updateThumbnail'
+			]);
+			//TODO
+			Route::post('user/{id}/settings',[
+			]);
+			/*
+			 * Change password request by user_id {id}
+			 */
+			Route::post('user/{id}/settings/pwchange',[
+				'uses' => 'UserController@changePassword'
+			]);
+		});
 	});
 });
 

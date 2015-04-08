@@ -1,5 +1,23 @@
 <?php
 class RoutesTest extends TestCase{
+	public function testRootRoute()
+	{
+		$response = $this->call('GET', '/api/v1');
+		$this->assertEquals(200, $response->getStatusCode());
+	}
+
+	public function testCreateUser()
+	{
+		$userData = [
+			'email' => 'test@gmail.com',
+			'password' => 'password'
+		];
+		$response = $this->call('POST', '/api/v1/user', $userData);
+		$this->assertEquals(200, $response->getStatusCode());
+		
+	}
+
+/*
 	public function testMobileRoutes()
 	{
 		$response = $this->call('GET','/ajaxCreateChatResponseNotifications.php');
@@ -50,5 +68,6 @@ class RoutesTest extends TestCase{
 		$response = $this->call('GET', '/ajaxUpdateUserSettings.php');
 		$this->assertEquals(200, $response->getStatusCode());
 	}	
+*/
 }
 ?>
