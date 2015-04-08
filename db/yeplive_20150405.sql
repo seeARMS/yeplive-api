@@ -112,6 +112,16 @@ CREATE TABLE IF NOT EXISTS `yeplive_users` (
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=104 ;
 
+CREATE TABLE IF NOT EXISTS `yeplive_following` (
+  `user_id` bigint(20) unsigned NOT NULL,
+  `follower_id` bigint(20) unsigned NOT NULL,
+  `created_at` timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `updated_at` timestamp not null default '0000-00-00 00:00:00',
+  PRIMARY KEY (`user_id`, `follower_id`),
+  FOREIGN KEY (`user_id`) REFERENCES yeplive_users(`user_id`),
+  FOREIGN KEY (`follower_id`) REFERENCES yeplive_users(`user_id`)
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
 CREATE TABLE IF NOT EXISTS `yeplive_user_pans` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) DEFAULT NULL,

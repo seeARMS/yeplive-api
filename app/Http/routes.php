@@ -24,27 +24,29 @@ Route::controllers([
 //ALL {id} tags only accept [0-9]+ see app/providers/RouteServiceProvider.php
 Route::group(array('prefix' => 'api/v1'), function()
 { 
+	/*
+	 * API Health Check
+	 */
 	Route::get('/', function(){
 		return 'Yeplive Web API v1.0';
 	});
-
+	/*
+	 * Authenticate a user
+	 */
 	Route::post('authenticate', [
 		'uses' => 'UserController@authenticate'
 	]);
-
 	/*
 	 * User Sign up
 	 */
 	Route::post('user', [
 		'uses' => 'UserController@signup'
 	]);
-	
+
 	//ALL THESE ROUTES REQURE A JWT TOKEN
 	Route::group(['middleware' => 'jwt.auth'], function(){
-		//Check authentication
-		Route::get('authenticate', [
-			'uses' => 'UserController@check_auth'
-		]);	
+
+
 		//RESTful Programs
 		Route::resource('program', 'ProgramController',
 			['except' => ['destroy', 'create', 'edit']]);
@@ -79,24 +81,54 @@ Route::group(array('prefix' => 'api/v1'), function()
 
 		]);
 		//RESTful Users
+		/*
+	 	 * Check authentication status by user email and password
+	 	 */
+		Route::get('authenticate', [
+			'uses' => 'UserController@checkAuth'
+		]);
+		/*
+	 	 * Show all users
+	 	 */
 		Route::get('user', [
-			'users' => 'UserController@show'
+			'uses' => 'UserController@showAllUsers'
 		]);
-		//TODO
-		Route::get('user/{id}/is_follow',[
 
-		]);
 		//TODO
 		Route::post('user/{id}/become_fan',[
-
 		]);
+
+		/*
+	 	 * User {id} follows a followee
+	 	 */
+		Route::post('user/{id}/follow', [
+			'uses' => 'UserController@addFollowing'
+		]);
+		/*
+		 * Display all followees followed by follower {id}
+		 */
+		Route::get('user/{id}/followees',[
+			'uses' => 'UserController@showAllFollowee'
+		]);
+		/*
+		 * Display all followers following followee {id}
+		 */
+		Route::get('user/{id}/followers',[
+			'uses' => 'UserController@showAllFollower'
+		]);
+
 		//TODO
 		Route::post('user/{id}/thumbnail',[
-
 		]);
 		//TODO
 		Route::post('user/{id}/settings',[
+		]);
 
+		/*
+		 * Change password request by user_id {id}
+		 */
+		Route::post('user/{id}/settings/pwchange',[
+			'uses' => 'UserController@changePassword'
 		]);
 	});
 });
