@@ -139,7 +139,13 @@ class UserController extends Controller {
 	{
 		return $followees = \App\Following::where('user_id' , '=' , $id )->get();
 	}
-
+	/*
+	 * POST : Change user password
+	 *
+	 * @param  {String}    $id    			User id
+	 * @param  {Object}    $request 		Payload contains old and new email
+	 * @return {Object}    Json response    Return status
+	 */
 	public function changePassword(Request $request, $id)
 	{
 		//Validate POST request
@@ -178,6 +184,32 @@ class UserController extends Controller {
 		}
 
 	}
+	/*
+	 * POST : Change user email
+	 *
+	 * @param  {String}    $id    			User id
+	 * @param  {Object}    $request 		Payload contains new email
+	 * @return {Object}    Json response    Return status
+	 */
+	public function changeEmail(Request $request, $id)
+	{
+		//Validate POST request
+		$params = $request->only('new_email');
+
+		$validator = \Validator::make( $params, [
+			'new_email' => 'required|email|unique:yeplive_users,email'
+		]);
+
+		if ( $validator -> fails() )
+		{
+			return response()-> json(['error' => 'invalid_input'], 400);
+		}
+		//Changing user email
+		$credentials = \App\User::find($id);
+		$credentials['email'] = $params['new_email'];
+		$credentials->save();
+		return response()->json(['success' => 'email_has_modified'], 200);
+	}
 
 	public function updateThumbnail(Request $request, $id)
 	{
@@ -188,7 +220,8 @@ class UserController extends Controller {
 		$file = $request->file('photo');
 		if(! $file->isValid())
 		{
-			return response()-> json(['error' => 'invalid_input'], 400);	
+			return response()-> json(['error' => 'invalid_input'], 400);
+	
 		}
 
 		$user = \App\User::find($id);

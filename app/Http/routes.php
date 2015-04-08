@@ -93,11 +93,6 @@ Route::group(array('prefix' => 'api/v1'), function()
 		Route::get('user', [
 			'uses' => 'UserController@showAllUsers'
 		]);
-
-		//TODO
-		Route::post('user/{id}/become_fan',[
-		]);
-
 		/*
 	 	 * User {id} follows a followee
 	 	 */
@@ -123,14 +118,17 @@ Route::group(array('prefix' => 'api/v1'), function()
 			Route::post('user/{id}/thumbnail',[
 				'uses' => 'UserController@updateThumbnail'
 			]);
-			//TODO
-			Route::post('user/{id}/settings',[
-			]);
 			/*
 			 * Change password request by user_id {id}
 			 */
-			Route::post('user/{id}/settings/pwchange',[
+			Route::post('user/{id}/settings/password',[
 				'uses' => 'UserController@changePassword'
+			]);
+			/*
+			 * Change email request by user_id {id}
+			 */
+			Route::post('user/{id}/settings/email',[
+				'uses' => 'UserController@changeEmail'
 			]);
 		});
 	});

@@ -16,8 +16,8 @@ class CheckUserMiddleware {
 		$id = $request -> route('id');
 
 		$user = \JWTAuth::parseToken()->toUser();
-	
-		if($id != $user->id)
+		
+		if($id != $user->user_id)
 		{
 			return response()->json(['error' => 'unauthorized', 'messages' => ['token does not match user']], 401);
 		}
