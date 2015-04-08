@@ -425,5 +425,4 @@ class UserController extends Controller {
 
 	}	
 */
->>>>>>> Stashed changes
 }
