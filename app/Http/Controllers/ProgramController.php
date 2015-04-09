@@ -38,15 +38,15 @@ class ProgramController extends Controller {
 	public function store(Request $request)
 	{
 		$params = $request->only(
-		'channel_id',
+//		'channel_id',
 		'title',
 		'latitude',
-		'longitude',
-		'location',
-		'description',
-		'end_time',
-		'start_time', 
-		'tags'
+		'longitude'
+//		'location',
+//		'description',
+//		'end_time',
+//		'start_time', 
+		,'tags'
 		);
 	
 		$validator = \Validator::make( $params, [

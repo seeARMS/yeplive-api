@@ -58,7 +58,7 @@ Route::group(array('prefix' => 'api/v1'), function()
 
 	//ALL THESE ROUTES REQURE A JWT TOKEN
 	//disabled
-	Route::group(/*['middleware' => 'jwt.auth']*/, function(){
+//	Route::group(['middleware' => 'jwt.auth'], function(){
 		//RESTful Programs
 		Route::resource('programs', 'ProgramController',
 			['except' => ['destroy', 'create', 'edit']]);
@@ -155,5 +155,5 @@ Route::group(array('prefix' => 'api/v1'), function()
 				'uses' => 'UserController@changeEmail'
 			]);
 		});
-	});
+//	});
 });
