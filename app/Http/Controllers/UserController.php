@@ -62,7 +62,8 @@ class UserController extends Controller {
 		if ( $validator -> fails() )
 		{
 			$messages = $validator -> messages() -> all();
-			return response()-> json(['status_code' => '400', 'messages' => $messages, 'error' => 'invalid_input'], 400);
+			return response()->json(\App\Errors::invalid($validator));
+			return response()->json(['status_code' => '400', 'messages' => $messages, 'error' => 'invalid_input'], 400);
 		}
 		//Catch the unhashed password for auth token
 		$password = $params['password'];
@@ -75,6 +76,109 @@ class UserController extends Controller {
 								], 200);
 	}
 
+
+	/*
+	 * POST: Sign in through facebook
+	 */
+	public function facebookLogin(\SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb,  Request $request)
+	{
+		$url = $fb->getLoginUrl(['email','public_profile']);
+		try {
+			$user = \JWTAuth::parseToken()->toUser();
+		} catch(\Exception $e) {
+				redirect()->away($url);
+		}
+	}
+
+	public function facebookCallback(\SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb)
+	{
+	 try {
+			$token = $fb->getAccessTokenFromRedirect();
+		} catch (Facebook\Exceptions\FacebookSDKException $e) {
+			dd($e->getMessage());
+		}
+	  $fb->setDefaultAccessToken($token);
+		try {
+			$response = $fb->get('/me?fields=id,email,first_name,picture.type(large)');
+    } catch (Facebook\Exceptions\FacebookSDKException $e) {
+			dd($e->getMessage());
+    }
+		$data = $response->getGraphObject();
+
+		$userData = [
+			'email' => $data->getProperty('email'),
+			'name' => $data->getProperty('first_name'),
+			'password' => $data->getProperty('first_name'),
+			'picture_path' => $data->getProperty('picture')->getProperty('url'),
+			'facebook_id' => $data->getProperty('id'),
+			'facebook_access_token' => (string) $token
+		];	
+
+
+		$users = \App\User::where('facebook_id',$userData['facebook_id'])->get();
+		if($users->count() == 0)
+		{
+			$user = \App\User::create($userData);
+		} else {
+			$user = $users->first();
+		}
+		$jwtoken = \JWTAuth::fromUser($user);
+
+		return response()->json(['success' => $jwtoken]);
+	}
+
+	public function loginTwitter(Request $request)
+	{
+		return \Socialize::with('twitter')->redirect();
+	}
+
+	public function twitterCallback(Request $request)
+	{
+		$user = \Socialize::with('twitter')->user();
+		$data = [
+			'email' => $user->getEmail(),
+			'id' => $user->getId(),
+			'nickname' => $user->getNickName(),
+			'name' => $user->getName(),
+			'avatar' => $user->getAvatar()
+		];	
+		return $data;
+	}
+
+	public function loginGoogle(Request $request)
+	{
+		return \Socialize::with('google')->redirect();
+	}
+
+	public function googleCallback(Request $request)
+	{
+		$user = \Socialize::with('google')->user();
+		$data = [
+			'email' => $user->getEmail(),
+			'id' => $user->getId(),
+			'nickname' => $user->getNickName(),
+			'name' => $user->getName(),
+			'avatar' => $user->getAvatar()
+		];	
+		return $data;
+
+	}
+
+	public function friends(\SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb)
+	{
+		$user = \JWTAuth::parseToken()->toUser();
+	  $fb->setDefaultAccessToken($user->facebook_access_token);
+		$response = $fb->get('/me/friends');
+		$loc = $response->getGraphObjectList();//getGraphObject();
+		return $loc;
+		return $response->getGraphObject();
+	}
+
+
+	public function setDisplayName(Request $request)
+	{
+			
+	}
 
 	/*
 	 * POST : Add a follower and followee relationship
@@ -92,6 +196,7 @@ class UserController extends Controller {
 
 		if ( $validator -> fails() )
 		{
+			return response()->json(\App\Errors::invalid($validator));
 			return response()-> json(['error' => 'invalid_followee'], 400);
 		}
 

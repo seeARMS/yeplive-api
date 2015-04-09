@@ -3,7 +3,8 @@
 
 run: `composer update`
 
-to get all the new packages
+in `.env` set `ROOT_URL=http://localhost/path/to/laravel`
+
 
 ####JSON Web Tokens
 change secret key in: `/vendor/tymon/jwt-wuth/src/config/config.php`
@@ -16,9 +17,59 @@ RewriteEngine On
 RewriteCond %{HTTP:Authorization} ^(.*)
 RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
 ````
+###Setup Social Login
+
+####Facebook
+
+plugin used: LaravelFacebookSDK
+
+*	Create a new application at [facebook](https://developers.facebook.com)
+* Click `settings` and add `localhost` to the `App Domains` field
+* Get your App ID and App Secret
+* add them to your `.env` file
+
+```
+FACEBOOK_APP_ID={your id here}
+FACEBOOK_SECRET_ID={your secret here}
+```
+
+* navigate to `/api/v1/facebook/login`
+
+####Twitter
+
+plugin used: Socialite
+
+* Create a new application at [twitter](https://apps.twitter.com)
+* Fill in the details and use `{ROOT_URL}/api/v1/twitter/callback` as the callback
+* fetch the Client ID and Client Secret
+* add them to your `.env` file:
+
+```
+TWITTER_CLIENT_ID={your id here}
+TWITTER_CLIENT_SECRET={your secret here}
+```
+* navigate to `/api/v1/twitter/login`
+
+####Google
+
+plugin used: Socialite
+
+* Create a new application at [google](https://google)
+* Fill in details and `{ROOT_URL}/api/v1/twitter/callback` as the callback
+* grab the Client and Client Secret
+* add them to your `.env`
+
+```
+GOOGLE_CLIENT_ID={your id here}
+GOOGLE_CLIENT_SECRET={your secret here}
+```
+* navigate to `/api/v1/google/login`
+
 ##Plugins Used
 * [laravel-tagging](https://github.com/rtconner/laravel-tagging/tree/laravel-5)
 * [ jwt-auth ](https://github.com/tymondesigns/jwt-auth)
+* [LaravelFacebookSDK](https://github.com/SammyK/LaravelFacebookSdk)
+* [Socialite](https://github.com/laravel/socialite)
 
 ##API Methods
 #####NOTE: The only methods that you don't have to include the authentication token is `POST /authenticate` and `POST /user`
@@ -57,6 +108,50 @@ example response:
 	"email":"some@email.com"
 }
 ```
+
+#####`GET /facebook/login`
+
+parmas: none
+
+returns: redirects to facebooks login which then redirects to `/facebook/callback` which authenticates the user and provides a token
+
+example response:
+
+```
+{
+	"success":"thisisatoken"
+}
+```
+
+#####`GET /twitter/login`
+
+parmas: none
+
+returns: redirects to twitter login which then redirects to `/twitter/callback` which authenticates the user and provides a token
+
+example response:
+
+```
+{
+	"success":"thisisatoken"
+}
+```
+
+#####`GET /google/login`
+
+parmas: none
+
+returns: redirects to google login which then redirects to `/google/callback` which authenticates the user and provides a token
+
+example response:
+
+```
+{
+	"success":"thisisatoken"
+}
+
+```
+
 
 ###Programs
 
@@ -344,6 +439,8 @@ solution: make sure that the route you are trying to call exists
 * Reporting
 * Warnings
 * Settings
+* Rate limiting
+* [Api framework](https://github.com/dingo/api)
 
 
 ##FAQs

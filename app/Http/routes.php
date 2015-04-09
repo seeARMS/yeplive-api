@@ -30,6 +30,35 @@ Route::group(array('prefix' => 'api/v1'), function()
 	Route::get('/', function(){
 		return 'Yeplive Web API v1.0';
 	});
+
+	// Generate a login URL
+	Route::get('facebook/login', function(SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb)
+	{
+		// Send an array of permissions to request
+		$login_url = $fb->getLoginUrl(['email','public_profile', 'user_friends']);
+		echo '<a href="' . $login_url . '">Login with Facebook</a>';
+	});
+
+	Route::get('facebook/callback', [
+		'uses' => 'UserController@facebookCallback'
+	]);
+
+	Route::get('twitter/login', [
+		'uses' => 'UserController@loginTwitter'	
+	]);
+
+	Route::get('twitter/callback', [	
+		'uses' => 'UserController@twitterCallback'
+	]);
+
+	Route::get('google/login', [
+		'uses' => 'UserController@loginGoogle'	
+	]);
+
+	Route::get('google/callback', [	
+		'uses' => 'UserController@googleCallback'
+	]);
+
 	/*
 	 * Authenticate a user
 	 */
@@ -45,8 +74,6 @@ Route::group(array('prefix' => 'api/v1'), function()
 
 	//ALL THESE ROUTES REQURE A JWT TOKEN
 	Route::group(['middleware' => 'jwt.auth'], function(){
-
-
 		//RESTful Programs
 		Route::resource('program', 'ProgramController',
 			['except' => ['destroy', 'create', 'edit']]);
@@ -56,19 +83,12 @@ Route::group(array('prefix' => 'api/v1'), function()
 		Route::get('program/{id}/tags', [
 			'uses' => 'ProgramController@tags'
 		]);
-		//TODO
 		Route::get('program/{id}/views',[
 			'uses' => 'ProgramController@viewCount'
 		]);
-		//TODO
 		Route::get('program/{id}/votes',[
 			'uses' => 'ProgramController@votes'
 		]);
-		//TODO
-		Route::get('program/{id}/negative_votes',[
-
-		]);
-		//TODO
 		Route::get('program/{id}/vote',[
 			'uses' => 'ProgramController@userVote'
 		]);
@@ -78,7 +98,7 @@ Route::group(array('prefix' => 'api/v1'), function()
 		]);
 		//TODO
 		Route::post('program/{id}/report',[
-
+			'uses' => 'ProgramController@report'
 		]);
 		//RESTful Users
 		/*
@@ -125,6 +145,9 @@ Route::group(array('prefix' => 'api/v1'), function()
 			]);
 			//TODO
 			Route::post('user/{id}/settings',[
+			]);
+			Route::get('user/{id}/friends', [
+				'uses' => 'UserController@friends' 
 			]);
 			/*
 			 * Change password request by user_id {id}

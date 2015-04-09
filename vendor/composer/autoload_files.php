@@ -10,6 +10,7 @@ return array(
     $vendorDir . '/symfony/var-dumper/Symfony/Component/VarDumper/Resources/functions/dump.php',
     $vendorDir . '/nikic/php-parser/lib/bootstrap.php',
     $vendorDir . '/ircmaxell/password-compat/lib/password.php',
+    $vendorDir . '/react/promise/src/functions_include.php',
     $vendorDir . '/phpseclib/phpseclib/phpseclib/Crypt/Random.php',
     $vendorDir . '/psy/psysh/src/Psy/functions.php',
     $vendorDir . '/danielstjules/stringy/src/Create.php',

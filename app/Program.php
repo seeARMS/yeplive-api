@@ -35,6 +35,16 @@ class Program extends Model{
 
 	public function report($reporter, $reason)
 	{
+		$reported = \App\User::find($this->user_id);
+		$data = [
+			'reason' => $reason,
+			'reporter_id' => $reporter->id,
+			'reported_id' => $reported->id,
+			'program_id' => $this->id	
+		];
+		$report = \App\Report::create($data);
+
+		return ['success' => $report];
 		
 	}
 

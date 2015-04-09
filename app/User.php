@@ -23,7 +23,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['name', 'email', 'password'];
+	protected $fillable = ['name', 'email', 'password', 'facebook_id', 'facebook_access_token','picture_path' ];
 
 	/**
 	 * The attributes excluded from the model's JSON form.
@@ -60,7 +60,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		{
 			return true;
 		}
-		else if ($this->bannedUntil < \Carbon\Carbon::now())
+		else if ($this->bannedUntil > \Carbon\Carbon::now())
 		{
 			return true;
 		}

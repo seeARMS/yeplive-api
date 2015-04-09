@@ -3816,5 +3816,544 @@
             "persistence",
             "queryobject"
         ]
+    },
+    {
+        "name": "facebook/php-sdk-v4",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/facebook/facebook-php-sdk-v4.git",
+            "reference": "816ba225235abfdae0b823e056e37d808044d87f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/facebook/facebook-php-sdk-v4/zipball/816ba225235abfdae0b823e056e37d808044d87f",
+            "reference": "816ba225235abfdae0b823e056e37d808044d87f",
+            "shasum": ""
+        },
+        "require": {
+            "ext-mbstring": "*",
+            "php": ">=5.4.0"
+        },
+        "require-dev": {
+            "guzzlehttp/guzzle": "~5.0",
+            "mockery/mockery": "~0.8",
+            "phpunit/phpunit": "~4.0"
+        },
+        "suggest": {
+            "guzzlehttp/guzzle": "Allows for implementation of the Guzzle HTTP client"
+        },
+        "time": "2015-04-02 22:14:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "4.1.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Facebook\\": "src/Facebook/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Facebook Platform"
+        ],
+        "authors": [
+            {
+                "name": "Facebook",
+                "homepage": "https://github.com/facebook/facebook-php-sdk-v4/contributors"
+            }
+        ],
+        "description": "Facebook SDK for PHP",
+        "homepage": "https://github.com/facebook/facebook-php-sdk-v4",
+        "keywords": [
+            "facebook",
+            "sdk"
+        ]
+    },
+    {
+        "name": "sammyk/laravel-facebook-sdk",
+        "version": "2.0.x-dev",
+        "version_normalized": "2.0.9999999.9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/SammyK/LaravelFacebookSdk.git",
+            "reference": "aa943c324042631112a1a9a7f05e0a7a9497f69b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/SammyK/LaravelFacebookSdk/zipball/aa943c324042631112a1a9a7f05e0a7a9497f69b",
+            "reference": "aa943c324042631112a1a9a7f05e0a7a9497f69b",
+            "shasum": ""
+        },
+        "require": {
+            "facebook/php-sdk-v4": "~4.1.0@dev",
+            "illuminate/auth": "~5",
+            "illuminate/config": "~5",
+            "illuminate/database": "~5",
+            "illuminate/routing": "~5",
+            "illuminate/session": "~5",
+            "illuminate/support": "~5",
+            "php": ">=5.4.0"
+        },
+        "require-dev": {
+            "mockery/mockery": "~0.9",
+            "phpunit/phpunit": "~4.0",
+            "squizlabs/php_codesniffer": "~2.0"
+        },
+        "time": "2015-04-05 02:41:15",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "SammyK\\LaravelFacebookSdk\\": "src/LaravelFacebookSdk"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Sammy Kaye Powers",
+                "email": "me@sammyk.me",
+                "homepage": "http://sammyk.me",
+                "role": "Developer"
+            }
+        ],
+        "description": "Fully unit tested Facebook SDK v4.1 integration for Laravel 5",
+        "homepage": "https://github.com/SammyK/LaravelFacebookSdk",
+        "keywords": [
+            "facebook",
+            "facebook query builder",
+            "facebook sdk v4",
+            "laravel",
+            "sdk"
+        ]
+    },
+    {
+        "name": "themattharris/tmhoauth",
+        "version": "0.8.4",
+        "version_normalized": "0.8.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/themattharris/tmhOAuth.git",
+            "reference": "455552d6c57549632644b6c9ac9204766be2b5ee"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/themattharris/tmhOAuth/zipball/455552d6c57549632644b6c9ac9204766be2b5ee",
+            "reference": "455552d6c57549632644b6c9ac9204766be2b5ee",
+            "shasum": ""
+        },
+        "require": {
+            "ext-curl": "*",
+            "php": ">=5.3.0"
+        },
+        "time": "2014-08-06 22:29:35",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "tmhOAuth": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache-2.0"
+        ],
+        "authors": [
+            {
+                "name": "themattharris",
+                "email": "matt@themattharris.com",
+                "role": "Developer"
+            }
+        ],
+        "description": "An OAuth library written in PHP by @themattharris",
+        "keywords": [
+            "oauth",
+            "twitter"
+        ]
+    },
+    {
+        "name": "thujohn/twitter",
+        "version": "2.0.4",
+        "version_normalized": "2.0.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/thujohn/twitter.git",
+            "reference": "40a5af806b87a54d607af6bb28e60cc4d6f51803"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/thujohn/twitter/zipball/40a5af806b87a54d607af6bb28e60cc4d6f51803",
+            "reference": "40a5af806b87a54d607af6bb28e60cc4d6f51803",
+            "shasum": ""
+        },
+        "require": {
+            "illuminate/support": "4.*|5.*",
+            "php": ">=5.4.0",
+            "themattharris/tmhoauth": "0.8.4"
+        },
+        "time": "2015-03-23 12:29:01",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Thujohn\\Twitter": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "thujohn",
+                "email": "jonathan.thuau@gmail.com"
+            }
+        ],
+        "description": "Twitter API for Laravel",
+        "keywords": [
+            "laravel",
+            "laravel4",
+            "laravel5",
+            "twitter"
+        ]
+    },
+    {
+        "name": "league/oauth1-client",
+        "version": "1.4.0",
+        "version_normalized": "1.4.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/thephpleague/oauth1-client.git",
+            "reference": "b378b2ba54f0de789628c9b5784bcf01c8303adf"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/thephpleague/oauth1-client/zipball/b378b2ba54f0de789628c9b5784bcf01c8303adf",
+            "reference": "b378b2ba54f0de789628c9b5784bcf01c8303adf",
+            "shasum": ""
+        },
+        "require": {
+            "guzzle/guzzle": "3.*",
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "mockery/mockery": "0.7.2",
+            "phpunit/phpunit": "*",
+            "satooshi/php-coveralls": "dev-master"
+        },
+        "time": "2015-04-07 00:07:18",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.0-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "League\\OAuth1\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Ben Corlett",
+                "email": "bencorlett@me.com",
+                "homepage": "http://www.webcomm.com.au",
+                "role": "Developer"
+            }
+        ],
+        "description": "OAuth 1.0 Client Library",
+        "keywords": [
+            "Authentication",
+            "SSO",
+            "authorization",
+            "bitbucket",
+            "identity",
+            "idp",
+            "oauth",
+            "oauth1",
+            "single sign on",
+            "trello",
+            "tumblr",
+            "twitter"
+        ]
+    },
+    {
+        "name": "react/promise",
+        "version": "v2.2.0",
+        "version_normalized": "2.2.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/reactphp/promise.git",
+            "reference": "365fcee430dfa4ace1fbc75737ca60ceea7eeeef"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/reactphp/promise/zipball/365fcee430dfa4ace1fbc75737ca60ceea7eeeef",
+            "reference": "365fcee430dfa4ace1fbc75737ca60ceea7eeeef",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.4.0"
+        },
+        "time": "2014-12-30 13:32:42",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.0-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "React\\Promise\\": "src/"
+            },
+            "files": [
+                "src/functions_include.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Jan Sorgalla",
+                "email": "jsorgalla@googlemail.com"
+            }
+        ],
+        "description": "A lightweight implementation of CommonJS Promises/A for PHP"
+    },
+    {
+        "name": "guzzlehttp/streams",
+        "version": "3.0.0",
+        "version_normalized": "3.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/guzzle/streams.git",
+            "reference": "47aaa48e27dae43d39fc1cea0ccf0d84ac1a2ba5"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/guzzle/streams/zipball/47aaa48e27dae43d39fc1cea0ccf0d84ac1a2ba5",
+            "reference": "47aaa48e27dae43d39fc1cea0ccf0d84ac1a2ba5",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.4.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.0"
+        },
+        "time": "2014-10-12 19:18:40",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "3.0-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "GuzzleHttp\\Stream\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Michael Dowling",
+                "email": "mtdowling@gmail.com",
+                "homepage": "https://github.com/mtdowling"
+            }
+        ],
+        "description": "Provides a simple abstraction over streams of data",
+        "homepage": "http://guzzlephp.org/",
+        "keywords": [
+            "Guzzle",
+            "stream"
+        ]
+    },
+    {
+        "name": "guzzlehttp/ringphp",
+        "version": "1.0.7",
+        "version_normalized": "1.0.7.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/guzzle/RingPHP.git",
+            "reference": "52d868f13570a9a56e5fce6614e0ec75d0f13ac2"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/guzzle/RingPHP/zipball/52d868f13570a9a56e5fce6614e0ec75d0f13ac2",
+            "reference": "52d868f13570a9a56e5fce6614e0ec75d0f13ac2",
+            "shasum": ""
+        },
+        "require": {
+            "guzzlehttp/streams": "~3.0",
+            "php": ">=5.4.0",
+            "react/promise": "~2.0"
+        },
+        "require-dev": {
+            "ext-curl": "*",
+            "phpunit/phpunit": "~4.0"
+        },
+        "suggest": {
+            "ext-curl": "Guzzle will use specific adapters if cURL is present"
+        },
+        "time": "2015-03-30 01:43:20",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.0-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "GuzzleHttp\\Ring\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Michael Dowling",
+                "email": "mtdowling@gmail.com",
+                "homepage": "https://github.com/mtdowling"
+            }
+        ],
+        "description": "Provides a simple API and specification that abstracts away the details of HTTP into a single PHP function."
+    },
+    {
+        "name": "guzzlehttp/guzzle",
+        "version": "5.2.0",
+        "version_normalized": "5.2.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/guzzle/guzzle.git",
+            "reference": "475b29ccd411f2fa8a408e64576418728c032cfa"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/guzzle/guzzle/zipball/475b29ccd411f2fa8a408e64576418728c032cfa",
+            "reference": "475b29ccd411f2fa8a408e64576418728c032cfa",
+            "shasum": ""
+        },
+        "require": {
+            "guzzlehttp/ringphp": "~1.0",
+            "php": ">=5.4.0"
+        },
+        "require-dev": {
+            "ext-curl": "*",
+            "phpunit/phpunit": "~4.0",
+            "psr/log": "~1.0"
+        },
+        "time": "2015-01-28 01:03:29",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "5.0-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "GuzzleHttp\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Michael Dowling",
+                "email": "mtdowling@gmail.com",
+                "homepage": "https://github.com/mtdowling"
+            }
+        ],
+        "description": "Guzzle is a PHP HTTP client library and framework for building RESTful web service clients",
+        "homepage": "http://guzzlephp.org/",
+        "keywords": [
+            "client",
+            "curl",
+            "framework",
+            "http",
+            "http client",
+            "rest",
+            "web service"
+        ]
+    },
+    {
+        "name": "laravel/socialite",
+        "version": "v2.0.4",
+        "version_normalized": "2.0.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/laravel/socialite.git",
+            "reference": "3d5f6560f8642c4973b5e54a67b1368ee81ff24d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/laravel/socialite/zipball/3d5f6560f8642c4973b5e54a67b1368ee81ff24d",
+            "reference": "3d5f6560f8642c4973b5e54a67b1368ee81ff24d",
+            "shasum": ""
+        },
+        "require": {
+            "guzzlehttp/guzzle": "~4.0|~5.0",
+            "illuminate/contracts": "~5.0",
+            "illuminate/http": "~5.0",
+            "illuminate/support": "~5.0",
+            "league/oauth1-client": "~1.0",
+            "php": ">=5.4.0"
+        },
+        "require-dev": {
+            "mockery/mockery": "~0.9",
+            "phpunit/phpunit": "~4.0"
+        },
+        "time": "2015-03-13 02:40:10",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.0-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Laravel\\Socialite\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Taylor Otwell",
+                "email": "taylorotwell@gmail.com"
+            }
+        ],
+        "description": "Laravel wrapper around OAuth 1 & OAuth 2 libraries.",
+        "keywords": [
+            "laravel",
+            "oauth"
+        ]
     }
 ]

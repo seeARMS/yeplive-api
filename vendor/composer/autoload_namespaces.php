@@ -6,7 +6,9 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'tmhOAuth' => array($vendorDir . '/themattharris/tmhoauth'),
     'phpDocumentor' => array($vendorDir . '/phpdocumentor/reflection-docblock/src'),
+    'Thujohn\\Twitter' => array($vendorDir . '/thujohn/twitter/src'),
     'System' => array($vendorDir . '/phpseclib/phpseclib/phpseclib'),
     'Symfony\\Component\\Yaml\\' => array($vendorDir . '/symfony/yaml'),
     'Symfony\\Component\\VarDumper\\' => array($vendorDir . '/symfony/var-dumper'),

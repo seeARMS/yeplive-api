@@ -34,19 +34,12 @@ class ProgramController extends Controller {
 					'displayName' => $displayName
 				];
 			}
-		//} catch (Exception $e)
-	//	{
-	//		$statusCode = 404;
-	//	}
-	//	 finally
-	 // {
 			return $body;
-	//	}
 	}
 
 	public function store(Request $request)
 	{
-		$input = $request->only(
+		$params = $request->only(
 		'channel_id',
 		'title',
 		'latitude',
@@ -57,21 +50,34 @@ class ProgramController extends Controller {
 		'start_time', 
 		'tags'
 		);
+	
+		$validator = \Validator::make( $params, [
+			'channel_id' => 'required',
+			'title' => 'required',
+			'latitude' => 'required',
+			'longitude' => 'required',
+			'location' => 'required',
+			'start_time' => 'required',
+			'end_time' => 'required'
+		]);
 
-		return $input;
-
-		$user = JWTAuth::parseToken()->toUser();
-
-		if($user -> isBanned){
-			return "banned";	
+		if($validator -> fails())
+		{
+			return response()->json(\App\Errors::invalid($validator), 400);
 		}
 
-		$input['user_id'] = $user -> id;
+		$user = \JWTAuth::parseToken()->toUser();
+		if($user -> isBanned()){
+			return response()->json(\App\Errors::unauthorized(null, ['user is banned']), 401);	
+		}
 
-		$program = \App\Program::create($input);
+		$params['user_id'] = $user -> id;
+		
+
+		$program = \App\Program::create($params);
 
 		//Create tags
-		$tags = explode(',',$input['tags']);
+		$tags = explode(',',$params['tags']);
 
 		if($tags[0] != '' )
 		{
@@ -86,7 +92,39 @@ class ProgramController extends Controller {
 	//PUT /program/{id}
 	public function update(Request $request, $id)
 	{
+		$program = \App\Program::find($id);
+		$user = \JWTAuth::parseToken()->toUser();
 		
+		if($program -> user_id != $user ->id)
+		{
+			return response()->json(\App\Errors::unauthorized(null, ['token mismatch error']));
+		}
+
+		$params = $request->only([
+			'title',
+			'description',
+			'tags',
+			
+		]);
+
+		$validator = \Validator::make( $params, [
+			'channel_id' => 'required',
+			'title' => 'required',
+			'latitude' => 'required',
+			'longitude' => 'required',
+			'loaction' => 'required'
+		]);
+
+		if($validator -> fails())
+		{
+			return response()->json(\App\Errors::invalid($validator), 400);
+		}
+
+		$program -> fill ($params);
+
+		$program -> save();
+
+		return response()->json(['program' => $program]);
 	}
 
 	public function show(Request $request, $id)
@@ -116,28 +154,31 @@ class ProgramController extends Controller {
 		return \App\Program::find($id)->tagNames();
 	}
 
-	public function get_videos(Request $request)
+	public function viewCount(Request $request, $id)
 	{
-		$programs = Program::all();
-		return $programs;
+		$views = \App\Program::find($id)->views;
+		return response()->json(['views'=>$views],200);
 	}
 
-	public function get_view_count(Request $request, $id)
+	public function incrementViews(Request $request, $id)
 	{
-		return \App\Program::find($id)->views;
+		$program = \App\Program::find($id);
+		$program -> views = $program->views + 1;
+		$program -> save();
+		return response()->json(['views' => $program->views], 200);
 	}
 
 	public function vote(Request $request, $id)
 	{
 		$user = \JWTAuth::parseToken()->toUser();
 		$data = \App\Program::find($id)->vote($user);
-		return $data;
+		return response()->json($data, 200);
 	}
 
 	public function votes(Request $request, $id)
 	{
 		$program = \App\Program::find($id);
-		return ['votes' => $program->votes->where('vote',1)->count()];
+		return response()->json(['votes' => $program->votes->where('vote',1)->count()], 200);
 	}
 
 	public function userVote(Request $request, $id)
@@ -145,15 +186,28 @@ class ProgramController extends Controller {
 		$program = \App\Program::find($id);
 		$user = \JWTAuth::parseToken()->toUser();
 		$vote = $program->my_vote($user)->first();
-		return ['vote' => $vote -> vote];
+		return response()->json(['vote' => $vote -> vote], 200);
 	}
 
 	public function report(Request $request, $id)
 	{
+		$params = $request->only([
+			'reason'
+		]);
+		
+		$validator = \Validator::make( $params, [
+			'reason' => 'required'
+		]);
+
+		if($validator -> fails())
+		{
+			return response()->json(\App\Errors::invalid($validator), 400);
+		}
+
 		$program = \App\Program::find($id);
-		$reason = $request->input("reason");
-		$user = JWTAuth::parseToken()->toUser();
-		return $program->report($user, $reason);	
+		$reporter = JWTAuth::parseToken()->toUser();
+		$data = $program->report($reporter, $reason);	
+		return response()->json($data, 200);
 	}
 
 	

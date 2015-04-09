@@ -28,7 +28,10 @@
         "App\\Providers\\EventServiceProvider",
         "App\\Providers\\RouteServiceProvider",
         "Conner\\Tagging\\TaggingServiceProvider",
-        "Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider"
+        "Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider",
+        "SammyK\\LaravelFacebookSdk\\LaravelFacebookSdkServiceProvider",
+        "Thujohn\\Twitter\\TwitterServiceProvider",
+        "Laravel\\Socialite\\SocialiteServiceProvider"
     ],
     "eager": [
         "Illuminate\\Auth\\AuthServiceProvider",
@@ -47,7 +50,9 @@
         "App\\Providers\\ConfigServiceProvider",
         "App\\Providers\\EventServiceProvider",
         "App\\Providers\\RouteServiceProvider",
-        "Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider"
+        "Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider",
+        "SammyK\\LaravelFacebookSdk\\LaravelFacebookSdkServiceProvider",
+        "Thujohn\\Twitter\\TwitterServiceProvider"
     ],
     "deferred": {
         "command.app.name": "Illuminate\\Foundation\\Providers\\ArtisanServiceProvider",
@@ -125,7 +130,8 @@
         "auth.password": "Illuminate\\Auth\\Passwords\\PasswordResetServiceProvider",
         "auth.password.tokens": "Illuminate\\Auth\\Passwords\\PasswordResetServiceProvider",
         "translator": "Illuminate\\Translation\\TranslationServiceProvider",
-        "translation.loader": "Illuminate\\Translation\\TranslationServiceProvider"
+        "translation.loader": "Illuminate\\Translation\\TranslationServiceProvider",
+        "Laravel\\Socialite\\Contracts\\Factory": "Laravel\\Socialite\\SocialiteServiceProvider"
     },
     "when": {
         "Illuminate\\Foundation\\Providers\\ArtisanServiceProvider": [],
@@ -141,6 +147,7 @@
         "Illuminate\\Translation\\TranslationServiceProvider": [],
         "Conner\\Tagging\\TaggingServiceProvider": [
             "artisan.start"
-        ]
+        ],
+        "Laravel\\Socialite\\SocialiteServiceProvider": []
     }
 }

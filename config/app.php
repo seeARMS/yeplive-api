@@ -145,7 +145,10 @@ return [
 		'App\Providers\EventServiceProvider',
 		'App\Providers\RouteServiceProvider',
 		'Conner\Tagging\TaggingServiceProvider',
-		'Tymon\JWTAuth\Providers\JWTAuthServiceProvider'
+		'Tymon\JWTAuth\Providers\JWTAuthServiceProvider',
+    'SammyK\LaravelFacebookSdk\LaravelFacebookSdkServiceProvider',
+		'Thujohn\Twitter\TwitterServiceProvider',
+		'Laravel\Socialite\SocialiteServiceProvider',
 
 	],
 
@@ -195,6 +198,8 @@ return [
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
 		'JWTAuth' => 'Tymon\JWTAuth\Facades\JWTAuth',
+		'Twitter' => 'Thujohn\Twitter\Facades\Twitter',
+		'Socialize' => 'Laravel\Socialite\Facades\Socialite',
 
 	],
 
