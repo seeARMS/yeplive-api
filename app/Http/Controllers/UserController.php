@@ -44,8 +44,42 @@ class UserController extends Controller {
 		return \App\User::all();
 	}
 
+	public function getUser(Request $request, $id)
+	{
+		return \App\User::find($id);
+	}
+
+
 	/*
-	 * POST : Take in user signup credentials, and return with user signup credentials and auth token
+	 * POST : Take in social login tokens and return with token and user id
+	 */
+	public function auth(Request $request)
+	{
+		//FACEBOOK
+		if($request->has('facebook_access_token') && $request->has('facebook_user_id'))
+		{
+
+		}
+		//TWITTER
+		else if($request->has('twitter_access_token') && $request->has('twitter_user_id'))
+		{
+
+		}
+		//GOOGLE
+		else if($request->has('google_access_token') && $request->has('google_user_id'))
+		{
+
+		}
+		//400
+		else
+		{
+			return response()->json(['statusCode' =>  400, 'error' => 'invalid_parameters'], 400);
+		}
+	}
+
+
+
+	/* * POST : Take in user signup credentials, and return with user signup credentials and auth token
 	 *
 	 * @param  {Array}   $request    An array consists of user email and password keys
 	 * @return {Array}   response()  An array consists of user email, password, and auth token
@@ -61,14 +95,9 @@ class UserController extends Controller {
 
 		if ( $validator -> fails() )
 		{
-<<<<<<< HEAD
 			$messages = $validator -> messages() -> all();
 			return response()->json(\App\Errors::invalid($validator));
 			return response()->json(['status_code' => '400', 'messages' => $messages, 'error' => 'invalid_input'], 400);
-=======
-			$messages = $validator -> messages() -> all();
-			return response()-> json(['status_code' => '400', 'messages' => $messages, 'error' => 'invalid_input'], 400);
->>>>>>> 80be9cc94ddeaa33af880fa80ef913c03636c7eb
 		}
 		//Catch the unhashed password for auth token
 		$password = $params['password'];

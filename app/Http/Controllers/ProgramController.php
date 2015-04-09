@@ -171,7 +171,12 @@ class ProgramController extends Controller {
 	public function vote(Request $request, $id)
 	{
 		$user = \JWTAuth::parseToken()->toUser();
-		$data = \App\Program::find($id)->vote($user);
+		$program= \App\Program::find($id);
+		if(! $program)
+		{
+			return response()->json(['stauts_code' => '404'], 404);	
+		}
+		$data = $program->vote($user);
 		return response()->json($data, 200);
 	}
 
@@ -184,9 +189,16 @@ class ProgramController extends Controller {
 	public function userVote(Request $request, $id)
 	{
 		$program = \App\Program::find($id);
+		if(! $program)
+		{
+			return response()->json(['stauts_code' => '404'], 404);	
+		}
 		$user = \JWTAuth::parseToken()->toUser();
-		$vote = $program->my_vote($user)->first();
-		return response()->json(['vote' => $vote -> vote], 200);
+		$vote = $program->my_vote($user);
+		if($vote->count() == 0){
+			return response()->json(['vote' => 0], 200);
+		}		
+		return response()->json(['vote' => $vote -> first() -> vote], 200);
 	}
 
 	public function report(Request $request, $id)
@@ -205,8 +217,8 @@ class ProgramController extends Controller {
 		}
 
 		$program = \App\Program::find($id);
-		$reporter = JWTAuth::parseToken()->toUser();
-		$data = $program->report($reporter, $reason);	
+		$reporter = \JWTAuth::parseToken()->toUser();
+		$data = $program->report($reporter, $params['reason']);	
 		return response()->json($data, 200);
 	}
 

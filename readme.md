@@ -17,7 +17,7 @@ RewriteEngine On
 RewriteCond %{HTTP:Authorization} ^(.*)
 RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
 ````
-###Setup Social Login
+###Setup Social Login for Testing
 
 ####Facebook
 
@@ -80,8 +80,8 @@ Return Type: All calls return JSON
 
 ###Authentication
 
-#####`POST /authenticate`
-
+#####`POST /auth`
+#####NOTE: Only use this for testing. Production application will only have social login
 params: `email` `password`
 
 returns: `token`
@@ -94,7 +94,23 @@ example response:
 }
 ```
 
-#####`GET /authenticate`
+#####`POST /auth/mobile`
+
+#####THIS IS THE METHOD IS USED TO LOG IN THROUGH THE MOBILE CLIENT
+
+params: `facebook_access_token` + `facebook_user_id` OR `twitter_access_token` + `twitter_user_id` OR `google_access_token` + `google_user_id`
+
+returns: `token`
+
+example response:
+
+```
+{
+	"token":"send this with all your requests"
+}
+```
+
+#####`GET /auth`
 
 parmas: none
 
@@ -332,7 +348,7 @@ example response:
 ```
 
 #####`POST /user`
-
+#####NOTE: Only use this for testing, production application will only have social login
 create a new user
 
 params: `email` `password` `name`
@@ -373,9 +389,9 @@ get a specific user by their id
 
 #####`GET /user/{id}/is_follow`
 
-determine if you are a follower of a specific 
+determine if you are a follower of a specific user
 
-###Errors
+##Errors
 
 ####400
 
@@ -405,11 +421,24 @@ example response:
 ```
 {
 	"statusCode": 401,
-	"error": "Unauthorized"
+	"error": "unauthorized"
 }
 ```
 
 solution: make sure that your token is still valid and if not request a new one. (Reauthenticate Client)
+
+####403
+
+forbidden from accessing
+
+example response:
+
+```
+{
+	"statusCode": 403,
+	"error": "forbidden"
+}
+```
 
 ####404
 
@@ -420,7 +449,7 @@ example response:
 ```
 {
 	"statusCode" 404,
-	"error": "Method not found"
+	"error": "not_found"
 }
 ```
 
@@ -440,6 +469,7 @@ solution: make sure that the route you are trying to call exists
 * Warnings
 * Settings
 * Rate limiting
+* Filtering, sorting etc. for programs
 * [Api framework](https://github.com/dingo/api)
 
 
@@ -448,3 +478,13 @@ solution: make sure that the route you are trying to call exists
 a JSON web token is issued for all clients that after they authenticate.
 Using the token the clinet includes `Authorization: Bearer {yourtokenhere}` in all requests as a header. 
 The server then checks against the token and gets the proper user.
+
+#####How does Social Login work?
+
+#####Mobile:
+
+For the mobile client, you will use your platform specific SDK for each of the social platforms to authenticate with their OAUTH service and get an access token. From there you will send the access token along with the your user id for that platform to `/mobile/auth`. This will either create a new user or use an existing user depending on if you have used the app before. This method responds with an API access token. 
+
+#####Web:
+
+TODO

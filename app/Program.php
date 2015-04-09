@@ -36,10 +36,12 @@ class Program extends Model{
 	public function report($reporter, $reason)
 	{
 		$reported = \App\User::find($this->user_id);
+		return $this;
+		return $reported;
 		$data = [
 			'reason' => $reason,
-			'reporter_id' => $reporter->id,
-			'reported_id' => $reported->id,
+			'reporter_id' => $reporter->user_id,
+			'reported_id' => $reported->user_id,
 			'program_id' => $this->id	
 		];
 		$report = \App\Report::create($data);
@@ -52,9 +54,9 @@ class Program extends Model{
 	{
 		if($user)
 		{
-			$vote = Vote::where('user_id',$user->id)
+			$vote = Vote::where('user_id',$user->user_id)
 				->where('program_id', $this->id)->get(); 
-			if(count($vote) != 0)
+			if($vote->count() != 0)
 			{
 				$currentVote = $vote->last();
 				if($currentVote -> vote == 1)
@@ -73,19 +75,21 @@ class Program extends Model{
 			else
 			{
 				$voteParams = [
-					'user_id' => $user->id,
+					'user_id' => $user->user_id,
 					'program_id' => $this->id,
 					'vote' => true
 				];
 				$currentVote = Vote::create($voteParams);
 				return ['vote' => $currentVote->vote];
 			}
+		} else{
+			return [ 'error' => 'no user specified'];
 		}	
 	}
 
 	public function my_vote($user)
-	{
-		return Vote::where('user_id',$user->id)
-				->where('program_id', $this->id)->get(); 
+	{	
+		return Vote::where('user_id',$user->user_id)
+			->where('program_id', $this->id)->get(); 
 	}
 }
