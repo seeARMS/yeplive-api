@@ -50,13 +50,14 @@ class ProgramController extends Controller {
 		);
 	
 		$validator = \Validator::make( $params, [
-			'channel_id' => 'required',
+		//	'channel_id' => 'required',
 			'title' => 'required',
 			'latitude' => 'required',
 			'longitude' => 'required',
-			'location' => 'required',
-			'start_time' => 'required',
-			'end_time' => 'required'
+		//disable for mobile
+		//	'location' => 'required',
+		//	'start_time' => 'required',
+		//	'end_time' => 'required'
 		]);
 
 		if($validator -> fails())

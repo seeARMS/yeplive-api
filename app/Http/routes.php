@@ -57,7 +57,8 @@ Route::group(array('prefix' => 'api/v1'), function()
 	]);
 
 	//ALL THESE ROUTES REQURE A JWT TOKEN
-	Route::group(['middleware' => 'jwt.auth'], function(){
+	//disabled
+	Route::group(/*['middleware' => 'jwt.auth']*/, function(){
 		//RESTful Programs
 		Route::resource('programs', 'ProgramController',
 			['except' => ['destroy', 'create', 'edit']]);
