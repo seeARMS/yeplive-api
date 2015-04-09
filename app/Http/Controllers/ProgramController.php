@@ -8,10 +8,8 @@ class ProgramController extends Controller {
 	{
 	}
 
-	public function index()
+	public function index(Request $request)
 	{
-		//try
-		//{
 			$body = [
 			'programs' => []
 			];

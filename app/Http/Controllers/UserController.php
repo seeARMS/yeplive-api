@@ -370,5 +370,31 @@ class UserController extends Controller {
 		return response()->json(['success' => ['url' => $url]]);
 	}
 
+	public function getSettings(Request $request, $id)
+	{
+		$user = \App\User::find($id);
+		return response()->json(['push_notifications' => $user->push_notifications, 'device_token' => $user->device_token]);
+	}
+
+	public function settings(Request $request, $id)
+	{
+		$user = \App\User::find($id);
+		if($request->has('push_notifications'))
+		{
+			$push = $request->input('push_notifications');
+			if($push != "1" && $push != "0")
+			{
+				return response()->json(['error' => 'invalid_input', 'statusCode'=>400, 'messages'=>['push_notification setting must be either 0 or 1']], 400);
+			}
+			$user->push_notifications = (boolean) $request->input('push_notifications');
+		}
+		if($request->has('device_token'))
+		{
+			$user->device_token = $request->input('device_token');
+		}	
+		$user->save();
+		return response()->json(['success'=>true, 'push_notifications' => $user->push_notifications]);
+	}
+
 
 }

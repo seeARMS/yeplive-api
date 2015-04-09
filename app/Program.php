@@ -14,6 +14,10 @@ class Program extends Model{
 		'start_time',
 		'end_time'
 	];
+
+	protected $attributes = [
+		'views' => 0
+	];
 	
 	//
 	public function user()

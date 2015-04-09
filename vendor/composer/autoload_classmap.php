@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AddPushNotificationSettingsToUsers' => $baseDir . '/database/migrations/2015_04_09_132913_add_push_notification_settings_to_users.php',
     'AddViewsToProgram' => $baseDir . '/database/migrations/2015_04_09_012759_add_views_to_program.php',
     'ChaneUserTableNameAndKey' => $baseDir . '/database/migrations/2015_04_08_131302_chane_user_table_name_and_key.php',
     'CreateNotificationsTable' => $baseDir . '/database/migrations/2015_04_05_231551_create_notifications_table.php',

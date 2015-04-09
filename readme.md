@@ -1,4 +1,10 @@
 #Yeplive API
+##Test
+
+run `$ phpunit` in the project directory to run all route tests
+
+if all tests pass basically everything is operational except that things that can't be directly tested (push notifications, social login)
+
 ##Configuration
 
 run: `composer update`
@@ -17,6 +23,19 @@ RewriteEngine On
 RewriteCond %{HTTP:Authorization} ^(.*)
 RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
 ````
+
+###Push Notifications
+
+plugin used: [laravel-push-notification](https://github.com/laraviet/laravel-push-notification)
+
+config: `/config/packages/laraviet/laravel-push-notification/config.php`
+
+* Create new application at [google](https://console.developers.google.com/) if one doesn't already exist
+* toggle the android cloud messaging api
+* get a server key
+* add it to your `.env` `GOOGLE_SERVER_KEY={your key here}`
+* choose development mode in your `.env` `PUSH_NOTIFICATION_ENV=development`
+
 ###Setup Social Login for Testing
 
 ####Facebook
@@ -70,18 +89,22 @@ GOOGLE_CLIENT_SECRET={your secret here}
 * [ jwt-auth ](https://github.com/tymondesigns/jwt-auth)
 * [LaravelFacebookSDK](https://github.com/SammyK/LaravelFacebookSdk)
 * [Socialite](https://github.com/laravel/socialite)
+* [laravel-push-notification](https://github.com/laraviet/laravel-push-notification)
 
 ##API Methods
 #####NOTE: The only methods that you don't have to include the authentication token is `POST /authenticate` and `POST /user`
+
+#####NOTE: prefex all calls to the server root with the following:
 
 Root: `/api/v1/`
 
 Return Type: All calls return JSON
 
-###Authentication
+###Testing
+#####These routes are only used for testing and will be removed in prodution
 
 #####`POST /auth`
-#####NOTE: Only use this for testing. Production application will only have social login
+
 params: `email` `password`
 
 returns: `token`
@@ -94,36 +117,24 @@ example response:
 }
 ```
 
-#####`POST /auth/mobile`
 
-#####THIS IS THE METHOD IS USED TO LOG IN THROUGH THE MOBILE CLIENT
+#####`POST /user`
+create a new user
 
-params: `facebook_access_token` + `facebook_user_id` OR `twitter_access_token` + `twitter_user_id` OR `google_access_token` + `google_user_id`
-
-returns: `token`
+params: `email` `password` `name`
 
 example response:
 
 ```
 {
-	"token":"send this with all your requests"
+	"user_id": 4,
+	"email": "example@gmail.com",
+	"success": {
+		"token": "thisisyourauthenticationtoken"
+	}
 }
 ```
 
-#####`GET /auth`
-
-parmas: none
-
-returns: the current user that the provided token is associated with
-
-example response:
-
-```
-{
-	"username":"someUsername",
-	"email":"some@email.com"
-}
-```
 
 #####`GET /facebook/login`
 
@@ -168,10 +179,42 @@ example response:
 
 ```
 
+###Authentication
+
+#####`POST /auth/mobile`
+
+#####THIS IS THE METHOD IS USED TO LOG IN THROUGH THE MOBILE CLIENT
+
+params: `facebook_access_token` + `facebook_user_id` OR `twitter_access_token` + `twitter_user_id` OR `google_access_token` + `google_user_id`
+
+returns: `token`
+
+example response:
+
+```
+{
+	"token":"send this with all your requests"
+}
+```
+
+#####`GET /auth`
+
+parmas: none
+
+returns: the current user that the provided token is associated with
+
+example response:
+
+```
+{
+	"username":"someUsername",
+	"email":"some@email.com"
+}
+```
 
 ###Programs
 
-#####`GET /program`
+#####`GET /programs`
 
 params: none
 
@@ -196,7 +239,7 @@ example response:
 }
 ```
 
-#####`POST /program`
+#####`POST /programs`
 
 create a new program
 
@@ -231,7 +274,7 @@ example output:
 }
 ```
 
-#####`GET /program/{id}`
+#####`GET /programs/{id}`
 
 returns: data about the specified program
 
@@ -252,7 +295,7 @@ example output:
 }
 ```
 
-#####`GET /program/{id}/tags`
+#####`GET /programs/{id}/tags`
 
 returns: an array of tags for the program with specified id
 
@@ -269,7 +312,9 @@ example output:
 }
 ```
 
-#####`GET /program/{id}/views`
+#####`GET /programs/{id}/views`
+
+returns: the number of views on the specifed program
 
 ```
 {
@@ -277,9 +322,19 @@ example output:
 }
 ```
 
+#####`POST /programs/{id}/views`
+
+Increments and returns the number of views on the specified program
+
+```
+{
+	"views": 12125
+}
+```
+
 #####Voting:
 
-#####`GET /program/{id}/votes`
+#####`GET /programs/{id}/votes`
 
 Get number of votes on the specified program
 
@@ -293,11 +348,13 @@ Example output:
 }
 ```
 
-#####`GET /program/{id}/my_vote`
+#####`GET /programs/{id}/votes/my`
 
 get whether or not the user has voted on the program
 
 params: none
+
+#####NOTE: 0 means no vote, 1 means voted
 
 Example output:
 
@@ -307,13 +364,15 @@ Example output:
 }
 ```
 
-#####`POST /program/{id}/vote`
+#####`POST /programs/{id}/votes`
 
 params: none
 
-Example output:
+#####NOTE: 0 means no vote, 1 means voted
 
 toggle vote on the program with specified ID
+
+Example output:
 
 ```
 {
@@ -323,7 +382,7 @@ toggle vote on the program with specified ID
 
 #####Reporting:
 
-#####`POST /program/{id}/report`
+#####`POST /programs/{id}/report`
 
 ```
 {
@@ -333,7 +392,7 @@ toggle vote on the program with specified ID
 
 ###User
 
-#####`GET /user`
+#####`GET /users`
 
 Returns a list of users
 
@@ -347,25 +406,53 @@ example response:
 }
 ```
 
-#####`POST /user`
-#####NOTE: Only use this for testing, production application will only have social login
-create a new user
 
-params: `email` `password` `name`
+
+
+#####NOTE: remember to unescape the `\` before all `/` or else the url won't work
+
+#####`GET /users/{id}`
+
+get a specific user by their id
+
+#####`GET /users/{id}/is_follow`
+
+determine if you are a follower of a specific user
+
+####The following routes require that token provided matches the ID or they will return 403
+
+#####`GET /users/{id}/settings`
+
+Get the current users settings
+
+params: none
 
 example response:
 
 ```
 {
-	"user_id": 4,
-	"email": "example@gmail.com",
-	"success": {
-		"token": "thisisyourauthenticationtoken"
-	}
+	"push_notifications": 0
 }
 ```
 
-#####`POST /user/{id}/thumbnail`
+#####`POST /users/{id}/settings`
+
+Set the current users settings
+
+all parameters optional
+
+params: `push_notifications` `device_token`
+
+example response:
+
+```
+{
+	"push_notifications": 0
+}
+```
+
+
+#####`POST /users/{id}/thumbnail`
 
 upload a picture for the user
 
@@ -380,16 +467,6 @@ example response:
 	}
 }
 ```
-
-#####NOTE: remember to unescape the `\` before all `/` or else the url won't work
-
-#####`GET /user/{id}`
-
-get a specific user by their id
-
-#####`GET /user/{id}/is_follow`
-
-determine if you are a follower of a specific user
 
 ##Errors
 
@@ -457,20 +534,15 @@ solution: make sure that the route you are trying to call exists
 
 ##TODO:
 
-* make sure all functionality of old wordpress site is transfered
-* some models might not have all the data they need (havn't gone through all wordpress code)
-* Get voting working
-* Get a view counter working
-* Ensure that all models have the proper field
-* Integrate with amazon web services (s3 for uploads)
+* Ensure that all routes return proper fields
 * clean up old code (make sure not to throw out useful functionality)
 * document all routes with parameters and example returns
-* Reporting
-* Warnings
-* Settings
+* test all routes
 * Rate limiting
 * Filtering, sorting etc. for programs
-* [Api framework](https://github.com/dingo/api)
+* Find similar programs algorithm
+* Set up RDS
+* [Api framework](https://github.com/dingo/api)?
 
 
 ##FAQs

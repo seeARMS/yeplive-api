@@ -149,6 +149,7 @@ return [
     'SammyK\LaravelFacebookSdk\LaravelFacebookSdkServiceProvider',
 		'Thujohn\Twitter\TwitterServiceProvider',
 		'Laravel\Socialite\SocialiteServiceProvider',
+		'Laraviet\LaravelPushNotification\LaravelPushNotificationServiceProvider',
 
 	],
 
@@ -200,7 +201,7 @@ return [
 		'JWTAuth' => 'Tymon\JWTAuth\Facades\JWTAuth',
 		'Twitter' => 'Thujohn\Twitter\Facades\Twitter',
 		'Socialize' => 'Laravel\Socialite\Facades\Socialite',
-
+		'PushNotification' => 'Laraviet\LaravelPushNotification\Facades\PushNotification',
 	],
 
 ];

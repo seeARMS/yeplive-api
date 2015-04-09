@@ -21,15 +21,14 @@ class RoutesTest extends TestCase{
 		$response = $this->call('POST', '/api/v1/auth/mobile');
 		$this->assertEquals($response->getStatusCode(), 400);
 
-
 		$userData = [
 			'email' => 'test@gmail.com',
 			'password' => 'password'
 		];
-		$response = $this->call('POST', '/api/v1/user', $userData);
+		$response = $this->call('POST', '/api/v1/users', $userData);
 		$json = json_decode($response->getContent());
-		$this->assertEquals($json->email, 'test@gmail.com');
 		$this->assertEquals(200, $response->getStatusCode());	
+		$this->assertEquals($json->email, 'test@gmail.com');
 
 		$token = $json->success->token;
 		$headers = [
@@ -37,6 +36,7 @@ class RoutesTest extends TestCase{
 		];	
 		$response = $this->call('GET', '/api/v1/auth', [],[],[], $headers);
 		$this->assertEquals(200, $response->getStatusCode());
+
 
 		$response = $this->call('POST', '/api/v1/auth', $userData);
 		$this->assertEquals(200, $response->getStatusCode());
@@ -48,10 +48,13 @@ class RoutesTest extends TestCase{
 		$newHeaders = [
 			'HTTP_Authorization' => 'Bearer '.$newToken
 		];	
+		$json = json_decode($response->getContent());
+		$userId = $json->user_id;
+
 		$response = $this->call('GET', '/api/v1/auth', [],[],[], $newHeaders);
 		$this->assertEquals(200, $response->getStatusCode());
 
-		$response = $this->call('GET', '/api/v1/program', [],[],[], $newHeaders);
+		$response = $this->call('GET', '/api/v1/programs', [],[],[], $newHeaders);
 		$this->assertEquals(200, $response->getStatusCode());
 
 		$programData = [
@@ -66,54 +69,54 @@ class RoutesTest extends TestCase{
 			'end_time' => '1'
 		];
 
-		$response = $this->call('POST', '/api/v1/program', $programData ,[],[], $newHeaders);
+		$response = $this->call('POST', '/api/v1/programs', $programData ,[],[], $newHeaders);
 		$this->assertEquals(200, $response->getStatusCode());
 
-		$response = $this->call('GET', '/api/v1/program', [],[],[],$newHeaders);
+		$response = $this->call('GET', '/api/v1/programs', [],[],[],$newHeaders);
 		$this->assertEquals(200, $response->getStatusCode());
 		$programs = json_decode($response->getContent());
 		
 		$program_id = $programs->programs[0]->id;		
 
-		$response = $this->call('GET', '/api/v1/program/'.$program_id, [], [], [], $newHeaders);
+		$response = $this->call('GET', '/api/v1/programs/'.$program_id, [], [], [], $newHeaders);
 		$this->assertEquals(200, $response->getStatusCode());
 		$json = json_decode($response->getContent());
 		
 	
-		$response = $this->call('GET', '/api/v1/program/'.$program_id.'/votes', [], [], [], $newHeaders);
+		$response = $this->call('GET', '/api/v1/programs/'.$program_id.'/votes', [], [], [], $newHeaders);
 		$this->assertEquals(200, $response->getStatusCode());
 		$json = json_decode($response->getContent());
 		$this->assertEquals(0, $json->votes);
-		$response = $this->call('GET', '/api/v1/program/'.$program_id.'/votes/my', [], [], [], $newHeaders);
+		$response = $this->call('GET', '/api/v1/programs/'.$program_id.'/votes/my', [], [], [], $newHeaders);
 		$this->assertEquals(200, $response->getStatusCode());
 		$json = json_decode($response->getContent());
 		$this->assertEquals(0, $json->vote);
 
-		$response = $this->call('POST', '/api/v1/program/'.$program_id.'/votes', [], [], [], $newHeaders);
+		$response = $this->call('POST', '/api/v1/programs/'.$program_id.'/votes', [], [], [], $newHeaders);
 		$this->assertEquals(200, $response->getStatusCode());
 		$json = json_decode($response->getContent());
 		$this->assertEquals(1, $json->vote);
 
 		
-		$response = $this->call('GET', '/api/v1/program/'.$program_id.'/votes', [], [], [], $newHeaders);
+		$response = $this->call('GET', '/api/v1/programs/'.$program_id.'/votes', [], [], [], $newHeaders);
 		$this->assertEquals(200, $response->getStatusCode());
 		$json = json_decode($response->getContent());
 		$this->assertEquals(1, $json->votes);
-		$response = $this->call('GET', '/api/v1/program/'.$program_id.'/votes/my', [], [], [], $newHeaders);
+		$response = $this->call('GET', '/api/v1/programs/'.$program_id.'/votes/my', [], [], [], $newHeaders);
 		$this->assertEquals(200, $response->getStatusCode());
 		$json = json_decode($response->getContent());
 		$this->assertEquals(1, $json->vote);
 
-		$response = $this->call('POST', '/api/v1/program/'.$program_id.'/votes', [], [], [], $newHeaders);
+		$response = $this->call('POST', '/api/v1/programs/'.$program_id.'/votes', [], [], [], $newHeaders);
 		$this->assertEquals(200, $response->getStatusCode());
 		$json = json_decode($response->getContent());
 		$this->assertEquals(0, $json->vote);
-		$response = $this->call('GET', '/api/v1/program/'.$program_id.'/votes/my', [], [], [], $newHeaders);
+		$response = $this->call('GET', '/api/v1/programs/'.$program_id.'/votes/my', [], [], [], $newHeaders);
 		$this->assertEquals(200, $response->getStatusCode());
 		$json = json_decode($response->getContent());
 		$this->assertEquals(0, $json->vote);
 
-		$response = $this->call('POST', '/api/v1/program/'.$program_id.'/votes', [], [], [], $newHeaders);
+		$response = $this->call('POST', '/api/v1/programs/'.$program_id.'/votes', [], [], [], $newHeaders);
 		$this->assertEquals(200, $response->getStatusCode());
 		$json = json_decode($response->getContent());
 		$this->assertEquals(1, $json->vote);
@@ -121,17 +124,17 @@ class RoutesTest extends TestCase{
 		/*
 		 * TEST VIEWS & VIEW COUNT
 		 */
-		$response = $this->call('GET', '/api/v1/program/'.$program_id.'/views', [], [], [], $newHeaders);
+		$response = $this->call('GET', '/api/v1/programs/'.$program_id.'/views', [], [], [], $newHeaders);
 		$json = json_decode($response->getContent());
 		$this->assertEquals(200, $response->getStatusCode());
 		$this->assertEquals(0, $json->views);
 
-		$response = $this->call('POST', '/api/v1/program/'.$program_id.'/views', [], [], [], $newHeaders);
+		$response = $this->call('POST', '/api/v1/programs/'.$program_id.'/views', [], [], [], $newHeaders);
 		$json = json_decode($response->getContent());
 		$this->assertEquals(200, $response->getStatusCode());
 		$this->assertEquals(1, $json->views);
 			
-		$response = $this->call('GET', '/api/v1/program/'.$program_id.'/views', [], [], [], $newHeaders);
+		$response = $this->call('GET', '/api/v1/programs/'.$program_id.'/views', [], [], [], $newHeaders);
 		$json = json_decode($response->getContent());
 		$this->assertEquals(200, $response->getStatusCode());
 		$this->assertEquals(1, $json->views);
@@ -142,11 +145,29 @@ class RoutesTest extends TestCase{
 		$reportData = [
 			'reason' => 'Innapropriate Video'
 		];
-		$response = $this->call('POST', '/api/v1/program/'.$program_id.'/report', [], [], [], $newHeaders);
+		$response = $this->call('POST', '/api/v1/programs/'.$program_id.'/reports', $reportData, [], [], $newHeaders);
 		$this->assertEquals(200, $response->getStatusCode());
 
 
-	}
+
+			
+		$response = $this->call('GET', '/api/v1/users/'.$userId, [], [], [], $newHeaders);
+		$this->assertEquals(200, $response->getStatusCode());
+		
+		$response = $this->call('GET', '/api/v1/users/'.$userId.'/settings', [], [], [], $newHeaders);
+		$this->assertEquals(200, $response->getStatusCode());
+		$json = json_decode($response->getContent());
+		$this->assertEquals($json->push_notifications, 1);
+
+		$settingsData = [
+			'push_notifications' => '0',
+			'device_token' => 'token'
+		];
+		$response = $this->call('POST', '/api/v1/users/'.$userId.'/settings', $settingsData, [], [], $newHeaders);
+		$this->assertEquals($response->statusCode, 200);
+		$json = json_decode($response->getContent());
 
 	}
+
+}
 ?>

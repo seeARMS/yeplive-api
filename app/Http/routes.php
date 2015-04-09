@@ -52,39 +52,39 @@ Route::group(array('prefix' => 'api/v1'), function()
 	/*
 	 * User Sign up
 	 */
-	Route::post('user', [
+	Route::post('users', [
 		'uses' => 'UserController@signup'
 	]);
 
 	//ALL THESE ROUTES REQURE A JWT TOKEN
 	Route::group(['middleware' => 'jwt.auth'], function(){
 		//RESTful Programs
-		Route::resource('program', 'ProgramController',
+		Route::resource('programs', 'ProgramController',
 			['except' => ['destroy', 'create', 'edit']]);
-		Route::get('program/{id}/similar', [
+		Route::get('programs/{id}/similar', [
 			'uses' => 'ProgramController@similar'
 		]);
-		Route::get('program/{id}/tags', [
+		Route::get('programs/{id}/tags', [
 			'uses' => 'ProgramController@tags'
 		]);
-		Route::get('program/{id}/views',[
+		Route::get('programs/{id}/views',[
 			'uses' => 'ProgramController@viewCount'
 		]);
-		Route::post('program/{id}/views', [
+		Route::post('programs/{id}/views', [
 			'uses' => 'ProgramController@incrementViews'
 		]);
-		Route::get('program/{id}/votes',[
+		Route::get('programs/{id}/votes',[
 			'uses' => 'ProgramController@votes'
 		]);
-		Route::get('program/{id}/votes/my',[
+		Route::get('programs/{id}/votes/my',[
 			'uses' => 'ProgramController@userVote'
 		]);
 		//TODO
-		Route::post('program/{id}/votes',[
+		Route::post('programs/{id}/votes',[
 			'uses' => 'ProgramController@vote'
 		]);
 		//TODO
-		Route::post('program/{id}/report',[
+		Route::post('programs/{id}/reports',[
 			'uses' => 'ProgramController@report'
 		]);
 		//RESTful Users
@@ -97,57 +97,60 @@ Route::group(array('prefix' => 'api/v1'), function()
 		/*
 	 	 * Show all users
 	 	 */
-		Route::get('user', [
+		Route::get('users', [
 			'uses' => 'UserController@showAllUsers'
 		]);
 		/*
 		 *
 		 */
-		Route::get('user/{id}', [
+		Route::get('users/{id}', [
 			'uses' => 'UserController@getUser'
 		]);
 		/*
 	 	 * User {id} follows a followee
 	 	 */
-		Route::post('user/{id}/follow', [
+		Route::post('users/{id}/follow', [
 			'uses' => 'UserController@addFollowing'
 		]);
 		/*
 		 * Display all followees followed by follower {id}
 		 */
-		Route::get('user/{id}/followees',[
+		Route::get('users/{id}/followees',[
 			'uses' => 'UserController@showAllFollowee'
 		]);
 		/*
 		 * Display all followers following followee {id}
 		 */
-		Route::get('user/{id}/followers',[
+		Route::get('users/{id}/followers',[
 			'uses' => 'UserController@showAllFollower'
 		]);
 
 		//These routes all require the {id} to be the user in the json web token
 		Route::group(['middleware' => 'jwt.checkUser'], function(){
 			//TODO
-			Route::post('user/{id}/thumbnail',[
+			Route::post('users/{id}/thumbnail',[
 				'uses' => 'UserController@updateThumbnail'
 			]);
-			//TODO
-			Route::post('user/{id}/settings',[
+			Route::get('users/{id}/settings',[
+				'uses' => 'UserController@getSettings'
+			]);
+			Route::post('users/{id}/settings',[
+				'uses' => 'UserController@settings'
 			]);
 			//TODO
-			Route::get('user/{id}/friends', [
+			Route::get('users/{id}/friends', [
 				'uses' => 'UserController@friends' 
 			]);
 			/*
 			 * Change password request by user_id {id}
 			 */
-			Route::post('user/{id}/settings/password',[
+			Route::post('users/{id}/settings/password',[
 				'uses' => 'UserController@changePassword'
 			]);
 			/*
 			 * Change email request by user_id {id}
 			 */
-			Route::post('user/{id}/settings/email',[
+			Route::post('users/{id}/settings/email',[
 				'uses' => 'UserController@changeEmail'
 			]);
 		});

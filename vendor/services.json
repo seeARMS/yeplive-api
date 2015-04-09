@@ -31,7 +31,8 @@
         "Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider",
         "SammyK\\LaravelFacebookSdk\\LaravelFacebookSdkServiceProvider",
         "Thujohn\\Twitter\\TwitterServiceProvider",
-        "Laravel\\Socialite\\SocialiteServiceProvider"
+        "Laravel\\Socialite\\SocialiteServiceProvider",
+        "Laraviet\\LaravelPushNotification\\LaravelPushNotificationServiceProvider"
     ],
     "eager": [
         "Illuminate\\Auth\\AuthServiceProvider",
@@ -52,7 +53,8 @@
         "App\\Providers\\RouteServiceProvider",
         "Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider",
         "SammyK\\LaravelFacebookSdk\\LaravelFacebookSdkServiceProvider",
-        "Thujohn\\Twitter\\TwitterServiceProvider"
+        "Thujohn\\Twitter\\TwitterServiceProvider",
+        "Laraviet\\LaravelPushNotification\\LaravelPushNotificationServiceProvider"
     ],
     "deferred": {
         "command.app.name": "Illuminate\\Foundation\\Providers\\ArtisanServiceProvider",
