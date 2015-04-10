@@ -6,12 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'tmhOAuth' => array($vendorDir . '/themattharris/tmhoauth'),
     'phpDocumentor' => array($vendorDir . '/phpdocumentor/reflection-docblock/src'),
-    'ZendService\\Apple\\Exception\\' => array($vendorDir . '/zendframework/zendservice-apple-apns/library'),
-    'ZendService\\Apple\\Apns\\' => array($vendorDir . '/zendframework/zendservice-apple-apns/library'),
-    'ZendService' => array($vendorDir . '/zendframework/zendservice-google-gcm/library'),
-    'Thujohn\\Twitter' => array($vendorDir . '/thujohn/twitter/src'),
     'System' => array($vendorDir . '/phpseclib/phpseclib/phpseclib'),
     'Symfony\\Component\\Yaml\\' => array($vendorDir . '/symfony/yaml'),
     'Symfony\\Component\\VarDumper\\' => array($vendorDir . '/symfony/var-dumper'),
@@ -19,7 +14,6 @@ return array(
     'Symfony\\Component\\Security\\Core\\' => array($vendorDir . '/symfony/security-core'),
     'Symfony\\Component\\Routing\\' => array($vendorDir . '/symfony/routing'),
     'Symfony\\Component\\Process\\' => array($vendorDir . '/symfony/process'),
-    'Symfony\\Component\\OptionsResolver\\' => array($vendorDir . '/symfony/options-resolver'),
     'Symfony\\Component\\HttpKernel\\' => array($vendorDir . '/symfony/http-kernel'),
     'Symfony\\Component\\HttpFoundation\\' => array($vendorDir . '/symfony/http-foundation'),
     'Symfony\\Component\\Finder\\' => array($vendorDir . '/symfony/finder'),
@@ -27,7 +21,6 @@ return array(
     'Symfony\\Component\\EventDispatcher\\' => array($vendorDir . '/symfony/event-dispatcher'),
     'Symfony\\Component\\Debug\\' => array($vendorDir . '/symfony/debug'),
     'Symfony\\Component\\Console\\' => array($vendorDir . '/symfony/console'),
-    'Sly' => array($vendorDir . '/unit27/notification-pusher/src'),
     'Psy\\' => array($vendorDir . '/psy/psysh/src'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log'),
     'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
@@ -35,7 +28,6 @@ return array(
     'Net' => array($vendorDir . '/phpseclib/phpseclib/phpseclib'),
     'Namshi\\JOSE' => array($vendorDir . '/namshi/jose/src'),
     'Math' => array($vendorDir . '/phpseclib/phpseclib/phpseclib'),
-    'Laraviet\\LaravelPushNotification' => array($vendorDir . '/laraviet/laravel-push-notification/src'),
     'JakubOnderka\\PhpConsoleHighlighter' => array($vendorDir . '/jakub-onderka/php-console-highlighter/src'),
     'JakubOnderka\\PhpConsoleColor' => array($vendorDir . '/jakub-onderka/php-console-color/src'),
     'Guzzle\\Tests' => array($vendorDir . '/guzzle/guzzle/tests'),

@@ -38,11 +38,11 @@ class Handler extends ExceptionHandler {
 	{
 		if($e instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException)
 		{
-			return response()->json(['statusCode' => '404', 'error'=>'not_found']);
+			return \App\Errors::notFound();
 		}
 		if($e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException)
 		{
-			return response()->json(['statusCode' => '404', 'error'=>'not_found']);
+			return \App\Errors::notFound();
 		}
 	
 		return parent::render($request, $e);

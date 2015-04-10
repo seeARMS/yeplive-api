@@ -18,7 +18,7 @@ class CreateVotesTable extends Migration {
 //			$table->foreign('program_id')->references('id')->on('programs');
 //			$table->foreign('user_id')->references('id')->on('users');
 			$table->integer('user_id');
-			$table->integer('program_id');
+			$table->integer('yep_id');
 			$table->boolean('vote');
 			$table->timestamps();
 		});

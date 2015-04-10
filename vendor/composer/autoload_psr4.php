@@ -6,19 +6,13 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Zend\\Validator\\' => array($vendorDir . '/zendframework/zend-validator'),
-    'Zend\\Uri\\' => array($vendorDir . '/zendframework/zend-uri'),
-    'Zend\\Stdlib\\' => array($vendorDir . '/zendframework/zend-stdlib'),
-    'Zend\\Loader\\' => array($vendorDir . '/zendframework/zend-loader'),
-    'Zend\\Json\\' => array($vendorDir . '/zendframework/zend-json'),
-    'Zend\\Http\\' => array($vendorDir . '/zendframework/zend-http'),
-    'Zend\\Escaper\\' => array($vendorDir . '/zendframework/zend-escaper'),
     'XdgBaseDir\\' => array($vendorDir . '/dnoegel/php-xdg-base-dir/src'),
     'Tymon\\JWTAuth\\' => array($vendorDir . '/tymon/jwt-auth/src'),
     'SuperClosure\\' => array($vendorDir . '/jeremeamia/SuperClosure/src'),
     'Stringy\\' => array($vendorDir . '/danielstjules/stringy/src'),
     'SammyK\\LaravelFacebookSdk\\' => array($vendorDir . '/sammyk/laravel-facebook-sdk/src/LaravelFacebookSdk'),
     'React\\Promise\\' => array($vendorDir . '/react/promise/src'),
+    'Parse\\' => array($vendorDir . '/parse/php-sdk/src/Parse'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
     'League\\OAuth1\\' => array($vendorDir . '/league/oauth1-client/src'),
     'League\\Flysystem\\AwsS3v2\\' => array($vendorDir . '/league/flysystem-aws-s3-v2/src'),
@@ -28,6 +22,7 @@ return array(
     'GuzzleHttp\\Stream\\' => array($vendorDir . '/guzzlehttp/streams/src'),
     'GuzzleHttp\\Ring\\' => array($vendorDir . '/guzzlehttp/ringphp/src'),
     'GuzzleHttp\\' => array($vendorDir . '/guzzlehttp/guzzle/src'),
+    'GrahamCampbell\\Parse\\' => array($vendorDir . '/graham-campbell/parse/src'),
     'Facebook\\' => array($vendorDir . '/facebook/php-sdk-v4/src/Facebook'),
     'ClassPreloader\\' => array($vendorDir . '/classpreloader/classpreloader/src'),
     'App\\' => array($baseDir . '/app'),

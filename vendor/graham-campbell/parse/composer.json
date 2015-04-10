@@ -1,0 +1,38 @@
+{
+    "name": "graham-campbell/parse",
+    "description": "Parse Is A Parse SDK Bridge For Laravel 5",
+    "keywords": ["laravel", "framework", "parse", "parse-sdk", "parse sdk", "ParseSDK", "parse bridge", "parse sdk bridge", "bridge", "Parse", "Laravel Parse", "Laravel-Parse", "Graham Campbell", "GrahamCampbell"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Graham Campbell",
+            "email": "graham@mineuk.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.7",
+        "illuminate/contracts": "5.0.*",
+        "illuminate/support": "5.0.*",
+        "parse/php-sdk": "~1.0"
+    },
+    "require-dev": {
+        "graham-campbell/testbench": "~2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "GrahamCampbell\\Parse\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "GrahamCampbell\\Tests\\Parse\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

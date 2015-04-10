@@ -26,15 +26,17 @@ RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
 
 ###Push Notifications
 
-plugin used: [laravel-push-notification](https://github.com/laraviet/laravel-push-notification)
+Mobile: [Android Parse Setup](https://parse.com/docs/push_guide#setup/Android)
 
-config: `/config/packages/laraviet/laravel-push-notification/config.php`
+plugin used: [Laravel-Parse](https://github.com/GrahamCampbell/Laravel-Parse)
 
-* Create new application at [google](https://console.developers.google.com/) if one doesn't already exist
-* toggle the android cloud messaging api
-* get a server key
-* add it to your `.env` `GOOGLE_SERVER_KEY={your key here}`
-* choose development mode in your `.env` `PUSH_NOTIFICATION_ENV=development`
+[documentation for php sdk](https://parse.com/docs/push_guide#top/PHP)
+
+config: `/config/parse.php`
+
+* Create a new parse app
+* in `.env` set `PARSE_APP_KEY`,`PARSE_REST_KEY` and `PARSE_MASTER_KEY`
+
 
 ###Setup Social Login for Testing
 
@@ -92,16 +94,19 @@ GOOGLE_CLIENT_SECRET={your secret here}
 * [laravel-push-notification](https://github.com/laraviet/laravel-push-notification)
 
 ##API Methods
+#####Moved to [Confulence](http://jira.yeplive.com:8090/display/IN/API)
 #####NOTE: The only methods that you don't have to include the authentication token is `POST /authenticate` and `POST /user`
 
 #####NOTE: prefex all calls to the server root with the following:
 
 Root: `/api/v1/`
 
+Parameters with a * are required
+
 Return Type: All calls return JSON
 
 ###Testing
-#####These routes are only used for testing and will be removed in prodution
+#####These routes are only used for testing and will be removed in prodution so don't use them in any production code
 
 #####`POST /auth`
 
@@ -212,19 +217,19 @@ example response:
 }
 ```
 
-###Programs
+###Yeps
 
-#####`GET /programs`
+#####`GET /yeps`
 
 params: none
 
-returns: a list of programs
+returns: a list of yeps
 
 example response:
 
 ```
 {
-	"programs":[
+	"yeps":[
 		{
 			"title": "some title",
 			"description": "some description",
@@ -239,9 +244,9 @@ example response:
 }
 ```
 
-#####`POST /programs`
+#####`POST /yeps`
 
-create a new program
+create a new yeps
 
 params:
 
@@ -257,7 +262,7 @@ params:
 
 #####Note: `tags` is a comma seperated string ex: `"these,are,each,tags"`
 
-returns: the newly created program
+returns: the newly created yep
 
 example output:
 
@@ -274,30 +279,51 @@ example output:
 }
 ```
 
-#####`GET /programs/{id}`
+#####`PUT /yeps/{id}`
 
-returns: data about the specified program
+updates the specified yep
+
+#####`GET /yeps/{id}`
+
+returns: data about the specified yep
 
 example output:
 
 ```
 {
-	"program": {
-		"id": 412,
-		"title": "some title",
-		"description": "some description",
-		"latitude": 12.3,
-		"longitude": 100.3,
-		"location": "some location",
-		"displayName": "@someuser"
-		"views": 123
+	"yep": {
+		"id": 1,
+		"channel_id": 0,
+		"title": "a test yep",
+		"image_path": "",
+		"vod_enable": 0,
+		"vod_path": "",
+		"latitude": 123,
+		"longitude": -12,
+		"location": "",
+		"user_id": 0,
+		"start_time": "",
+		"end_time": "",
+		"description": "",
+		"connect_count": 0,
+		"created_at": "2015-04-10 15:06:41",
+		"views": 1,
+		"tags": [
+			"these",
+			"are",
+			"tags"
+		]
 	}
 }
 ```
 
-#####`GET /programs/{id}/tags`
+#####`GET /yeps/{id}/similar`
 
-returns: an array of tags for the program with specified id
+
+
+#####`GET /yeps/{id}/tags`
+
+returns: an array of tags for the yep with specified id
 
 example output:
 
@@ -312,9 +338,9 @@ example output:
 }
 ```
 
-#####`GET /programs/{id}/views`
+#####`GET /yeps/{id}/views`
 
-returns: the number of views on the specifed program
+returns: the number of views on the specifed yep
 
 ```
 {
@@ -322,9 +348,9 @@ returns: the number of views on the specifed program
 }
 ```
 
-#####`POST /programs/{id}/views`
+#####`POST /yeps/{id}/views`
 
-Increments and returns the number of views on the specified program
+Increments and returns the number of views on the specified yep
 
 ```
 {
@@ -334,9 +360,9 @@ Increments and returns the number of views on the specified program
 
 #####Voting:
 
-#####`GET /programs/{id}/votes`
+#####`GET /yeps/{id}/votes`
 
-Get number of votes on the specified program
+Get number of votes on the specified yep
 
 params: none
 
@@ -348,9 +374,9 @@ Example output:
 }
 ```
 
-#####`GET /programs/{id}/votes/my`
+#####`GET /yeps/{id}/votes/my`
 
-get whether or not the user has voted on the program
+get whether or not the user has voted on the yep
 
 params: none
 
@@ -364,13 +390,13 @@ Example output:
 }
 ```
 
-#####`POST /programs/{id}/votes`
+#####`POST /yeps/{id}/votes`
 
 params: none
 
 #####NOTE: 0 means no vote, 1 means voted
 
-toggle vote on the program with specified ID
+toggle vote on the yep with specified ID
 
 Example output:
 
@@ -382,7 +408,7 @@ Example output:
 
 #####Reporting:
 
-#####`POST /programs/{id}/report`
+#####`POST /yeps/{id}/report`
 
 ```
 {
@@ -390,18 +416,28 @@ Example output:
 }
 ```
 
-###User
+###Users
 
 #####`GET /users`
 
-Returns a list of users
+params: none
+
+Returns a list of users (maybe to be removed)
 
 example response:
 
 ```
 {
 	"users": [
-		
+		{
+		"user_id": 1,
+		"name": "test user",
+		"email": "test@example.com",
+		"display_name": "testuser",
+		"picture_path": "http://pathtopicture.com/",
+		"status": "test status"
+		},
+		...
 	]
 }
 ```
@@ -413,7 +449,22 @@ example response:
 
 #####`GET /users/{id}`
 
+params: none
+
 get a specific user by their id
+
+example response:
+
+```
+{
+	"user_id": 1,
+	"name": "test user",
+	"email": "test@example.com",
+	"display_name": "testuser",
+	"picture_path": "http://pathtopicture.com/",
+	"status": "test status"
+}
+```
 
 #####`GET /users/{id}/is_follow`
 
@@ -539,8 +590,8 @@ solution: make sure that the route you are trying to call exists
 * document all routes with parameters and example returns
 * test all routes
 * Rate limiting
-* Filtering, sorting etc. for programs
-* Find similar programs algorithm
+* Filtering, sorting etc. for yeps
+* Find similar yeps algorithm
 * Set up RDS
 * [Api framework](https://github.com/dingo/api)?
 

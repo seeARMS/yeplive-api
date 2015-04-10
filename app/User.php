@@ -30,7 +30,32 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @var array
 	 */
-	protected $hidden = ['password', 'remember_token'];
+	protected $hidden = ['password',
+		'remember_token',
+		'email',
+		'name',
+		'activation_key',
+		'url',
+		'facebook_id',
+		'facebook_email',
+		'facebook_access_token',
+		'facebook_picture',
+		'twitter_id',
+		'twitter_name',	
+		'twitter_oauth_token',
+		'twitter_oauth_token_secret',
+		'facebook_friends',
+		'google_name',
+		'google_access_token',
+		'google_email',
+		'google_picture',
+		'created_at',
+		'updated_at',
+		'push_notifications',
+		'device_token',
+		'bannedPermanently',
+		'bannedUntil'
+	];
 
 
 	protected $attributes = [

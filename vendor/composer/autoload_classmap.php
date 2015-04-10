@@ -7,8 +7,10 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'AddPushNotificationSettingsToUsers' => $baseDir . '/database/migrations/2015_04_09_132913_add_push_notification_settings_to_users.php',
+    'AddTimestampsToVotes' => $baseDir . '/database/migrations/2015_04_10_210115_add_timestamps_to_votes.php',
     'AddViewsToProgram' => $baseDir . '/database/migrations/2015_04_09_012759_add_views_to_program.php',
-    'ChaneUserTableNameAndKey' => $baseDir . '/database/migrations/2015_04_08_131302_chane_user_table_name_and_key.php',
+    'ChangeVotesToYeps' => $baseDir . '/database/migrations/2015_04_10_182205_change_votes_to_yeps.php',
+    'CreateNewVotesTable' => $baseDir . '/database/migrations/2015_04_10_182722_create_new_votes_table.php',
     'CreateNotificationsTable' => $baseDir . '/database/migrations/2015_04_05_231551_create_notifications_table.php',
     'CreatePasswordResetsTable' => $baseDir . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
     'CreateProgramsTable' => $baseDir . '/database/migrations/2015_04_05_231258_create_programs_table.php',
@@ -399,6 +401,7 @@ return array(
     'PHP_Token_WHITESPACE' => $vendorDir . '/phpunit/php-token-stream/src/Token.php',
     'PHP_Token_XOR_EQUAL' => $vendorDir . '/phpunit/php-token-stream/src/Token.php',
     'PHP_Token_YIELD' => $vendorDir . '/phpunit/php-token-stream/src/Token.php',
+    'RenameProgramsToYeps' => $baseDir . '/database/migrations/2015_04_10_180544_rename_programs_to_yeps.php',
     'SebastianBergmann\\Comparator\\ArrayComparator' => $vendorDir . '/sebastian/comparator/src/ArrayComparator.php',
     'SebastianBergmann\\Comparator\\Comparator' => $vendorDir . '/sebastian/comparator/src/Comparator.php',
     'SebastianBergmann\\Comparator\\ComparisonFailure' => $vendorDir . '/sebastian/comparator/src/ComparisonFailure.php',

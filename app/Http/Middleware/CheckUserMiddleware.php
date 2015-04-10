@@ -19,7 +19,7 @@ class CheckUserMiddleware {
 	
 		if($id != (string) $user->user_id)
 		{
-			return response()->json(['error' => 'forbidden', 'messages' => ['token does not match user']], 403);
+			return \App\Errors::forbidden('token does not match user');
 		}
 	
 		return $next($request);

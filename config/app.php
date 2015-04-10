@@ -147,9 +147,8 @@ return [
 		'Conner\Tagging\TaggingServiceProvider',
 		'Tymon\JWTAuth\Providers\JWTAuthServiceProvider',
     'SammyK\LaravelFacebookSdk\LaravelFacebookSdkServiceProvider',
-		'Thujohn\Twitter\TwitterServiceProvider',
 		'Laravel\Socialite\SocialiteServiceProvider',
-		'Laraviet\LaravelPushNotification\LaravelPushNotificationServiceProvider',
+		'GrahamCampbell\Parse\ParseServiceProvider'
 
 	],
 
