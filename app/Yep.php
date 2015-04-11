@@ -79,13 +79,13 @@ class Yep extends Model{
 				{
 					$currentVote -> vote = 0;
 					$currentVote -> save();
-					return ['vote' => $currentVote -> vote];
+					return ['id' => $this->id, 'success' => 1,'vote' => $currentVote->vote];
 				}
 				else
 				{
 					$currentVote -> vote = 1;
 					$currentVote -> save();
-					return ['vote' => $currentVote -> vote];	
+					return ['id' => $this->id, 'success' => 1,'vote' => $currentVote->vote];
 				}
 			}
 			else
@@ -93,10 +93,10 @@ class Yep extends Model{
 				$voteParams = [
 					'user_id' => $user->user_id,
 					'yep_id' => $this->id,
-					'vote' => true
+					'vote' => 1 
 				];
 				$currentVote = Vote::create($voteParams);
-				return ['vote' => $currentVote->vote];
+				return ['id' => $this->id, 'success' => 1,'vote' => $currentVote->vote];
 			}
 		} else{
 			return [ 'error' => 'no user specified'];

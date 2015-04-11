@@ -77,6 +77,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		return $this->hasMany('App\Vote');
 	}
 
+	public function voted($yep)
+	{
+		return Vote::where('user_id',$user->user_id)
+			->where('yep_id', $yep->id)->get(); 
+	}
+
 
 	public function programs()
 	{

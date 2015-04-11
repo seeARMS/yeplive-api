@@ -8,6 +8,7 @@ class YepsController extends Controller {
 	{
 	}
 
+	//GET /yeps
 	public function index(Request $request)
 	{
 		$params = $request->only(
@@ -35,6 +36,7 @@ class YepsController extends Controller {
 		return response()->json(['yeps' => $yeps], 200);
 	}
 
+	//POST /yeps
 	public function store(Request $request)
 	{
 		$params = $request->only(
@@ -151,12 +153,26 @@ class YepsController extends Controller {
 		}
 	}
 
+	//GET /yep/{id}
 	public function show(Request $request, $id)
 	{
-		$yep= \App\Yep::find($id);
+		$yep = \App\Yep::find($id);
+		
 		if (! $yep)
 		{
 			return \App\Errors::notFound('yep not found');
+		}
+
+		$user = \JWTAuth::parseToken()->toUser();
+		if($user)
+		{
+			if($user->voted($yep)){
+				$yep['voted'] = 1;
+			} else {
+				$yep['voted'] = 0;
+			}
+		} else {
+				$yep['voted'] = 0;
 		}
 
 		$yep['votes'] = $yep->votes()->count();
@@ -172,43 +188,52 @@ class YepsController extends Controller {
 
 	}
 
-
+	//GET /yep/{id}/similar
 	public function similar(Request $request, $id)
 	{
+		$params = $request->only(
+			'quantity'
+		);
+
+		$validator = \Validator::make( $params, [
+			'quantity' => 'integer'
+		]);
+
+		if($validator -> fails())
+		{
+			return \App\Errors::invalid(null, $validator);
+		}
+
+		if ($params['quantity'])
+		{
+			$quantity = $params['quantity'];
+		} else 
+		{
+			$quantity = 10;
+		}
+
 		$yep= \App\Yep::find($id);
 		if (! $yep)
 		{
 			return \App\Errors::notFound('yep not found');
 		}
 		$tags = $yep->tagNames();
-		return \App\Yep::withAnyTag($tags)->get()->filter(function ($currentYep) use ($yep)
-		{
-			return $currentYep->id != $yep->id;
-		})->values();
+
+		$yeps = \App\Yep::withAnyTag($tags)
+			->get()
+			->take($quantity)
+			->filter(function ($currentYep) use ($yep)
+				{
+					return $currentYep->id != $yep->id;
+				})
+			->values();
+
+		return response()->json(['yeps' => $yeps]);
 	}
 
-	public function tags(Request $request, $id)
-	{
-		$yep= \App\Yep::find($id);
-		if (! $yep)
-		{
-			return \App\Errors::notFound('yep not found');
-		}
-		return $yep->tagNames();
-	}
+	
 
-	public function viewCount(Request $request, $id)
-	{
-		$yep = \App\Yep::find($id);
-		if (! $yep)
-		{
-			return \App\Errors::notFound('yep not found');
-		}
-		$views = $yep->views;
-
-		return response()->json(['views'=>$views],200);
-	}
-
+	//INCREMENT VIEWS ON A YEP
 	public function incrementViews(Request $request, $id)
 	{
 		$yep= \App\Yep::find($id);
@@ -218,9 +243,11 @@ class YepsController extends Controller {
 		}
 		$yep -> views = $yep ->views + 1;
 		$yep -> save();
+		return response()->json(['success' => 1, 'id' => $yep->id, 'views'=>$yep->views],200);
 		return response()->json(['views' => $yep ->views], 200);
 	}
 
+	//VOTE FOR A YEP
 	public function vote(Request $request, $id)
 	{
 		$user = \JWTAuth::parseToken()->toUser();
@@ -233,16 +260,7 @@ class YepsController extends Controller {
 		return response()->json($data, 200);
 	}
 
-	public function votes(Request $request, $id)
-	{
-		$yep = \App\Yep::find($id);
-		if(! $yep)
-		{
-			return \App\Errors::notFound('yep not found');
-		}
-		return response()->json(['votes' => $yep->votes->where('vote',1)->count()], 200);
-	}
-
+	//GET THE USERS VOTE ON A YEP	
 	public function userVote(Request $request, $id)
 	{
 		$yep = \App\Yep::find($id);
@@ -281,8 +299,39 @@ class YepsController extends Controller {
 
 		$reporter = \JWTAuth::parseToken()->toUser();
 		$data = $yep->report($reporter, $params['reason']);	
-		return response()->json($data, 200);
+		return response()->json(['success' => 1, 'id' => $id]);
 	}
 
-	
+	//unneeded methods
+	public function votes(Request $request, $id)
+	{
+		$yep = \App\Yep::find($id);
+		if(! $yep)
+		{
+			return \App\Errors::notFound('yep not found');
+		}
+		return response()->json(['votes' => $yep->votes->where('vote',1)->count()], 200);
+	}
+	public function viewCount(Request $request, $id)
+	{
+		$yep = \App\Yep::find($id);
+		if (! $yep)
+		{
+			return \App\Errors::notFound('yep not found');
+		}
+		$views = $yep->views;
+
+		return response()->json(['success' => 1, 'id' => $yep->id, 'views'=>$views],200);
+	}
+	public function tags(Request $request, $id)
+	{
+		$yep= \App\Yep::find($id);
+		if (! $yep)
+		{
+			return \App\Errors::notFound('yep not found');
+		}
+		return $yep->tagNames();
+	}
+
+
 }

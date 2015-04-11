@@ -1,39 +1,27 @@
-+--------+----------+-------------------------------------+------------------------+-------------------------------------------------------+------------------------+
-|[32m Domain [39m|[32m Method   [39m|[32m URI                                 [39m|[32m Name                   [39m|[32m Action                                                [39m|[32m Middleware             [39m|
-+--------+----------+-------------------------------------+------------------------+-------------------------------------------------------+------------------------+
-|        | GET|HEAD | api/v1                              |                        | Closure                                               |                        |
-|        | POST     | api/v1/auth/mobile                  |                        | App\Http\Controllers\UserController@auth              |                        |
-|        | GET|HEAD | api/v1/facebook/login               |                        | Closure                                               |                        |
-|        | GET|HEAD | api/v1/facebook/callback            |                        | App\Http\Controllers\UserController@facebookCallback  |                        |
-|        | GET|HEAD | api/v1/twitter/login                |                        | App\Http\Controllers\UserController@loginTwitter      |                        |
-|        | GET|HEAD | api/v1/twitter/callback             |                        | App\Http\Controllers\UserController@twitterCallback   |                        |
-|        | GET|HEAD | api/v1/google/login                 |                        | App\Http\Controllers\UserController@loginGoogle       |                        |
-|        | GET|HEAD | api/v1/google/callback              |                        | App\Http\Controllers\UserController@googleCallback    |                        |
-|        | POST     | api/v1/auth                         |                        | App\Http\Controllers\UserController@authenticate      |                        |
-|        | POST     | api/v1/users                        |                        | App\Http\Controllers\UserController@signup            |                        |
-|        | GET|HEAD | api/v1/programs                     | api.v1.programs.index  | App\Http\Controllers\ProgramController@index          | jwt.auth               |
-|        | POST     | api/v1/programs                     | api.v1.programs.store  | App\Http\Controllers\ProgramController@store          | jwt.auth               |
-|        | GET|HEAD | api/v1/programs/{programs}          | api.v1.programs.show   | App\Http\Controllers\ProgramController@show           | jwt.auth               |
-|        | PUT      | api/v1/programs/{programs}          | api.v1.programs.update | App\Http\Controllers\ProgramController@update         | jwt.auth               |
-|        | PATCH    | api/v1/programs/{programs}          |                        | App\Http\Controllers\ProgramController@update         | jwt.auth               |
-|        | GET|HEAD | api/v1/programs/{id}/similar        |                        | App\Http\Controllers\ProgramController@similar        | jwt.auth               |
-|        | GET|HEAD | api/v1/programs/{id}/tags           |                        | App\Http\Controllers\ProgramController@tags           | jwt.auth               |
-|        | GET|HEAD | api/v1/programs/{id}/views          |                        | App\Http\Controllers\ProgramController@viewCount      | jwt.auth               |
-|        | POST     | api/v1/programs/{id}/views          |                        | App\Http\Controllers\ProgramController@incrementViews | jwt.auth               |
-|        | GET|HEAD | api/v1/programs/{id}/votes          |                        | App\Http\Controllers\ProgramController@votes          | jwt.auth               |
-|        | GET|HEAD | api/v1/programs/{id}/votes/my       |                        | App\Http\Controllers\ProgramController@userVote       | jwt.auth               |
-|        | POST     | api/v1/programs/{id}/votes          |                        | App\Http\Controllers\ProgramController@vote           | jwt.auth               |
-|        | POST     | api/v1/programs/{id}/reports        |                        | App\Http\Controllers\ProgramController@report         | jwt.auth               |
-|        | GET|HEAD | api/v1/auth                         |                        | App\Http\Controllers\UserController@checkAuth         | jwt.auth               |
-|        | GET|HEAD | api/v1/users                        |                        | App\Http\Controllers\UserController@showAllUsers      | jwt.auth               |
-|        | GET|HEAD | api/v1/users/{id}                   |                        | App\Http\Controllers\UserController@getUser           | jwt.auth               |
-|        | POST     | api/v1/users/{id}/follow            |                        | App\Http\Controllers\UserController@addFollowing      | jwt.auth               |
-|        | GET|HEAD | api/v1/users/{id}/followees         |                        | App\Http\Controllers\UserController@showAllFollowee   | jwt.auth               |
-|        | GET|HEAD | api/v1/users/{id}/followers         |                        | App\Http\Controllers\UserController@showAllFollower   | jwt.auth               |
-|        | POST     | api/v1/users/{id}/thumbnail         |                        | App\Http\Controllers\UserController@updateThumbnail   | jwt.auth,jwt.checkUser |
-|        | GET|HEAD | api/v1/users/{id}/settings          |                        | App\Http\Controllers\UserController@getSettings       | jwt.auth,jwt.checkUser |
-|        | POST     | api/v1/users/{id}/settings          |                        | App\Http\Controllers\UserController@settings          | jwt.auth,jwt.checkUser |
-|        | GET|HEAD | api/v1/users/{id}/friends           |                        | App\Http\Controllers\UserController@friends           | jwt.auth,jwt.checkUser |
-|        | POST     | api/v1/users/{id}/settings/password |                        | App\Http\Controllers\UserController@changePassword    | jwt.auth,jwt.checkUser |
-|        | POST     | api/v1/users/{id}/settings/email    |                        | App\Http\Controllers\UserController@changeEmail       | jwt.auth,jwt.checkUser |
-+--------+----------+-------------------------------------+------------------------+-------------------------------------------------------+------------------------+
++--------+----------+----------------------------------+------+-------------------------------------------------------+------------------------+
+|[32m Domain [39m|[32m Method   [39m|[32m URI                              [39m|[32m Name [39m|[32m Action                                                [39m|[32m Middleware             [39m|
++--------+----------+----------------------------------+------+-------------------------------------------------------+------------------------+
+|   -    | GET|HEAD | api/v1/facebook/login            |      | Closure                                               |                        |
+|   -    | GET|HEAD | api/v1/facebook/callback         |      | App\Http\Controllers\UsersController@facebookCallback |                        |
+|   -    | GET|HEAD | api/v1/twitter/login             |      | App\Http\Controllers\UsersController@loginTwitter     |                        |
+|   -    | GET|HEAD | api/v1/twitter/callback          |      | App\Http\Controllers\UsersController@twitterCallback  |                        |
+|   -    | GET|HEAD | api/v1/google/login              |      | App\Http\Controllers\UsersController@loginGoogle      |                        |
+|   -    | GET|HEAD | api/v1/google/callback           |      | App\Http\Controllers\UsersController@googleCallback   |                        |
+|   x    | POST     | api/v1/test/auth                 |      | App\Http\Controllers\UsersController@authenticate     |                        |
+|   x    | GET|HEAD | api/v1                           |      | Closure                                               |                        |
+|   x    | POST     | api/v1/auth/social               |      | App\Http\Controllers\UsersController@socialAuth       |                        |
+|   x    | GET|HEAD | api/v1/yeps                      |      | App\Http\Controllers\YepsController@index             |                        |
+|   x    | GET|HEAD | api/v1/yeps/{id}                 |      | App\Http\Controllers\YepsController@show              |                        |
+|   x    | GET|HEAD | api/v1/yeps/{id}/similar         |      | App\Http\Controllers\YepsController@similar           | jwt.auth               |
+|   x    | POST     | api/v1/yeps                      |      | App\Http\Controllers\YepsController@store             | jwt.auth               |
+|   x    | PUT      | api/v1/yeps                      |      | App\Http\Controllers\YepsController@update            | jwt.auth               |
+|   x    | POST     | api/v1/yeps/{id}/views           |      | App\Http\Controllers\YepsController@incrementViews    | jwt.auth               |
+|   x    | POST     | api/v1/yeps/{id}/votes           |      | App\Http\Controllers\YepsController@vote              | jwt.auth               |
+|   x    | POST     | api/v1/yeps/{id}/reports         |      | App\Http\Controllers\YepsController@report            | jwt.auth               |
+|   x    | GET|HEAD | api/v1/auth                      |      | App\Http\Controllers\UsersController@checkAuth        | jwt.auth               |
+|   x    | GET|HEAD | api/v1/users/{id}                |      | App\Http\Controllers\UsersController@getUser          | jwt.auth               |
+|        | POST     | api/v1/users/{id}/picture        |      | App\Http\Controllers\UsersController@updateThumbnail  | jwt.auth,jwt.checkUser |
+|   x    | GET|HEAD | api/v1/users/{id}/settings       |      | App\Http\Controllers\UsersController@getSettings      | jwt.auth,jwt.checkUser |
+|   x    | POST     | api/v1/users/{id}/settings       |      | App\Http\Controllers\UsersController@settings         | jwt.auth,jwt.checkUser |
+|        | POST     | api/v1/users/{id}/settings/email |      | App\Http\Controllers\UsersController@changeEmail      | jwt.auth,jwt.checkUser |
++--------+----------+----------------------------------+------+-------------------------------------------------------+------------------------+

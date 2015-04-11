@@ -16,8 +16,23 @@ class UsersController extends Controller {
 	public function authenticate(Request $request)
 	{
 		$credentials = $request->only('email', 'password');
-		$output = \App\Algorithm\ProAuth::jwtAuth($credentials);
-		return response()->json([$output['status'] => $output['message']], $output['code']);
+		$user = \App\User::where('email', '=', $credentials['email'])->first(); 
+		if($user)
+		{
+			$output = \App\Algorithm\ProAuth::jwtAuth($credentials);
+			return response()->json([$output['status'] => $output['message']], $output['code']);
+		}
+		else
+		{
+			$password = $credentials['password'];
+					$credentials['password'] = \Hash::make($credentials['password']);
+					$user = \App\Algorithm\ProSave::user($credentials);
+					$output = \App\Algorithm\ProAuth::jwtAuth(array('email' => $user['email'], 'password' => $password));
+					return response()->json([ 'user_id' => $user['user_id'],
+												'email' => $user['email'], 
+												$output['status'] => $output['message'] 
+											], 200);
+		}
 	}
 
 	/*
@@ -28,7 +43,9 @@ class UsersController extends Controller {
 	public function checkAuth()
 	{
 		try {
-			return \JWTAuth::parseToken()->toUser();
+			$user = \JWTAuth::parseToken()->toUser();
+			$user -> yeps = \App\Yep::where('user_id', '=', $user->user_id)->get();	
+			return $user;
 		} catch (\JWTException $e){
 			return response()->json(['error' => 'no_token'], 401);
 		}
@@ -46,26 +63,64 @@ class UsersController extends Controller {
 
 	public function getUser(Request $request, $id)
 	{
-		return \App\User::find($id);
+		$user = \App\User::find($id);
+		if(! $user)
+		{
+			return \App\Errors::notFound('yep not found');
+		}
+		$user -> yeps = \App\Yep::where('user_id', '=', $user->user_id)->get();	
+		
+		return $user;
 	}
 
 
 	/*
 	 * POST : Take in social login tokens and return with token and user id
 	 */
-	public function auth(Request $request)
+	public function socialAuth(Request $request, \SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb)
 	{
 		//FACEBOOK
 		if($request->has('facebook_access_token') && $request->has('facebook_user_id'))
 		{
+			$params = $request->only(
+				'facebook_access_token',
+				'facebook_user_id'
+			);
+			$fb->setDefaultAccessToken($params['facebook_access_token']);
+			try {
+				$response = $fb->get('/me?fields=id,email,first_name,picture.type(large)');
+			} catch (Facebook\Exceptions\FacebookSDKException $e) {
+				return \Errors\invalid('invalid facebook token');
+				dd($e->getMessage());
+			}
+			$data = $response->getGraphObject();
+			$facebookId = $data->getProperty('id');
+			if($facebookId != $params['facebook_user_id'])
+			{
+				return \Errors\invalid('facebook id mismatch');
+			}	
+			$user = \App\User::where($facebook_id, '=', $params['facebook_user_id'])->first();
+			if(! $user)
+			{
+				$newUserParams = [
 
+				];
+				$user = \App\User::create($params);
+			} else { 
+				$user -> facebook_access_token = $params['facebook_access_token'];
+				$user -> save();
+			}
+
+			$jwtoken = \JWTAuth::fromUser($user);
+
+			return response()->json(['success' => 1, 'token' => $jwtoken]);	
 		}
-		//TWITTER
+		//TWITTER - TODO
 		else if($request->has('twitter_access_token') && $request->has('twitter_user_id'))
 		{
-
+			
 		}
-		//GOOGLE
+		//GOOGLE - TODO
 		else if($request->has('google_access_token') && $request->has('google_user_id'))
 		{
 
@@ -73,129 +128,18 @@ class UsersController extends Controller {
 		//400
 		else
 		{
-			return response()->json(['statusCode' =>  400, 'error' => 'invalid_parameters'], 400);
+			return \App\Errors::invalid('no access token provided');
 		}
 	}
 
-
-
-	/* * POST : Take in user signup credentials, and return with user signup credentials and auth token
-	 *
-	 * @param  {Array}   $request    An array consists of user email and password keys
-	 * @return {Array}   response()  An array consists of user email, password, and auth token
-	 */
-	public function signup(Request $request)
+	//This function will link existing users other social media accounts
+	public function linkSoclai(Request $request)
 	{
-		$params = $request->only('email', 'password');
 
-		$validator = \Validator::make( $params, [
-			'email' => 'required|email|unique:yeplive_users,email',
-			'password' => 'required'
-		]);
-
-		if ( $validator -> fails() )
-		{
-			$messages = $validator -> messages() -> all();
-			return response()->json(\App\Errors::invalid($validator));
-		}
-		//Catch the unhashed password for auth token
-		$password = $params['password'];
-		$params['password'] = \Hash::make($params['password']);
-		$user = \App\Algorithm\ProSave::user($params);
-		$output = \App\Algorithm\ProAuth::jwtAuth(array('email' => $user['email'], 'password' => $password));
-		return response()->json([ 'user_id' => $user['user_id'],
-								  'email' => $user['email'], 
-								  $output['status'] => $output['message'] 
-								], 200);
 	}
 
 
-	/*
-	 * POST: Sign in through facebook
-	 */
-	public function facebookLogin(\SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb,  Request $request)
-	{
-		$url = $fb->getLoginUrl(['email','public_profile']);
-		try {
-			$user = \JWTAuth::parseToken()->toUser();
-		} catch(\Exception $e) {
-				redirect()->away($url);
-		}
-	}
 
-	public function facebookCallback(\SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb)
-	{
-	 try {
-			$token = $fb->getAccessTokenFromRedirect();
-		} catch (Facebook\Exceptions\FacebookSDKException $e) {
-			dd($e->getMessage());
-		}
-	  $fb->setDefaultAccessToken($token);
-		try {
-			$response = $fb->get('/me?fields=id,email,first_name,picture.type(large)');
-    } catch (Facebook\Exceptions\FacebookSDKException $e) {
-			dd($e->getMessage());
-    }
-		$data = $response->getGraphObject();
-
-		$userData = [
-			'email' => $data->getProperty('email'),
-			'name' => $data->getProperty('first_name'),
-			'password' => $data->getProperty('first_name'),
-			'picture_path' => $data->getProperty('picture')->getProperty('url'),
-			'facebook_id' => $data->getProperty('id'),
-			'facebook_access_token' => (string) $token
-		];	
-
-
-		$users = \App\User::where('facebook_id',$userData['facebook_id'])->get();
-		if($users->count() == 0)
-		{
-			$user = \App\User::create($userData);
-		} else {
-			$user = $users->first();
-		}
-		$jwtoken = \JWTAuth::fromUser($user);
-
-		return response()->json(['success' => $jwtoken]);
-	}
-
-	public function loginTwitter(Request $request)
-	{
-		return \Socialize::with('twitter')->redirect();
-	}
-
-	public function twitterCallback(Request $request)
-	{
-		$user = \Socialize::with('twitter')->user();
-		$data = [
-			'email' => $user->getEmail(),
-			'id' => $user->getId(),
-			'nickname' => $user->getNickName(),
-			'name' => $user->getName(),
-			'avatar' => $user->getAvatar()
-		];	
-		return $data;
-	}
-
-	public function loginGoogle(Request $request)
-	{
-		return \Socialize::with('google')->redirect();
-	}
-
-	public function googleCallback(Request $request)
-	{
-		$user = \Socialize::with('google')->user();
-		$data = [
-			'email' => $user->getEmail(),
-			'id' => $user->getId(),
-			'nickname' => $user->getNickName(),
-			'name' => $user->getName(),
-			'avatar' => $user->getAvatar()
-		];	
-		return $data;
-
-	}
 
 	public function friends(\SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb)
 	{
@@ -340,33 +284,49 @@ class UsersController extends Controller {
 
 		if ( $validator -> fails() )
 		{
-			return response()-> json(['error' => 'invalid_input'], 400);
+			return \App\Errors::invalid(null, $validator);
 		}
 		//Changing user email
 		$credentials = \App\User::find($id);
 		$credentials['email'] = $params['new_email'];
 		$credentials->save();
-		return response()->json(['success' => 'email_has_modified'], 200);
+		return response()->json(['success' => 1, 'id' => $credentials->user_id ], 200);
 	}
 
-	public function updateThumbnail(Request $request, $id)
+	public function updatePicture(Request $request, $id)
 	{
+		$params = $request->only(
+			'photo'
+		);
+		$validator = \Validator::make( $params, [
+			'photo' => 'required|image'
+		]);
+
+		if ( $validator -> fails() )
+		{
+			return \App\Errors::invalid(null, $validator);
+		}
+
 		if (! $request->hasFile('photo'))
 		{
-			return response()-> json(['error' => 'invalid_input'], 400);
+			return \App\Errors::invalid('not found');
 		}
 		$file = $request->file('photo');
 		if(! $file->isValid())
 		{
-			return response()-> json(['error' => 'invalid_input'], 400);
+			return \App\Errors::invalid('invalid upload');
 	
 		}
 
 		$user = \App\User::find($id);
+		if(! $user)
+		{
+			return \App\Errors::notFound();
+		}
 		$url = \App\Algorithm\ProS3::storeThumbnail($user, $file);
 		$user -> picture_path = $url;
 		$user->save();
-		return response()->json(['success' => ['url' => $url]]);
+		return response()->json(['success' => 1, 'id'=> $user->user_id]);
 	}
 
 	public function getSettings(Request $request, $id)
@@ -378,13 +338,29 @@ class UsersController extends Controller {
 	public function settings(Request $request, $id)
 	{
 		$user = \App\User::find($id);
-		if($request->has('push_notifications'))
+
+		if(! $user)
 		{
-			$push = $request->input('push_notifications');
-			if($push != "1" && $push != "0")
-			{
-				return response()->json(['error' => 'invalid_input', 'statusCode'=>400, 'messages'=>['push_notification setting must be either 0 or 1']], 400);
-			}
+			return \App\Errors::notFound();
+		}
+
+		$params = $request->only(
+			'push_notifications',
+			'device_token'
+		);
+
+		$validator = \Validator::make( $params, [
+			'push_notifications' => 'boolean',
+			'device_token' => 'string|max:255'
+		]);
+
+		if ( $validator -> fails() )
+		{
+			return \App\Errors::invalid(null, $validator);
+		}
+		if($params['push_notifications'])
+		{
+			$push = $params['push_notifications'];
 			$user->push_notifications = (boolean) $request->input('push_notifications');
 		}
 		if($request->has('device_token'))
@@ -392,8 +368,130 @@ class UsersController extends Controller {
 			$user->device_token = $request->input('device_token');
 		}	
 		$user->save();
-		return response()->json(['success'=>true, 'push_notifications' => $user->push_notifications]);
+		return response()->json(['success'=>1, 'id' => $user->user_id]);
 	}
 
 
+//THESE METHODS WILL BE REMOVED IN PRODUCTION
+
+
+	/*
+	 * POST: Sign in through facebook
+	 */
+	public function facebookLogin(\SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb,  Request $request)
+	{
+		$url = $fb->getLoginUrl(['email','public_profile']);
+		try {
+			$user = \JWTAuth::parseToken()->toUser();
+		} catch(\Exception $e) {
+				redirect()->away($url);
+		}
+	}
+
+	public function facebookCallback(\SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb)
+	{
+	 try {
+			$token = $fb->getAccessTokenFromRedirect();
+		} catch (Facebook\Exceptions\FacebookSDKException $e) {
+			dd($e->getMessage());
+		}
+	  $fb->setDefaultAccessToken($token);
+		try {
+			$response = $fb->get('/me?fields=id,email,first_name,picture.type(large)');
+    } catch (Facebook\Exceptions\FacebookSDKException $e) {
+			dd($e->getMessage());
+    }
+		$data = $response->getGraphObject();
+
+		$userData = [
+			'email' => $data->getProperty('email'),
+			'name' => $data->getProperty('first_name'),
+			'password' => $data->getProperty('first_name'),
+			'picture_path' => $data->getProperty('picture')->getProperty('url'),
+			'facebook_id' => $data->getProperty('id'),
+			'facebook_access_token' => (string) $token
+		];	
+
+
+		$users = \App\User::where('facebook_id',$userData['facebook_id'])->get();
+		if($users->count() == 0)
+		{
+			$user = \App\User::create($userData);
+		} else {
+			$user = $users->first();
+		}
+		$jwtoken = \JWTAuth::fromUser($user);
+
+		return response()->json(['success' => $jwtoken]);
+	}
+
+	public function loginTwitter(Request $request)
+	{
+		return \Socialize::with('twitter')->redirect();
+	}
+
+	public function twitterCallback(Request $request)
+	{
+		$user = \Socialize::with('twitter')->user();
+		$data = [
+			'email' => $user->getEmail(),
+			'id' => $user->getId(),
+			'nickname' => $user->getNickName(),
+			'name' => $user->getName(),
+			'avatar' => $user->getAvatar()
+		];	
+		return $data;
+	}
+
+	public function loginGoogle(Request $request)
+	{
+		return \Socialize::with('google')->redirect();
+	}
+
+	public function googleCallback(Request $request)
+	{
+		$user = \Socialize::with('google')->user();
+		$data = [
+			'email' => $user->getEmail(),
+			'id' => $user->getId(),
+			'nickname' => $user->getNickName(),
+			'name' => $user->getName(),
+			'avatar' => $user->getAvatar()
+		];	
+		return $data;
+
+	}
+
+	/* * POST : Take in user signup credentials, and return with user signup credentials and auth token
+	 *
+	 * @param  {Array}   $request    An array consists of user email and password keys
+	 * @return {Array}   response()  An array consists of user email, password, and auth token
+	 */
+	public function signup(Request $request)
+	{
+		$params = $request->only('email', 'password');
+
+		$validator = \Validator::make( $params, [
+			'email' => 'required|email|unique:yeplive_users,email',
+			'password' => 'required'
+		]);
+
+		if ( $validator -> fails() )
+		{
+			return response()->json(\App\Errors::invalid($validator));
+		}
+		//Catch the unhashed password for auth token
+		$password = $params['password'];
+		$params['password'] = \Hash::make($params['password']);
+		$user = \App\Algorithm\ProSave::user($params);
+		$output = \App\Algorithm\ProAuth::jwtAuth(array('email' => $user['email'], 'password' => $password));
+		return response()->json([ 'user_id' => $user['user_id'],
+								  'email' => $user['email'], 
+								  $output['status'] => $output['message'] 
+								], 200);
+	}
+
+
+
 }
+
