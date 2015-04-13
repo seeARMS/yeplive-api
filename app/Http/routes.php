@@ -39,6 +39,7 @@ Route::group(array('prefix' => 'api/v1'), function()
 			Route::post('auth', [
 				'uses' => 'UsersController@authenticate'
 			]);
+
 		});
 	}
 	
@@ -47,6 +48,23 @@ Route::group(array('prefix' => 'api/v1'), function()
 	 */
 	Route::get('/', function(){
 		return response()->json(['name' => 'Yeplive Web API', 'version' => '1.0']);
+	});
+
+	//internal apis 
+	Route::group(['prefix' => 'internal'], function(){
+		//communicate with socket.io chat server
+		Route::post('chat/{id}/connect', [
+			'uses' => 'ChatController@connection'
+		]);
+		Route::post('chat/{id}/disconnect', [
+			'uses' => 'ChatController@disconnection'
+		]);
+		Route::get('chat/{id}/messages', [
+			'uses' => 'ChatController@messages'
+		]);
+		Route::post('chat/{id}/messages',[
+			'uses' => 'ChatController@newMessage'
+		]);
 	});
 
 	Route::post('auth/social',[

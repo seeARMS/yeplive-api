@@ -13,7 +13,8 @@
 		"sammyk/laravel-facebook-sdk": "~2.0@dev",
 		"facebook/php-sdk-v4": "~4.1.0@dev",
 		"laravel/socialite": "~2.0",
-		"graham-campbell/parse": "~2.0"
+		"graham-campbell/parse": "~2.0",
+		"guzzlehttp/guzzle": "~5.2"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~4.0",

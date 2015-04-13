@@ -92,6 +92,7 @@ GOOGLE_CLIENT_SECRET={your secret here}
 * [LaravelFacebookSDK](https://github.com/SammyK/LaravelFacebookSdk)
 * [Socialite](https://github.com/laravel/socialite)
 * [laravel-push-notification](https://github.com/laraviet/laravel-push-notification)
+* [guzzle](https://github.com/guzzle/guzzle)
 
 ##API Methods
 #####Moved to [Confulence](http://jira.yeplive.com:8090/display/IN/API)
