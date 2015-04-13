@@ -10,6 +10,7 @@ return array(
     'AddTimestampsToVotes' => $baseDir . '/database/migrations/2015_04_10_210115_add_timestamps_to_votes.php',
     'AddViewsToProgram' => $baseDir . '/database/migrations/2015_04_09_012759_add_views_to_program.php',
     'ChangeVotesToYeps' => $baseDir . '/database/migrations/2015_04_10_182205_change_votes_to_yeps.php',
+    'CreateFollowersTable' => $baseDir . '/database/migrations/2015_04_13_155536_create_followers_table.php',
     'CreateMessagesTable' => $baseDir . '/database/migrations/2015_04_12_151758_create_messages_table.php',
     'CreateNewVotesTable' => $baseDir . '/database/migrations/2015_04_10_182722_create_new_votes_table.php',
     'CreateNotificationsTable' => $baseDir . '/database/migrations/2015_04_05_231551_create_notifications_table.php',

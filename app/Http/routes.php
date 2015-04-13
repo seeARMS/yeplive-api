@@ -127,6 +127,21 @@ Route::group(array('prefix' => 'api/v1'), function()
 		Route::get('users/{id}', [
 			'uses' => 'UsersController@getUser'
 		]);
+		Route::get('users/{id}/yeps',[
+			'uses' => 'UsersController@getYeps'
+		]);
+		Route::get('users/{id}/followers',[
+			'uses' => 'UsersController@getFollowers'
+		]);
+		Route::post('users/{id}/followers', [
+			'uses' => 'UsersController@follow'
+		]);
+		Route::delete('users/{id}/followers', [
+			'uses' => 'UsersController@unfollow'
+		]);
+		Route::get('users/{id}/following',[
+			'uses' => 'UsersController@getFollowing'
+		]);
 		/*
 	 	 * User {id} follows a followee
 		Route::post('users/{id}/follow', [

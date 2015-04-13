@@ -68,9 +68,21 @@ class UsersController extends Controller {
 		{
 			return \App\Errors::notFound('yep not found');
 		}
-		$user -> yeps = \App\Yep::where('user_id', '=', $user->user_id)->get();	
+		//$user -> yeps = \App\Yep::where('user_id', '=', $user->user_id)->get();	
 		
-		return $user;
+		return response()->json($user,200);
+	}
+
+	public function getYeps(Request $request, $id)
+	{
+		$user = \App\User::find($id);
+		if(! $user)
+		{
+			return \App\Errors::notFound('yep not found');
+		}
+		$yeps = \App\Yep::where('user_id', '=', $user->user_id)->get();	
+
+		return response()->json(['yeps' => $yeps], 200);	
 	}
 
 
@@ -163,43 +175,59 @@ class UsersController extends Controller {
 	 * @param  {Array}   $request    Payload consists of Followee user_id
 	 * @param  {int}     $id         Follower user_id
 	 */
-	public function addFollowing(Request $request, $id)
+	public function follow(Request $request, $id)
 	{	
-		$params = $request->only('user_id');
-
-		$validator = \Validator::make( $params, [
-			'user_id' => 'required|exists:yeplive_users,user_id',
-		]);
-
-		if ( $validator -> fails() )
+		$user = \App\User::find($id);
+		if(! $user)
 		{
-			return response()->json(\App\Errors::invalid($validator));
-			return response()-> json(['error' => 'invalid_followee'], 400);
+			return \App\Errors::notFound('user not found');
 		}
 
 		//Get token source
 		try {
-			$user = $this->checkAuth();
+			$currentUser = $this->checkAuth();
 		} catch (\Exception $e) {
 			return response()->json(['error' => 'no_token'], 401);
 		}
 
-		//If this user sends this reqeust
-		if ($id == $user['user_id']){
+		$followed = \App\Follower::where('follower_id', '=', $currentUser->user_id)
+			->where('followee_id', '=', $user->user_id)->get()->first();
+		if($followed){
+			return \App\Errors::invalid('already following');
+		}
 
-			$following_obj = new \App\Following;
-			$following_obj->user_id = $params['user_id'];
-			$following_obj->follower_id = $id;
-			try {
-				$following_obj->save();
-				return response()->json(['success' => 'followed'], 200);
-			} catch (\Exception $e){
-				return response()->json(['error' => 'followed_already'], 401);
-			}
+
+		$following_obj = new \App\Follower;
+		$following_obj->followee_id = $user->user_id;
+		$following_obj->follower_id = $currentUser->user_id;
+		$following_obj->save();
+		
+		return response()->json(['success' => 1, 'id' => $id], 200);
+	}
+
+	public function unfollow(Request $request, $id)
+	{
+		$user = \App\User::find($id);
+		if(! $user)
+		{
+			return \App\Errors::notFound('user not found');
 		}
-		else {
-			return response()->json(['error' => 'unauthorized'], 401);
+
+		try {
+			$currentUser = $this->checkAuth();
+		} catch (\Exception $e) {
+			return response()->json(['error' => 'no_token'], 401);
 		}
+
+		$followed = \App\Follower::where('follower_id', '=', $currentUser->user_id)
+			->where('followee_id', '=', $user->user_id)->get()->first();
+		if(! $followed){
+			return \App\Errors::invalid('not following');
+		}
+		$followed->delete();
+		
+		return response()->json(['success' => 1, 'id' => $id], 200);
+		
 	}
 
 	/*
@@ -207,9 +235,16 @@ class UsersController extends Controller {
 	 *
 	 * @return {Object}    All followees followed by follower {id}
 	 */
-	public function showAllFollowee($id)
+	public function getFollowers($id)
 	{
-		return $followees = \App\Following::where('follower_id' , '=' , $id )->get();
+		$user = \App\User::find($id);
+		if(! $user)
+		{
+			return \App\Error::notFound('user not found');
+		}
+		$followers = $user->followers();
+		return response()->json(['users' => $followers]);
+		//return $followees = \App\Following::where('follower_id' , '=' , $id )->get();
 	}
 
 	/*
@@ -217,9 +252,15 @@ class UsersController extends Controller {
 	 *
 	 * @return {Object}    All followers following followee {id}
 	 */
-	public function showAllFollower($id)
+	public function getFollowing($id)
 	{
-		return $followees = \App\Following::where('user_id' , '=' , $id )->get();
+		$user = \App\User::find($id);
+		if(! $user)
+		{
+			return \App\Error::notFound('user not found');
+		}
+		$followers = $user->following();
+		return response()->json(['users' => $followers]);
 	}
 	/*
 	 * POST : Change user password

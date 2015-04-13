@@ -77,6 +77,30 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		return $this->hasMany('App\Vote');
 	}
 
+	public function followers()
+	{
+		$followers = \App\Follower::where('followee_id', '=', $this->user_id)->get();
+		$users = [];
+		foreach ($followers as $follower)
+		{
+			array_push($users, \App\User::find($follower->follower_id));
+		}
+		return $users;
+//		return $this->hasManyThrough('App\User','App\Follower','followee_id', 'follower_id');
+	}
+
+	public function following()
+	{
+		$following = \App\Follower::where('follower_id', '=', $this->user_id)->get();
+		$users = [];
+		foreach ($following as $follower)
+		{
+			array_push($users, \App\User::find($follower->followee_id));
+		}
+		return $users;	
+		//return $this->hasManyThrough('App\User','App\Follower','followee_id', 'user_id');
+	}
+
 	public function voted($yep)
 	{
 		return Vote::where('user_id',$user->user_id)
