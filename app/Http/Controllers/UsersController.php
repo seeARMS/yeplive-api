@@ -44,7 +44,7 @@ class UsersController extends Controller {
 	{
 		try {
 			$user = \JWTAuth::parseToken()->toUser();
-			$user -> yeps = \App\Yep::where('user_id', '=', $user->user_id)->get();	
+//			$user -> yeps = \App\Yep::where('user_id', '=', $user->user_id)->get();	
 			return $user;
 		} catch (\JWTException $e){
 			return response()->json(['error' => 'no_token'], 401);
@@ -337,10 +337,10 @@ class UsersController extends Controller {
 	public function updatePicture(Request $request, $id)
 	{
 		$params = $request->only(
-			'photo'
+			'picture'
 		);
 		$validator = \Validator::make( $params, [
-			'photo' => 'required|image'
+			'picture' => 'required|image'
 		]);
 
 		if ( $validator -> fails() )
@@ -348,11 +348,11 @@ class UsersController extends Controller {
 			return \App\Errors::invalid(null, $validator);
 		}
 
-		if (! $request->hasFile('photo'))
+		if (! $request->hasFile('picture'))
 		{
 			return \App\Errors::invalid('not found');
 		}
-		$file = $request->file('photo');
+		$file = $request->file('picture');
 		if(! $file->isValid())
 		{
 			return \App\Errors::invalid('invalid upload');
@@ -387,7 +387,9 @@ class UsersController extends Controller {
 
 		$params = $request->only(
 			'push_notifications',
-			'device_token'
+			'device_token',
+			'status',
+			'display_name'
 		);
 
 		$validator = \Validator::make( $params, [
@@ -407,6 +409,14 @@ class UsersController extends Controller {
 		if($request->has('device_token'))
 		{
 			$user->device_token = $request->input('device_token');
+		}	
+		if($request->has('display_name'))
+		{
+			$user->display_name = $request->input('display_name');
+		}	
+		if($request->has('status'))
+		{
+			$user->status= $request->input('status');
 		}	
 		$user->save();
 		return response()->json(['success'=>1, 'id' => $user->user_id]);
