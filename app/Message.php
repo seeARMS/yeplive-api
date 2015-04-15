@@ -6,15 +6,19 @@ class Message extends Model {
 
 	//
 	protected $fillable = [
+		'sender_id',
+		'channel_id',
+		'display_name',
 		'message',
-		'user_id',
-		'channel_id'
+		'timestamp'
 	];
 
+	/*
 	protected $hidden = [
 		'id',
 		'updated_at',
 		'channel_id'
 	];
+	*/
 
 }

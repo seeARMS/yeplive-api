@@ -1034,6 +1034,7 @@ return array(
     'Aws\\WorkSpaces\\WorkSpacesClient' => $vendorDir . '/aws/aws-sdk-php/src/Aws/WorkSpaces/WorkSpacesClient.php',
     'Carbon\\Carbon' => $vendorDir . '/nesbot/carbon/src/Carbon/Carbon.php',
     'Carbon\\CarbonInterval' => $vendorDir . '/nesbot/carbon/src/Carbon/CarbonInterval.php',
+    'ChangeMessagesTable' => $baseDir . '/database/migrations/2015_04_15_211316_change_messages_table.php',
     'ChangeVotesToYeps' => $baseDir . '/database/migrations/2015_04_10_182205_change_votes_to_yeps.php',
     'ClassPreloader\\Application' => $vendorDir . '/classpreloader/classpreloader/src/Application.php',
     'ClassPreloader\\ClassList' => $vendorDir . '/classpreloader/classpreloader/src/ClassList.php',
