@@ -163,10 +163,12 @@ solution: make sure that the route you are trying to call exists
 
 ##Socket I.O Internal API
 
-*  `POST: internal/user/{id}/chat/{channel_id}/messages`
+#####  `POST: internal/user/{id}/chat/{channel_id}/messages`
 
 Allow socket I.O server to save chat data after a live streaming event ends
+
 It requeires param **key** as `messages`, and **value** to be `JSON object`
+
 Here is an example of **value**:
 ```
 [
@@ -195,23 +197,29 @@ Here is an example of **value**:
     "timestamp": "2015-12-30 07:08:01"
   }
 ]
+
 ```
-Return Success:
+##### Return Success:
 ```
 {
   "success": "1"
 }
+
 ```
-Return Failure:
+##### Return Failure:
 ```
 {
   "error": "invalid input"
 }
 ```
 
-*  `internal/chat/{id}/connect`
-*  `internal/chat/{id}/disconnect`
-*  `internal/chat/{id}/messages`
+#####  `internal/chat/{id}/connect`
+
+
+#####  `internal/chat/{id}/disconnect`
+
+
+#####  `internal/chat/{id}/messages`
 
 
 ##TODO:
