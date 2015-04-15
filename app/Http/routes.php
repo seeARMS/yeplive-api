@@ -50,7 +50,7 @@ Route::group(array('prefix' => 'api/v1'), function()
 		return response()->json(['name' => 'Yeplive Web API', 'version' => '1.0']);
 	});
 
-	//internal apis 
+	// Internal apis 
 	Route::group(['prefix' => 'internal'], function(){
 		//communicate with socket.io chat server
 		Route::post('chat/{id}/connect', [
@@ -62,9 +62,12 @@ Route::group(array('prefix' => 'api/v1'), function()
 		Route::get('chat/{id}/messages', [
 			'uses' => 'ChatController@messages'
 		]);
+
+		/* Moved down under jwt.checkUser
 		Route::post('chat/{id}/messages',[
 			'uses' => 'ChatController@newMessage'
 		]);
+		*/
 	});
 
 	Route::post('auth/social',[
@@ -81,7 +84,8 @@ Route::group(array('prefix' => 'api/v1'), function()
 	Route::get('yeps/{id}/similar', [
 		'uses' => 'YepsController@similar'
 	]);
-	//ALL THESE ROUTES REQURE A JWT TOKEN
+
+	// ALL THESE ROUTES REQURE A JWT TOKEN
 	Route::group(['middleware' => 'jwt.auth'], function(){
 		//RESTful yeps 
 		Route::post('yeps', [
@@ -192,8 +196,20 @@ Route::group(array('prefix' => 'api/v1'), function()
 			Route::post('users/{id}/settings/email',[
 				'uses' => 'UsersController@changeEmail'
 			]);
+			Route::group(['prefix' => 'internal'], function(){
+				/*
+				 * Ideally, we should allow anonymous guest to live record videos
+				 * They will then be prompted to sign in with thier social accounts
+				 * Then their chat messages will be stored in db, otherwise, no messages are stored
+				 * This api will be called from only registered users
+				 * This should be called asynchronously
+				 */
+				Route::post('user/{id}/chat/{channel_id}/messages',[
+					'uses' => 'ChatController@compileMessages'
+				]);
+			});
 		});
-		});
+	});
 
 		/* SIMPLIFYING API INFO NOW IN SHOW/INDEX
 		Route::get('yeps/{id}/tags', [

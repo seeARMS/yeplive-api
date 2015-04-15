@@ -57,6 +57,7 @@ class ChatController extends Controller {
 		return response()->json($messages, 200);	
 	}
 
+	/*
 	public function newMessage(Request $request, $id)
 	{
 		$user = \JWTAuth::parseToken()->toUser();
@@ -66,7 +67,9 @@ class ChatController extends Controller {
 		}
 		
 		$params = $request->only(
-			'message'
+			'message',
+			'sender_id',
+
 		);
 	
 		$validator = \Validator::make( $params, [
@@ -90,6 +93,33 @@ class ChatController extends Controller {
 		$message = \App\Message::create($params);
 		
 		return response()->json(['success' => 1, 'id' => $message->id]);
+	}
+	*/
+
+	public function compileMessages(Request $request, $user_id, $channel_id)
+	{
+		
+		$messageObj = $request->only(
+			'messages'
+		);
+		
+		$messageObj = json_decode($messageObj['messages']);
+
+		foreach($messageObj as $message)
+		{
+			try {
+				$params['sender_id']	= $message->sender_id;
+				$params['message']		= $message->message;
+				$params['timestamp']	= $message->timestamp;
+				$params['display_name'] = $message->display_name;
+				$params['channel_id']	= $channel_id;
+				\App\Message::create($params);
+			} catch (\Exception $e) {
+				return response()->json(['error' => 'invalid input'], 401);
+			}
+		}
+		
+		return response()->json(['success' => '1'], 200);
 	}
 
 }

@@ -586,7 +586,8 @@ class UsersController extends Controller {
 
 	}
 
-	/* * POST : Take in user signup credentials, and return with user signup credentials and auth token
+	/*
+ * POST : Take in user signup credentials, and return with user signup credentials and auth token
 	 *
 	 * @param  {Array}   $request    An array consists of user email and password keys
 	 * @return {Array}   response()  An array consists of user email, password, and auth token
@@ -618,4 +619,3 @@ class UsersController extends Controller {
 
 
 }
-
