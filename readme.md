@@ -163,15 +163,11 @@ solution: make sure that the route you are trying to call exists
 
 ##TODO:
 
-* Ensure that all routes return proper fields
-* clean up old code (make sure not to throw out useful functionality)
-* document all routes with parameters and example returns
 * test all routes
 * Rate limiting
 * Filtering, sorting etc. for yeps
 * Find similar yeps algorithm
 * Set up RDS
-* [Api framework](https://github.com/dingo/api)?
 
 
 ##FAQs

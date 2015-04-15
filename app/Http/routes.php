@@ -103,6 +103,9 @@ Route::group(array('prefix' => 'api/v1'), function()
 		Route::post('yeps/{id}/reports',[
 			'uses' => 'YepsController@report'
 		]);
+		Route::post('yeps/{id}/complete',[
+			'uses' => 'YepsController@streamComplete'
+		]);
 		/*
 		Route::get('yeps/{id}/votes',[
 			'uses' => 'YepsController@userVote'	

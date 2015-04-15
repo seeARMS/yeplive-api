@@ -9,4 +9,5 @@ return array(
     $vendorDir . '/phpunit/php-text-template',
     $vendorDir . '/phpunit/php-timer',
     $vendorDir . '/phpseclib/phpseclib/phpseclib',
+    $vendorDir . '/google/apiclient/src',
 );

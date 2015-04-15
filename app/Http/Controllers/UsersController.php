@@ -109,15 +109,19 @@ class UsersController extends Controller {
 			$facebookId = $data->getProperty('id');
 			if($facebookId != $params['facebook_user_id'])
 			{
-				return \Errors\invalid('facebook id mismatch');
+				return \App\Errors::invalid('facebook id mismatch');
 			}	
-			$user = \App\User::where($facebook_id, '=', $params['facebook_user_id'])->first();
+			$user = \App\User::where('facebook_id', '=', $params['facebook_user_id'])->first();
 			if(! $user)
 			{
 				$newUserParams = [
-
+					'email' => $data->getProperty('email'),
+					'facebook_id' => $data->getProperty('id'),
+					'picture_path' => $data->getProperty('picture')->getProperty('url'),
+					'display_name' => $data->getProperty('first_name'),
+					'facebook_access_token' => $params['facebook_access_token']
 				];
-				$user = \App\User::create($params);
+				$user = \App\User::create($newUserParams);
 			} else { 
 				$user -> facebook_access_token = $params['facebook_access_token'];
 				$user -> save();
@@ -128,14 +132,83 @@ class UsersController extends Controller {
 			return response()->json(['success' => 1, 'token' => $jwtoken]);	
 		}
 		//TWITTER - TODO
-		else if($request->has('twitter_access_token') && $request->has('twitter_user_id'))
+		else if($request->has('twitter_access_token') && $request->has('twitter_user_id') &&
+			$request->has('twitter_secret_token') )
 		{
-			
+			 $request_token = [
+					'token' =>$request->input('twitter_access_token'),
+					'secret' => $request->input('twitter_secret_token')
+        ];
+
+			\Twitter::reconfig($request_token);
+			$credentials = \Twitter::getCredentials();
+			if($request->input('twitter_user_id') != $credentials->id){
+				return \App\Errors::invalid('twitter id mismatch');
+			}
+			$user = \App\User::where('twitter_id','=', $credentials->id)->get()->first();
+			if(! $user)
+			{
+				$newUserParams = [
+					'email' => strval(time()),
+					'name' => $credentials->name,
+					'twitter_id' => $credentials->id,
+					'display_name' => $credentials->screen_name,
+					'picture_path' => $credentials->profile_image_url,
+					'twitter_oauth_token' => $request->input('twitter_access_token'),
+					'twitter_oauth_token_secret' => $request->input('twitter_access_secret')
+				];
+
+				$user = \App\User::create($newUserParams);
+			} else {
+				$user -> twitter_oauth_token = $request->input('twitter_access_token');
+				$user -> twitter_oauth_token_secret = $request->input('twitter_access_secret');
+				$user -> save();
+			}
+
+			$jwtoken = \JWTAuth::fromUser($user);
+			return response()->json(['success' => 1, 'token' => $jwtoken]);	
 		}
 		//GOOGLE - TODO
 		else if($request->has('google_access_token') && $request->has('google_user_id'))
 		{
+			$client = new \Google_Client();
+			$access_token = $request->input('google_access_token');
+			$access_token_json = json_encode([
+				"access_token" =>$access_token,
+				"token_type"=>"Bearer",
+				"expires_in"=>3600,
+				 "id_token"=>$access_token,
+				"created"=>time(),
+				"refresh_token"=>''
+			]);
+			$client->setAccessToken($access_token_json);
+			$plus = new \Google_Service_Plus($client);
+			$person = $plus->people->get('me');
+			$id = $person->id;
+			if($request->input('google_user_id') != $id)
+			{
+				return \App\Errors::invalid('google id mismatch');
+			}
+			$user = \App\User::where('google_name','=', $id)->get()->first();
+			if(! $user)
+			{
+				$newUserParams = [
+					'email' => strval(time()),
+					'name' => $person->displayName,
+					'google_name' => $person->id,
+					'display_name' => $person->displayName,
+					'picture_path' => $person->getImage()->url,
+					'twitter_access_token' => $request->input('google_access_token')
+				];
 
+				$user = \App\User::create($newUserParams);
+			} else {
+				$user -> google_access_token = $request->input('twitter_access_token');
+				$user -> save();
+			}
+
+			$jwtoken = \JWTAuth::fromUser($user);
+			return response()->json(['success' => 1, 'token' => $jwtoken]);	
 		}
 		//400
 		else
@@ -320,7 +393,7 @@ class UsersController extends Controller {
 		$params = $request->only('new_email');
 
 		$validator = \Validator::make( $params, [
-			'new_email' => 'required|email|unique:yeplive_users,email'
+			'new_email' => 'required|email|'
 		]);
 
 		if ( $validator -> fails() )
@@ -523,7 +596,7 @@ class UsersController extends Controller {
 		$params = $request->only('email', 'password');
 
 		$validator = \Validator::make( $params, [
-			'email' => 'required|email|unique:yeplive_users,email',
+			'email' => 'required|email|',
 			'password' => 'required'
 		]);
 

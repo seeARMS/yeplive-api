@@ -87,7 +87,16 @@ class YepsController extends Controller {
 				$yep->tag(strtolower($tagName));
 			}
 		}
-		return response()->json(['success' => 1, 'id' => $yep->id]);
+
+		$yep->stream_name = $yep->id . "-" .  strval(time());
+
+		$yep->vod_enable = false;
+
+		$yep->stream_url = "rtmp://54.149.106.109/test/&mp4:".$yep->stream_name;
+
+		$yep -> save();
+
+		return response()->json(['success' => 1, 'id' => $yep->id, 'stream_name' => $yep->stream_name]);
 	}
 
 	//PUT /yep/{id}
@@ -331,6 +340,29 @@ class YepsController extends Controller {
 			return \App\Errors::notFound('yep not found');
 		}
 		return $yep->tagNames();
+	}
+
+	public function streamComplete(Request $request, $id){
+		$yep = \App\Yep::find($id);
+		if (! $yep)
+		{
+			return \App\Errors::notFound('yep not found');
+		}
+		$user = \JWTAuth::parseToken()->toUser();
+		if($user->user_id != $yep->user_id)
+		{
+			return \App\Errors::forbidden("you can't do that");	
+		}
+
+		$yep -> vod_enable = true;
+		$yep -> vod_path = "rtmp://54.149.106.109/vods3/_definst_/&mp4:amazons3/dev-wowza/".$yep->stream_name.".mp4";
+
+		$yep -> save();
+
+		return response()->json(["success" => 1, "id" => $yep->id], 200);
+		
+		
+		
 	}
 
 

@@ -31,7 +31,8 @@
         "Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider",
         "SammyK\\LaravelFacebookSdk\\LaravelFacebookSdkServiceProvider",
         "Laravel\\Socialite\\SocialiteServiceProvider",
-        "GrahamCampbell\\Parse\\ParseServiceProvider"
+        "GrahamCampbell\\Parse\\ParseServiceProvider",
+        "Thujohn\\Twitter\\TwitterServiceProvider"
     ],
     "eager": [
         "Illuminate\\Auth\\AuthServiceProvider",
@@ -52,7 +53,8 @@
         "App\\Providers\\RouteServiceProvider",
         "Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider",
         "SammyK\\LaravelFacebookSdk\\LaravelFacebookSdkServiceProvider",
-        "GrahamCampbell\\Parse\\ParseServiceProvider"
+        "GrahamCampbell\\Parse\\ParseServiceProvider",
+        "Thujohn\\Twitter\\TwitterServiceProvider"
     ],
     "deferred": {
         "command.app.name": "Illuminate\\Foundation\\Providers\\ArtisanServiceProvider",

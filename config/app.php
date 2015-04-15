@@ -148,7 +148,8 @@ return [
 		'Tymon\JWTAuth\Providers\JWTAuthServiceProvider',
     'SammyK\LaravelFacebookSdk\LaravelFacebookSdkServiceProvider',
 		'Laravel\Socialite\SocialiteServiceProvider',
-		'GrahamCampbell\Parse\ParseServiceProvider'
+		'GrahamCampbell\Parse\ParseServiceProvider',
+		'Thujohn\Twitter\TwitterServiceProvider',
 
 	],
 

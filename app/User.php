@@ -6,7 +6,7 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
+class User extends Model implements AuthenticatableContract, CanResetPasswordContract{
 
 	use Authenticatable, CanResetPassword;
 
@@ -23,7 +23,18 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['name', 'email', 'password', 'facebook_id', 'facebook_access_token','picture_path' ];
+	protected $fillable = [
+		'name', 
+		'email', 
+		'password', 
+		'facebook_id', 
+		'facebook_access_token',
+		'picture_path', 
+		'display_name', 
+		'twitter_oauth_token',
+		'twitter_oauth_secret',
+		'twitter_id'
+	];
 
 	/**
 	 * The attributes excluded from the model's JSON form.
@@ -103,8 +114,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	public function voted($yep)
 	{
-		return Vote::where('user_id',$user->user_id)
-			->where('yep_id', $yep->id)->get(); 
+		return Vote::where('user_id',$this->user_id)
+			->where('yep_id', $yep->id)->get()->first(); 
 	}
 
 

@@ -19,7 +19,9 @@ class Yep extends Model{
 	protected $hidden = [
 		'updated_at',
 		'isMobile',
-		'user_id'
+		'user_id',
+		'start_time',
+		'end_time'
 	];
 
 	protected $attributes = [
