@@ -105,18 +105,20 @@ class ChatController extends Controller {
 		
 		$messageObj = json_decode($messageObj['messages']);
 
-		foreach($messageObj as $message)
-		{
-			try {
-				$params['sender_id']	= $message->sender_id;
-				$params['message']		= $message->message;
-				$params['timestamp']	= $message->timestamp;
-				$params['display_name'] = $message->display_name;
-				$params['channel_id']	= $channel_id;
-				\App\Message::create($params);
-			} catch (\Exception $e) {
-				return response()->json(['error' => 'invalid input'], 401);
+		try {
+			
+			foreach($messageObj as $message)
+			{
+					$params['sender_id']	= $message->sender_id;
+					$params['message']		= $message->message;
+					$params['timestamp']	= $message->timestamp;
+					$params['display_name'] = $message->display_name;
+					$params['channel_id']	= $channel_id;
+					\App\Message::create($params);
 			}
+
+		} catch (\Exception $e) {
+				return response()->json(['error' => 'invalid input'], 401);
 		}
 		
 		return response()->json(['success' => '1'], 200);
