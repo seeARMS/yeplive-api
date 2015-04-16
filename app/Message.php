@@ -13,6 +13,7 @@ class Message extends Model {
 		'timestamp'
 	];
 
+
 	/*
 	protected $hidden = [
 		'id',
@@ -20,5 +21,4 @@ class Message extends Model {
 		'channel_id'
 	];
 	*/
-
 }

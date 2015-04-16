@@ -85,6 +85,13 @@ Route::group(array('prefix' => 'api/v1'), function()
 		'uses' => 'YepsController@similar'
 	]);
 
+	/*
+	 * Get all comments by channel_id
+	 */
+	Route::get('comment/{channel_id}', [
+		'uses' => 'CommentController@getComment'
+	]);
+
 	// ALL THESE ROUTES REQURE A JWT TOKEN
 	Route::group(['middleware' => 'jwt.auth'], function(){
 		//RESTful yeps 
