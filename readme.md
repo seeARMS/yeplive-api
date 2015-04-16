@@ -209,6 +209,12 @@ Here is an example of **value**:
 ##### Return Failure:
 ```
 {
+  "error": "unauthorized"
+}
+```
+
+```
+{
   "error": "invalid input"
 }
 ```

@@ -99,6 +99,16 @@ class ChatController extends Controller {
 	public function compileMessages(Request $request, $user_id, $channel_id)
 	{
 		
+		// Check if user is the owner of this channel
+		// Only channel owner can compile chat messages
+		// Assuming channel_id is yep_id (This may have to be changed later on)
+		$yep = \App\Yep::find($channel_id);
+
+		if( !$yep || $yep->user_id != $user_id )
+		{
+			return response()->json(['error' => 'unauthorized'], 401);
+		}
+
 		$messageObj = $request->only(
 			'messages'
 		);
@@ -106,7 +116,7 @@ class ChatController extends Controller {
 		$messageObj = json_decode($messageObj['messages']);
 
 		try {
-			
+
 			foreach($messageObj as $message)
 			{
 					$params['sender_id']	= $message->sender_id;
@@ -118,7 +128,7 @@ class ChatController extends Controller {
 			}
 
 		} catch (\Exception $e) {
-				return response()->json(['error' => 'invalid input'], 401);
+			return response()->json(['error' => 'invalid input'], 401);
 		}
 		
 		return response()->json(['success' => '1'], 200);

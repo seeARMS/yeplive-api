@@ -196,6 +196,14 @@ Route::group(array('prefix' => 'api/v1'), function()
 			Route::post('users/{id}/settings/email',[
 				'uses' => 'UsersController@changeEmail'
 			]);
+
+			/*
+			 * User add a comment to a channel
+			 */
+			Route::post('user/{id}/comment/{channel_id}',[
+				'uses' => 'CommentController@addComment'
+			]);
+
 			Route::group(['prefix' => 'internal'], function(){
 				/*
 				 * Ideally, we should allow anonymous guest to live record videos
