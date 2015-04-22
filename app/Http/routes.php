@@ -155,10 +155,10 @@ Route::group(array('prefix' => 'api/v1'), function()
 		Route::get('users/{id}/followers',[
 			'uses' => 'UsersController@getFollowers'
 		]);
-		Route::post('users/{id}/followers', [
+		Route::post('users/{id}/following', [
 			'uses' => 'UsersController@follow'
 		]);
-		Route::delete('users/{id}/followers', [
+		Route::delete('users/{id}/following', [
 			'uses' => 'UsersController@unfollow'
 		]);
 		Route::get('users/{id}/following',[
