@@ -53,13 +53,18 @@ Route::group(array('prefix' => 'api/v1'), function()
 	// Internal apis 
 	Route::group(['prefix' => 'internal'], function(){
 
-		//communicate with socket.io chat server
+		// communicate with socket.io chat server
+		// We may not need this
 		Route::post('chat/{id}/connect', [
 			'uses' => 'ChatController@connection'
 		]);
+
+		// We may not need this
 		Route::post('chat/{id}/disconnect', [
 			'uses' => 'ChatController@disconnection'
 		]);
+		
+		// This should be moved to Comment Controller
 		Route::get('chat/{id}/messages', [
 			'uses' => 'ChatController@messages'
 		]);
