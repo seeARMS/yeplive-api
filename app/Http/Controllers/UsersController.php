@@ -168,7 +168,6 @@ class UsersController extends Controller {
 			$jwtoken = \JWTAuth::fromUser($user);
 			return response()->json(['success' => 1, 'token' => $jwtoken]);	
 		}
-		//GOOGLE - TODO
 		else if($request->has('google_access_token') && $request->has('google_user_id'))
 		{
 			$client = new \Google_Client();
@@ -177,7 +176,7 @@ class UsersController extends Controller {
 				"access_token" =>$access_token,
 				"token_type"=>"Bearer",
 				"expires_in"=>3600,
-				 "id_token"=>$access_token,
+				"id_token"=>$access_token,
 				"created"=>time(),
 				"refresh_token"=>''
 			]);
@@ -198,12 +197,12 @@ class UsersController extends Controller {
 					'google_name' => $person->id,
 					'display_name' => $person->displayName,
 					'picture_path' => $person->getImage()->url,
-					'twitter_access_token' => $request->input('google_access_token')
+					'google_access_token' => $request->input('google_access_token')
 				];
 
 				$user = \App\User::create($newUserParams);
 			} else {
-				$user -> google_access_token = $request->input('twitter_access_token');
+				$user -> google_access_token = $request->input('google_access_token');
 				$user -> save();
 			}
 
@@ -266,7 +265,9 @@ class UsersController extends Controller {
 		$followed = \App\Follower::where('follower_id', '=', $currentUser->user_id)
 			->where('followee_id', '=', $user->user_id)->get()->first();
 		if($followed){
-			return \App\Errors::invalid('already following');
+			//unfollow
+			$followed->delete();
+			return response()->json(['success'=>1, 'id' => $id, 'following' => 0], 200);
 		}
 
 
@@ -275,7 +276,7 @@ class UsersController extends Controller {
 		$following_obj->follower_id = $currentUser->user_id;
 		$following_obj->save();
 		
-		return response()->json(['success' => 1, 'id' => $id], 200);
+		return response()->json(['success' => 1, 'id' => $id, 'following' => 1], 200);
 	}
 
 	public function unfollow(Request $request, $id)

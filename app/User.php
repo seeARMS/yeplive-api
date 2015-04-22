@@ -33,7 +33,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		'display_name', 
 		'twitter_oauth_token',
 		'twitter_oauth_secret',
-		'twitter_id'
+		'twitter_id',
+		'google_name',
+		'google_access_token'
 	];
 
 	/**

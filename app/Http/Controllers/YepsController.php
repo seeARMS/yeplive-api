@@ -93,6 +93,7 @@ class YepsController extends Controller {
 		$yep->vod_enable = false;
 
 		$yep->stream_url = "rtmp://54.149.106.109/test/&mp4:".$yep->stream_name;
+		$yep->stream_mobile_url = "http://54.149.106.109:1935/test/".$yep->stream_name."/playlist.m3u8";
 
 		$yep -> save();
 
@@ -175,7 +176,8 @@ class YepsController extends Controller {
 		$user = \JWTAuth::parseToken()->toUser();
 		if($user)
 		{
-			if($user->voted($yep)){
+			$vote = $user->voted($yep);
+			if($vote && $vote->vote == 1){
 				$yep['voted'] = 1;
 			} else {
 				$yep['voted'] = 0;
@@ -356,6 +358,7 @@ class YepsController extends Controller {
 
 		$yep -> vod_enable = true;
 		$yep -> vod_path = "rtmp://54.149.106.109/vods3/_definst_/&mp4:amazons3/dev-wowza/".$yep->stream_name.".mp4";
+		$yep->vod_mobile_path = "http://54.149.106.109:1935/vods3/_definst_/amazons3/dev-wowza/".$yep->stream_name."/playlist.m3u8";
 
 		$yep -> save();
 
