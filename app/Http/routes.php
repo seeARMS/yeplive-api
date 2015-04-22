@@ -35,7 +35,7 @@ Route::group(array('prefix' => 'api/v1'), function()
 
 		Route::group(array('prefix' => 'test'), function()
 		{
-		/*create/sign up as a user for testing*/
+			/*create/sign up as a user for testing*/
 			Route::post('auth', [
 				'uses' => 'UsersController@authenticate'
 			]);
@@ -52,13 +52,19 @@ Route::group(array('prefix' => 'api/v1'), function()
 
 	// Internal apis 
 	Route::group(['prefix' => 'internal'], function(){
-		//communicate with socket.io chat server
+
+		// communicate with socket.io chat server
+		// We may not need this
 		Route::post('chat/{id}/connect', [
 			'uses' => 'ChatController@connection'
 		]);
+
+		// We may not need this
 		Route::post('chat/{id}/disconnect', [
 			'uses' => 'ChatController@disconnection'
 		]);
+		
+		// This should be moved to Comment Controller
 		Route::get('chat/{id}/messages', [
 			'uses' => 'ChatController@messages'
 		]);
@@ -94,7 +100,8 @@ Route::group(array('prefix' => 'api/v1'), function()
 
 	// ALL THESE ROUTES REQURE A JWT TOKEN
 	Route::group(['middleware' => 'jwt.auth'], function(){
-		//RESTful yeps 
+
+		// RESTful yeps 
 		Route::post('yeps', [
 			'uses' => 'YepsController@store'
 		]);
@@ -117,6 +124,7 @@ Route::group(array('prefix' => 'api/v1'), function()
 		Route::post('yeps/{id}/complete',[
 			'uses' => 'YepsController@streamComplete'
 		]);
+
 		/*
 		Route::get('yeps/{id}/votes',[
 			'uses' => 'YepsController@userVote'	

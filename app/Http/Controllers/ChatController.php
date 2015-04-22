@@ -20,10 +20,10 @@ class ChatController extends Controller {
 	
 		$yep->save();
 
-		$messages = \App\Message::where('channel_id', '=', $yep->id)->take(25)->get();
+		//$messages = \App\Message::where('channel_id', '=', $yep->id)->take(25)->get();
 	
-		return response()->json($messages, 200);	
-
+		//return response()->json($messages, 200);
+		return response()->json({"success": 1});
 	}
 
 	public function disconnection(Request $request, $id)
@@ -41,9 +41,10 @@ class ChatController extends Controller {
 
 		$yep->save();
 
-		$messages = \App\Message::where('channel_id', '=', $yep->id)->get();
+		//$messages = \App\Message::where('channel_id', '=', $yep->id)->get();
 	
-		return response()->json($messages, 200);	
+		//return response()->json($messages, 200);
+		return response()->json({"success": 1});	
 
 	}
 

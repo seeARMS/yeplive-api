@@ -129,7 +129,7 @@ class UsersController extends Controller {
 
 			$jwtoken = \JWTAuth::fromUser($user);
 
-			return response()->json(['success' => 1, 'token' => $jwtoken]);	
+			return response()->json(['success' => 1, 'token' => $jwtoken, 'id' => $user->user_id]);	
 		}
 		//TWITTER - TODO
 		else if($request->has('twitter_access_token') && $request->has('twitter_user_id') &&
@@ -166,7 +166,7 @@ class UsersController extends Controller {
 			}
 
 			$jwtoken = \JWTAuth::fromUser($user);
-			return response()->json(['success' => 1, 'token' => $jwtoken]);	
+			return response()->json(['success' => 1, 'token' => $jwtoken, 'id' => $user->user_id]);	
 		}
 		else if($request->has('google_access_token') && $request->has('google_user_id'))
 		{
@@ -207,12 +207,12 @@ class UsersController extends Controller {
 			}
 
 			$jwtoken = \JWTAuth::fromUser($user);
-			return response()->json(['success' => 1, 'token' => $jwtoken]);	
+			return response()->json(['success' => 1, 'token' => $jwtoken, 'id' => $user->user_id]);	
 		}
 		//400
 		else
 		{
-			return \App\Errors::invalid('no access token provided');
+			return \App\Errors::invalid('no access token / user id provided');
 		}
 	}
 
