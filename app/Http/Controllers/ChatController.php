@@ -22,8 +22,7 @@ class ChatController extends Controller {
 
 		$messages = \App\Message::where('channel_id', '=', $yep->id)->take(25)->get();
 	
-		return response()->json($messages, 200);	
-
+		return response()->json($messages, 200);
 	}
 
 	public function disconnection(Request $request, $id)

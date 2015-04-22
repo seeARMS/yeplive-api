@@ -65,6 +65,7 @@ class YepsController extends Controller {
 		{
 			return \App\Errors::invalid(null, $validator);
 		}
+
 		$user = \JWTAuth::parseToken()->toUser();
 
 		if($user -> isBanned()){
@@ -92,7 +93,7 @@ class YepsController extends Controller {
 
 		$yep->vod_enable = false;
 
-		$yep->stream_url = "rtmp://54.149.106.109/test/&mp4:".$yep->stream_name;
+		$yep->stream_url = \Config::get('wowza.rtmp.test').$yep->stream_name;
 
 		$yep -> save();
 
@@ -355,15 +356,11 @@ class YepsController extends Controller {
 		}
 
 		$yep -> vod_enable = true;
-		$yep -> vod_path = "rtmp://54.149.106.109/vods3/_definst_/&mp4:amazons3/dev-wowza/".$yep->stream_name.".mp4";
+		$yep -> vod_path = \Config::get('wowoza.rtmp.vod').$yep->stream_name.".mp4";
 
 		$yep -> save();
 
 		return response()->json(["success" => 1, "id" => $yep->id], 200);
 		
-		
-		
 	}
-
-
 }
