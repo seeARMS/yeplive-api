@@ -46,8 +46,6 @@ class YepsController extends Controller {
 			'longitude',
 			'location',
 			'description',
-			'end_time',
-			'start_time', 
 			'tags'
 		);
 	
@@ -57,8 +55,6 @@ class YepsController extends Controller {
 			'latitude' => 'required|numeric',
 			'longitude' => 'required|numeric',
 			'description' => 'string|max:255',
-			'start_time' => 'string|max:255',
-			'end_time' => 'string|max:255'
 		]);
 
 		if($validator -> fails())
@@ -88,6 +84,8 @@ class YepsController extends Controller {
 				$yep->tag(strtolower($tagName));
 			}
 		}
+
+		$yep->start_time = time();
 
 		$yep->stream_name = $yep->id . "-" .  strval(time());
 
@@ -362,6 +360,7 @@ class YepsController extends Controller {
 //		$yep->vod_mobile_path = "http://54.149.106.109:1935/vods3/_definst_/amazons3/dev-wowza/".$yep->stream_name."/playlist.m3u8";
 		$yep -> vod_path = \Config::get('wowoza.rtmp.vod').$yep->stream_name.".mp4";
 		$yep -> vod_mobile_path = \Config::get('wowoza.rtmp.vod').$yep->stream_name."/playlist.m3u8";
+		$yep -> end_time = time();
 
 		$yep -> save();
 

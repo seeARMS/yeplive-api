@@ -11,8 +11,6 @@ class Yep extends Model{
 		'longitude',
 		'location',
 		'description',
-		'start_time',
-		'end_time',
 		'user_id'
 	];
 
@@ -20,8 +18,6 @@ class Yep extends Model{
 		'updated_at',
 		'isMobile',
 		'user_id',
-		'start_time',
-		'end_time'
 	];
 
 	protected $attributes = [
