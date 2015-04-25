@@ -11,6 +11,7 @@ return array(
     'AddStreamInfoToYeps' => $baseDir . '/database/migrations/2015_04_13_220052_add_stream_info_to_yeps.php',
     'AddTimestampsToVotes' => $baseDir . '/database/migrations/2015_04_10_210115_add_timestamps_to_votes.php',
     'AddViewsToProgram' => $baseDir . '/database/migrations/2015_04_09_012759_add_views_to_program.php',
+    'ChangeGoogleNameToId' => $baseDir . '/database/migrations/2015_04_25_174613_change_google_name_to_id.php',
     'ChangeMessagesTable' => $baseDir . '/database/migrations/2015_04_15_211316_change_messages_table.php',
     'ChangeVotesToYeps' => $baseDir . '/database/migrations/2015_04_10_182205_change_votes_to_yeps.php',
     'CreateFollowersTable' => $baseDir . '/database/migrations/2015_04_13_155536_create_followers_table.php',

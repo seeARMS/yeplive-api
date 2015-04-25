@@ -56,12 +56,29 @@ class UsersController extends Controller {
 	 *
 	 * @return {Object}    All users in db
 	 */
-	public function showAllUsers()
+	public function index(Request $request)
 	{
-		return \App\User::all();
+		$name = $request->input('name');
+		if(! $name)
+		{
+			return \App\Errors::invalid('must supply name');
+		}
+
+		$user = \App\User::where('display_name','=',$name)->get()->first();
+
+		if(! $user)
+		{
+			return \App\Errors::notFound('user not found');
+		}
+
+		$user -> followers  = $user->followers();
+		$user -> following = $user->following();
+		$user -> yeps = $user->yeps;
+
+		return response()->json($user,200);
 	}
 
-	public function getUser(Request $request, $id)
+	public function show(Request $request, $id)
 	{
 		$user = \App\User::find($id);
 		if(! $user)
@@ -70,10 +87,13 @@ class UsersController extends Controller {
 		}
 		//$user -> yeps = \App\Yep::where('user_id', '=', $user->user_id)->get();	
 		
+		$user -> followers  = $user->followers();
+		$user -> following = $user->following();
+		$user -> yeps = $user->yeps;
 		return response()->json($user,200);
 	}
 
-	public function getYeps(Request $request, $id)
+	public function getUserYeps(Request $request, $id)
 	{
 		$user = \App\User::find($id);
 		if(! $user)
@@ -131,7 +151,6 @@ class UsersController extends Controller {
 
 			return response()->json(['success' => 1, 'token' => $jwtoken, 'id' => $user->user_id]);	
 		}
-		//TWITTER - TODO
 		else if($request->has('twitter_access_token') && $request->has('twitter_user_id') &&
 			$request->has('twitter_secret_token') )
 		{
@@ -155,13 +174,13 @@ class UsersController extends Controller {
 					'display_name' => $credentials->screen_name,
 					'picture_path' => $credentials->profile_image_url,
 					'twitter_oauth_token' => $request->input('twitter_access_token'),
-					'twitter_oauth_token_secret' => $request->input('twitter_access_secret')
+					'twitter_oauth_token_secret' => $request->input('twitter_secret_token')
 				];
 
 				$user = \App\User::create($newUserParams);
 			} else {
 				$user -> twitter_oauth_token = $request->input('twitter_access_token');
-				$user -> twitter_oauth_token_secret = $request->input('twitter_access_secret');
+				$user -> twitter_oauth_token_secret = $request->input('twitter_secret_token');
 				$user -> save();
 			}
 
@@ -188,13 +207,13 @@ class UsersController extends Controller {
 			{
 				return \App\Errors::invalid('google id mismatch');
 			}
-			$user = \App\User::where('google_name','=', $id)->get()->first();
+			$user = \App\User::where('google_id','=', $id)->get()->first();
 			if(! $user)
 			{
 				$newUserParams = [
 					'email' => strval(time()),
 					'name' => $person->displayName,
-					'google_name' => $person->id,
+					'google_id' => $person->id,
 					'display_name' => $person->displayName,
 					'picture_path' => $person->getImage()->url,
 					'google_access_token' => $request->input('google_access_token')
@@ -216,25 +235,196 @@ class UsersController extends Controller {
 		}
 	}
 
+	//TODO
+	public function shareAll()
+	{
+		$user = \App\User::find($id);
+		if(! $user)
+		{
+			return \App\Errors::notFound('user not found');
+		}
+
+		if($user->shareAll())
+		{
+
+		} else {
+
+		};
+	}
+
+	//GET PERMISSIONS FROM FACEBOOK
+	public function shareFacebook(Request $request, $id)
+	{
+		$user = \App\User::find($id);
+
+		if(! $user)
+		{
+			return \App\Errors::notFound('user not found');
+		}
+
+		if(! $user->isFacebookAuthed){
+			return \App\Errors::unauthorized('user is not authed with facebook');
+		}
+
+		$user->shareFacebook();
+		
+
+		return response()->json(['success' => 1, 'id' => $id],200);
+	}
+
+	public function getFriends(Request $request, $id, \SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb)
+	{
+		$user = \App\User::find($id);
+		if(! $user)
+		{
+			return \App\Errors::notFound('user not found');
+		}
+
+		$friends = $user->getAllFriends();
+
+		return response()->json(['users' => $friends], 200);
+	}
+
+	//
+	public function shareGoogle(Request $request, $id)
+	{
+		$user = \App\User::find($id);
+		if(! $user)
+		{
+			return \App\Errors::notFound('user not found');
+		}
+
+		if(! $user->google_access_token)
+		{
+			return \App\Errors::unauthorized('no google access token found');
+		}
+
+		$client = new \Google_Client();
+		$access_token = $user->google_access_token;
+		$access_token_json = json_encode([
+			"access_token" =>$access_token,
+			"token_type"=>"Bearer",
+			"expires_in"=>3600,
+			"id_token"=>$access_token,
+			"created"=>time(),
+			"refresh_token"=>''
+		]);
+		$client->setAccessToken($access_token_json);
+		$plus = new \Google_Service_Plus($client);
+//		$moment = new \Google_Moment();
+ //   $moment->setType('http://schemas.google.com/AddActivity');
+    $itemScope = new \Google_ItemScope();
+    $itemScope->setUrl('https://developers.google.com/+/plugins/snippet/examples/thing');
+    $moment->setTarget($itemScope);
+    $plus->moments->insert('me', 'vault', $moment);
+		return response()->json(['success'=>1,'id'=>$id],200);
+
+	}
+
+	public function shareTwitter(Request $request, $id)
+	{
+		$user = \App\User::find($id);
+		if(! $user)
+		{
+			return \App\Errors::notFound('user not found');
+		}
+
+		if($user->shareTwitter())
+		{
+			return response()->json(["success"=>1, "id"=>$id],200);		
+		} 
+		else
+		{
+			return \App\Error::invalid('an error occured when sharing');
+		}
+	}
+
 	//This function will link existing users other social media accounts
-	public function linkSoclai(Request $request)
-	{
+	public function linkSoclai(Request $request, $id)
+	{	
+		$user = \App\User::find($id);
+		if(! $user)
+		{
+			\App\Errors::notFound('user not found');
+		}	
 
+			//FACEBOOK
+		if($request->has('facebook_access_token') && $request->has('facebook_user_id'))
+		{
+			$params = $request->only(
+				'facebook_access_token',
+				'facebook_user_id'
+			);
+			$fb->setDefaultAccessToken($params['facebook_access_token']);
+			try {
+				$response = $fb->get('/me?fields=id,email,first_name,picture.type(large)');
+			} catch (Facebook\Exceptions\FacebookSDKException $e) {
+				return \Errors\invalid('invalid facebook token');
+				dd($e->getMessage());
+			}
+			$data = $response->getGraphObject();
+			$facebookId = $data->getProperty('id');
+			if($facebookId != $params['facebook_user_id'])
+			{
+				return \App\Errors::invalid('facebook id mismatch');
+			}	
+			$user -> facebook_access_token = $params['facebook_access_token'];
+			$user -> save();
+
+			return response()->json(['success' => 1, 'id' => $user->user_id]);
+		}
+		else if($request->has('twitter_access_token') && $request->has('twitter_user_id') &&
+			$request->has('twitter_secret_token') )
+		{
+			 $request_token = [
+					'token' =>$request->input('twitter_access_token'),
+					'secret' => $request->input('twitter_secret_token')
+        ];
+
+			\Twitter::reconfig($request_token);
+			$credentials = \Twitter::getCredentials();
+			if($request->input('twitter_user_id') != $credentials->id){
+				return \App\Errors::invalid('twitter id mismatch');
+			}
+			$user -> twitter_oauth_token = $request->input('twitter_access_token');
+			$user -> twitter_oauth_token_secret = $request->input('twitter_secret_token');
+			$user -> save();
+
+			return response()->json(['success' => 1, 'id' => $user->user_id]);
+		}
+		else if($request->has('google_access_token') && $request->has('google_user_id'))
+		{
+			$client = new \Google_Client();
+			$access_token = $request->input('google_access_token');
+			$access_token_json = json_encode([
+				"access_token" =>$access_token,
+				"token_type"=>"Bearer",
+				"expires_in"=>3600,
+				"id_token"=>$access_token,
+				"created"=>time(),
+				"refresh_token"=>''
+			]);
+			$client->setAccessToken($access_token_json);
+			$plus = new \Google_Service_Plus($client);
+			$person = $plus->people->get('me');
+			$id = $person->id;
+			if($request->input('google_user_id') != $id)
+			{
+				return \App\Errors::invalid('google id mismatch');
+			}
+			$user -> google_access_token = $request->input('google_access_token');
+			$user -> save();
+
+			return response()->json(['success' => 1, 'id' => $user->user_id]);
+		}
+		//400
+		else
+		{
+			return \App\Errors::invalid('no access token / user id provided');
+		}
+
+		
 	}
-
-
-
-
-	public function friends(\SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb)
-	{
-		$user = \JWTAuth::parseToken()->toUser();
-	  $fb->setDefaultAccessToken($user->facebook_access_token);
-		$response = $fb->get('/me/friends');
-		$loc = $response->getGraphObjectList();//getGraphObject();
-		return $loc;
-		return $response->getGraphObject();
-	}
-
 
 	public function setDisplayName(Request $request)
 	{
@@ -550,43 +740,6 @@ class UsersController extends Controller {
 		return response()->json(['success' => $jwtoken]);
 	}
 
-	public function loginTwitter(Request $request)
-	{
-		return \Socialize::with('twitter')->redirect();
-	}
-
-	public function twitterCallback(Request $request)
-	{
-		$user = \Socialize::with('twitter')->user();
-		$data = [
-			'email' => $user->getEmail(),
-			'id' => $user->getId(),
-			'nickname' => $user->getNickName(),
-			'name' => $user->getName(),
-			'avatar' => $user->getAvatar()
-		];	
-		return $data;
-	}
-
-	public function loginGoogle(Request $request)
-	{
-		return \Socialize::with('google')->redirect();
-	}
-
-	public function googleCallback(Request $request)
-	{
-		$user = \Socialize::with('google')->user();
-		$data = [
-			'email' => $user->getEmail(),
-			'id' => $user->getId(),
-			'nickname' => $user->getNickName(),
-			'name' => $user->getName(),
-			'avatar' => $user->getAvatar()
-		];	
-		return $data;
-
-	}
-
 	/*
  * POST : Take in user signup credentials, and return with user signup credentials and auth token
 	 *
@@ -617,6 +770,25 @@ class UsersController extends Controller {
 								], 200);
 	}
 
+	public function checkSocialAuth(\SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb)
+	{
+		$user = \JWTAuth::parseToken()->toUser();
+		if(! $user)
+		{
+			return \App\Errors::notFound("user not found");	
+		}
+
+		$data = [
+			'id' => $user->id,
+			'google_auth' => $user->isGoogleAuthed(),
+			'facebook_auth' => $user->isFacebookAuthed($fb),
+			'twitter_auth' => $user->isTwitterAuthed()
+		];
+
+		return response()->json($data, 200);
+
+		
+	}
 
 
 }

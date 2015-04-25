@@ -121,9 +121,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	}
 
 
-	public function programs()
+	public function yeps()
 	{
-		return $this->hasMany('App\Program');
+		return $this->hasMany('App\Yep');
 	}
 
 	//check if user is banned
@@ -138,6 +138,174 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 			return true;
 		}
 		return false;
+	}
+
+	public function isGoogleAuthed()
+	{
+		$token = $this->google_access_token;
+		$id = $this->google_id;
+
+		if($token && $id)
+		{
+			$client = new \Google_Client();
+			$access_token_json = json_encode([
+				"access_token" =>$token,
+				"token_type"=>"Bearer",
+				"expires_in"=>3600,
+				"id_token"=>$token,
+				"created"=>time(),
+				"refresh_token"=>''
+			]);
+			$client->setAccessToken($access_token_json);
+			$plus = new \Google_Service_Plus($client);
+			try {
+				$person = $plus->people->get('me');
+			} catch(Exception $e){
+				return false;
+				dd($e);
+			}
+			$profileID = $person->id;
+			if($id != $profileID)
+			{
+				return false;
+			} else {
+				return true;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	public function shareGoogle()
+	{
+
+	}
+
+	public function isFacebookAuthed(\SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb)
+	{
+		$token = $this->facebook_access_token;
+		$id = $this->facebook_id;
+	
+		if($token && $id)
+		{
+			$fb->setDefaultAccessToken($token);
+			try {
+				$response = $fb->get('/me?fields=id,email,first_name,picture.type(large)');
+			} catch (Facebook\Exceptions\FacebookSDKException $e) {
+				return false;
+			}
+			$data = $response->getGraphObject();
+			$facebookId = $data->getProperty('id');
+			if($facebookId != $id)
+			{
+				return false;
+			}	
+			return true;
+		}
+		else 
+		{
+			return false;
+		}
+	}
+
+	//TODO
+	public function shareFacebook()
+	{
+		$fb->setDefaultAccessToken($user->facebook_access_token);
+			try {
+				$response = $fb->post('/me/feed', [
+					"message" => "test"
+				]);
+			} catch (Facebook\Exceptions\FacebookSDKException $e) {
+				return \Errors\invalid('invalid facebook token');
+				dd($e->getMessage());
+			}
+			$data = $response->getGraphObject();
+			dd($data);
+	}
+
+	public function getFacebookFriends()
+	{
+		$fb->setDefaultAccessToken($user->facebook_access_token);
+
+		try {
+			$response = $fb->get('/me/friends');
+		} catch (Facebook\Exceptions\FacebookSDKException $e) {
+				return \Errors\invalid('invalid facebook token');
+				dd($e->getMessage());
+			}
+		$data = $response->getGraphList()->AsArray();
+		$users = [];
+		foreach($data as $friend)
+		{
+			$userFriend = $user->where('facebook_id', '=', $friend->id)->get()->first();
+			array_push($users, $userFriend);
+		}
+
+		return response()->json(["users"=>$users], 200);
+
+	}
+
+	public function isTwitterAuthed()
+	{
+		$token = $this->twitter_oauth_token;
+		$secret = $this->twitter_oauth_token_secret;
+		$id = $this->twitter_id;
+
+		if($token && $secret && $id)
+		{
+			$twitter_token = [
+				'token' => $this->twitter_oauth_token,
+				'secret' => $this->twitter_oauth_token_secret 
+			];
+			\Twitter::reconfig($twitter_token);
+			$credentials = \Twitter::getCredentials();
+			if($id != $credentials->id){
+				return false;
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public function shareTwitter()
+	{
+		if(! $this->isTwitterAuthed)
+		{
+			return false;
+		}
+
+		$twitter_token = [
+			'token' => $this->twitter_oauth_token,
+			'secret' => $this->twitter_oauth_token_secret 
+		];
+
+		\Twitter::reconfig($twitter_token);
+
+		//Create Yeplive Tweet
+		try{
+			$response = \Twitter::postTweet([
+				'status' => "~~~Yeplive~~~\nStreaming now!\n #yeplive yplv.tv/".time()
+			]);
+			} catch(Exception $e) {
+				return false;
+			}
+
+		return  $response;
+		}
+
+	public function getAllFriends()
+	{
+		$facebookFriends = $this->getFacebookFriends();
+		$googleFriends = $this->getGoogleFriends();
+		$twitterFriends = $this->getTwitterFriends();
+
+		return [
+			'facebook' => $facebookFriends,
+			'google' => $googleFriends,
+			'twitter' => $twitterFriends
+		];
 	}
 
 }

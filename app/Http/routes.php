@@ -86,10 +86,22 @@ Route::group(array('prefix' => 'api/v1'), function()
 	Route::get('yeps/{id}', [
 		'uses' => 'YepsController@show'
 	]);
-
 	Route::get('yeps/{id}/similar', [
 		'uses' => 'YepsController@similar'
 	]);
+	Route::get('users',[
+		'uses' => 'UsersController@index'
+	]);
+	Route::get('users/{id}', [
+		'uses' => 'UsersController@show'
+	]);
+	Route::get('users/{id}/yeps',[
+		'uses' => 'UsersController@getUserYeps'
+	]);
+	Route::get('users/{id}/followers',[
+		'uses' => 'UsersController@getFollowers'
+	]);
+
 
 	/*
 	 * Get all comments by channel_id
@@ -100,6 +112,10 @@ Route::group(array('prefix' => 'api/v1'), function()
 
 	// ALL THESE ROUTES REQURE A JWT TOKEN
 	Route::group(['middleware' => 'jwt.auth'], function(){
+		//Social check
+		Route::get('auth/check', [
+			'uses' => 'UsersController@checkSocialAuth'
+		]);
 
 		// RESTful yeps 
 		Route::post('yeps', [
@@ -109,9 +125,6 @@ Route::group(array('prefix' => 'api/v1'), function()
 			'uses' => 'YepsController@update'
 		]);
 	
-		Route::get('yeps/{id}/similar', [
-			'uses' => 'YepsController@similar'
-		]);
 		Route::post('yeps/{id}/views', [
 			'uses' => 'YepsController@incrementViews'
 		]);
@@ -146,15 +159,6 @@ Route::group(array('prefix' => 'api/v1'), function()
 		/*
 		 *
 		 */
-		Route::get('users/{id}', [
-			'uses' => 'UsersController@getUser'
-		]);
-		Route::get('users/{id}/yeps',[
-			'uses' => 'UsersController@getYeps'
-		]);
-		Route::get('users/{id}/followers',[
-			'uses' => 'UsersController@getFollowers'
-		]);
 		Route::post('users/{id}/following', [
 			'uses' => 'UsersController@follow'
 		]);
@@ -211,6 +215,32 @@ Route::group(array('prefix' => 'api/v1'), function()
 			Route::post('users/{id}/settings/email',[
 				'uses' => 'UsersController@changeEmail'
 			]);
+
+			Route::post('users/{id}/share/twitter',[
+				'uses' => 'UsersController@shareTwitter'
+			]);
+
+			Route::post('users/{id}/share',[
+				'uses' => 'UsersController@share'
+			]);
+
+			Route::post('users/{id}/share/facebook',[
+				'uses' => 'UsersController@shareFacebook'
+			]);
+
+
+			Route::post('users/{id}/share/google',[
+				'uses' => 'UsersController@shareGoogle'
+			]);
+
+			Route::get('/users/{id}/friends', [
+				'uses' => 'UsersController@getFriends'
+			]);
+
+			Route::post('/users/{id}/social/link',[
+				'uses'=>'UsersController@linkSocial'
+			]);
+			
 
 			/*
 			 * User add a comment to a channel

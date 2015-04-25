@@ -30,7 +30,6 @@
         "Conner\\Tagging\\TaggingServiceProvider",
         "Tymon\\JWTAuth\\Providers\\JWTAuthServiceProvider",
         "SammyK\\LaravelFacebookSdk\\LaravelFacebookSdkServiceProvider",
-        "Laravel\\Socialite\\SocialiteServiceProvider",
         "GrahamCampbell\\Parse\\ParseServiceProvider",
         "Thujohn\\Twitter\\TwitterServiceProvider"
     ],
@@ -132,8 +131,7 @@
         "auth.password": "Illuminate\\Auth\\Passwords\\PasswordResetServiceProvider",
         "auth.password.tokens": "Illuminate\\Auth\\Passwords\\PasswordResetServiceProvider",
         "translator": "Illuminate\\Translation\\TranslationServiceProvider",
-        "translation.loader": "Illuminate\\Translation\\TranslationServiceProvider",
-        "Laravel\\Socialite\\Contracts\\Factory": "Laravel\\Socialite\\SocialiteServiceProvider"
+        "translation.loader": "Illuminate\\Translation\\TranslationServiceProvider"
     },
     "when": {
         "Illuminate\\Foundation\\Providers\\ArtisanServiceProvider": [],
@@ -149,7 +147,6 @@
         "Illuminate\\Translation\\TranslationServiceProvider": [],
         "Conner\\Tagging\\TaggingServiceProvider": [
             "artisan.start"
-        ],
-        "Laravel\\Socialite\\SocialiteServiceProvider": []
+        ]
     }
 }
