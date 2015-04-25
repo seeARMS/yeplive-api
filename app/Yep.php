@@ -21,7 +21,8 @@ class Yep extends Model{
 	];
 
 	protected $attributes = [
-		'views' => 0
+		'views' => 0,
+		'staging' => false
 	];
 	
 	//
@@ -113,8 +114,8 @@ class Yep extends Model{
 		$tags = explode(',',$params['tags']);
 		if($tags[0] == '')
 		{
-			return Yep::all()->take($quantity);
+			return Yep::all()->where('staging','=',0)->take($quantity);
 		}
-		return Yep::withAnyTag($tags)->limit($quantity)->get();
+		return Yep::withAnyTag($tags)->limit($quantity)->where('staging', '=', 0)->get();
 	}
 }

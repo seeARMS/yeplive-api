@@ -51,7 +51,7 @@ class YepsController extends Controller {
 	
 		$validator = \Validator::make( $params, [
 			'channel_id' => 'integer',
-			'title' => 'required|string|max:100',
+			'title' => 'string|max:100',
 			'latitude' => 'required|numeric',
 			'longitude' => 'required|numeric',
 			'description' => 'string|max:255',
@@ -94,6 +94,10 @@ class YepsController extends Controller {
 		$yep->stream_url = \Config::get('wowza.rtmp.test').$yep->stream_name;
 		$yep->stream_mobile_url = \Config::get('wowza.rtmp.test').$yep->stream_name."/playlist.m3u8";
 
+		if($request->has('staging')){
+			$yep->staging = true;
+		};
+
 		$yep -> save();
 
 		return response()->json(['success' => 1, 'id' => $yep->id, 'stream_name' => $yep->stream_name]);
@@ -120,7 +124,7 @@ class YepsController extends Controller {
 			'tags',
 			'start_time',
 			'end_time',
-			'tags'	
+			'tags'
 		]);
 
 		$validator = \Validator::make( $params, [
@@ -160,6 +164,25 @@ class YepsController extends Controller {
 		{
 			return response()->json(['success' => 0, 'id' => $yep->id]);
 		}
+	}
+
+	public function unstage(Request $request, $id)
+	{
+		$yep = \App\Yep::find($id);
+		if (! $yep)
+		{
+			return \App\Errors::notFound('yep not found');
+		}
+		$user = \JWTAuth::parseToken()->toUser();
+		if($user->user_id != $yep->user_id)
+		{
+			return \App\Errors::forbidden("you can't do that");	
+		}
+		$yep->staging = false;
+		$yep->save();
+
+		return response()->json(['success'=>1, 'id'=>$id], 200);
+
 	}
 
 	//GET /yep/{id}

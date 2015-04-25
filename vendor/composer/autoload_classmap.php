@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'AddMobileHLSUrls' => $baseDir . '/database/migrations/2015_04_17_191539_add_mobile_HLS_urls.php',
     'AddPushNotificationSettingsToUsers' => $baseDir . '/database/migrations/2015_04_09_132913_add_push_notification_settings_to_users.php',
+    'AddStagingToYeps' => $baseDir . '/database/migrations/2015_04_25_210209_add_staging_to_yeps.php',
     'AddStreamInfoToYeps' => $baseDir . '/database/migrations/2015_04_13_220052_add_stream_info_to_yeps.php',
     'AddTimestampsToVotes' => $baseDir . '/database/migrations/2015_04_10_210115_add_timestamps_to_votes.php',
     'AddViewsToProgram' => $baseDir . '/database/migrations/2015_04_09_012759_add_views_to_program.php',
