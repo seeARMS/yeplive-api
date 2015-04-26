@@ -211,7 +211,7 @@ class YepsController extends Controller {
 	{
 		$yep = \App\Yep::find($id);
 		
-		if (! $yep)
+		if (! $yep || $yep -> deleted)
 		{
 			return \App\Errors::notFound('yep not found');
 		}

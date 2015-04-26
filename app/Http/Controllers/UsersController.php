@@ -135,7 +135,7 @@ class UsersController extends Controller {
 			if(! $user)
 			{
 				$newUserParams = [
-					'email' => $data->getProperty('email'),
+					'email' => $data->getProperty('email') || 'no email',
 					'facebook_id' => $data->getProperty('id'),
 					'picture_path' => $data->getProperty('picture')->getProperty('url'),
 					'display_name' => $data->getProperty('first_name'),
