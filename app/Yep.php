@@ -1,9 +1,12 @@
 <?php namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Yep extends Model{
 	use \Conner\Tagging\TaggableTrait;
+	use SoftDeletes;
+
 	protected $fillable = [
 		'channel_id',
 		'title',
@@ -17,13 +20,14 @@ class Yep extends Model{
 	protected $hidden = [
 		'updated_at',
 		'isMobile',
-		'user_id',
+		'user_id'
 	];
+
+	 protected $dates = ['deleted_at'];
 
 	protected $attributes = [
 		'views' => 0,
-		'staging' => false,
-		'deleted' => false
+		'staging' => false
 	];
 	
 	//
@@ -113,8 +117,8 @@ class Yep extends Model{
 		$tags = explode(',',$params['tags']);
 		if($tags[0] == '')
 		{
-			return Yep::all()->where('staging','=',0)->where('deleted','=',0)->take($quantity);
+			return Yep::all()->where('staging','=',0)->take($quantity);
 		}
-		return Yep::withAnyTag($tags)->limit($quantity)->where('staging', '=', 0)->where('deleted','=',0)->get();
+		return Yep::withAnyTag($tags)->limit($quantity)->where('staging', '=', 0)->get();
 	}
 }

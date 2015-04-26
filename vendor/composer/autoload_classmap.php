@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AddDeeltedToYeps' => $baseDir . '/database/migrations/2015_04_26_133525_add_deelted_to_yeps.php',
     'AddDeletedToYeps' => $baseDir . '/database/migrations/2015_04_26_023425_add_deleted_to_yeps.php',
     'AddMobileHLSUrls' => $baseDir . '/database/migrations/2015_04_17_191539_add_mobile_HLS_urls.php',
     'AddPushNotificationSettingsToUsers' => $baseDir . '/database/migrations/2015_04_09_132913_add_push_notification_settings_to_users.php',

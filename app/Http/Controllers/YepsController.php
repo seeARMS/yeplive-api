@@ -181,8 +181,7 @@ class YepsController extends Controller {
 		{
 			return \App\Errors::forbidden("you can't do that");	
 		}
-		$yep->deleted = true;
-		$yep->save();
+		$yep->delete();
 
 		return response()->json(['success'=>1, 'id'=>$id], 200);
 	}
@@ -211,7 +210,7 @@ class YepsController extends Controller {
 	{
 		$yep = \App\Yep::find($id);
 		
-		if (! $yep || $yep -> deleted)
+		if (! $yep )
 		{
 			return \App\Errors::notFound('yep not found');
 		}
