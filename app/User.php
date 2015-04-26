@@ -59,6 +59,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		'twitter_oauth_token_secret',
 		'facebook_friends',
 		'google_name',
+		'google_id',
 		'google_access_token',
 		'google_email',
 		'google_picture',
@@ -202,13 +203,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 			$client->setAccessToken($access_token_json);
 			$plus = new \Google_Service_Plus($client);
 			try {
+				//$friends = $plus->people->listPeople('me','connected');
 				$friends = $plus->people->listPeople('me','visible');
 			} catch(Exception $e){
 				return false;
 				dd($e);
 			}
 			return $friends->getItmes();
-			dd($friends->getItems());
 			$googleFriends = [];
 		} else {
 			return false;

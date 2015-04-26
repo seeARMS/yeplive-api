@@ -20,7 +20,8 @@ class Yep extends Model{
 	protected $hidden = [
 		'updated_at',
 		'isMobile',
-		'user_id'
+		'user_id',
+		'staging'
 	];
 
 	 protected $dates = ['deleted_at'];

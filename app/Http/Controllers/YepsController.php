@@ -111,6 +111,7 @@ class YepsController extends Controller {
 	//PUT /yep/{id}
 	public function update(Request $request, $id)
 	{
+		dd($request->all());
 		$yep= \App\Yep::find($id);
 		if(! $yep)
 		{
@@ -126,7 +127,7 @@ class YepsController extends Controller {
 		$params = $request->only([
 			'title',
 			'description',
-			'tags',
+			'tags'
 		]);
 
 		$validator = \Validator::make( $params, [
@@ -139,6 +140,8 @@ class YepsController extends Controller {
 		{
 			return \App\Errors::invalid(null, $validator);
 		}
+
+		dd($params);
 		
 		if($request->has('title'))
 		{
