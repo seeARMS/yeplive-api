@@ -48,6 +48,9 @@ class YepsController extends Controller {
 			'description',
 			'tags'
 		);
+
+		\Log::info('REQUEST');
+		\Log::info($params);
 	
 		$validator = \Validator::make( $params, [
 			'channel_id' => 'integer',
@@ -73,6 +76,7 @@ class YepsController extends Controller {
 		$filtered_params = array_filter($params, 'strlen');
 
 		$yep= \App\Yep::create($filtered_params);
+		\Log::info($yep);
 
 		//Create tags
 		$tags = explode(',',$params['tags']);

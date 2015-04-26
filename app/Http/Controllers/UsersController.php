@@ -211,20 +211,17 @@ class UsersController extends Controller {
 			if(! $user)
 			{
 				$newUserParams = [
-					'email' => strval(time()),
 					'name' => $person->displayName,
 					'google_id' => $person->id,
 					'display_name' => $person->displayName,
 					'picture_path' => $person->getImage()->url,
 					'google_access_token' => $request->input('google_access_token')
 				];
-
 				$user = \App\User::create($newUserParams);
 			} else {
 				$user -> google_access_token = $request->input('google_access_token');
 				$user -> save();
 			}
-
 			$jwtoken = \JWTAuth::fromUser($user);
 			return response()->json(['success' => 1, 'token' => $jwtoken, 'id' => $user->user_id]);	
 		}
@@ -280,7 +277,7 @@ class UsersController extends Controller {
 			return \App\Errors::notFound('user not found');
 		}
 
-		$friends = $user->getAllFriends();
+		$friends = $user->getAllFriends($fb);
 
 		return response()->json(['users' => $friends], 200);
 	}

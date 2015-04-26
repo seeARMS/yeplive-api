@@ -34,7 +34,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		'twitter_oauth_token',
 		'twitter_oauth_secret',
 		'twitter_id',
-		'google_name',
+		'google_id',
 		'google_access_token'
 	];
 
@@ -144,7 +144,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	{
 		$token = $this->google_access_token;
 		$id = $this->google_id;
-
 		if($token && $id)
 		{
 			$client = new \Google_Client();
@@ -178,6 +177,42 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	public function shareGoogle()
 	{
+
+	}
+
+	public function getGoogleFriends()
+	{
+		if(! $this->isGoogleAuthed()){
+			return false;
+		}
+
+		$token = $this->google_access_token;
+		$id = $this->google_id;
+		if($token && $id)
+		{
+			$client = new \Google_Client();
+			$access_token_json = json_encode([
+				"access_token" =>$token,
+				"token_type"=>"Bearer",
+				"expires_in"=>3600,
+				"id_token"=>$token,
+				"created"=>time(),
+				"refresh_token"=>''
+			]);
+			$client->setAccessToken($access_token_json);
+			$plus = new \Google_Service_Plus($client);
+			try {
+				$friends = $plus->people->listPeople('me','visible');
+			} catch(Exception $e){
+				return false;
+				dd($e);
+			}
+			return $friends->getItmes();
+			dd($friends->getItems());
+			$googleFriends = [];
+		} else {
+			return false;
+		}
 
 	}
 
@@ -224,9 +259,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 			dd($data);
 	}
 
-	public function getFacebookFriends()
+	public function getFacebookFriends($fb)
 	{
-		$fb->setDefaultAccessToken($user->facebook_access_token);
+		$fb->setDefaultAccessToken($this->facebook_access_token);
 
 		try {
 			$response = $fb->get('/me/friends');
@@ -271,7 +306,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	public function shareTwitter()
 	{
-		if(! $this->isTwitterAuthed)
+		if(! $this->isTwitterAuthed())
 		{
 			return false;
 		}
@@ -293,18 +328,55 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 			}
 
 		return  $response;
+	}
+
+	public function getTwitterFriends()
+	{
+		if(! $this->isTwitterAuthed())
+		{
+			return false;
 		}
 
-	public function getAllFriends()
+		$twitter_token = [
+			'token' => $this->twitter_oauth_token,
+			'secret' => $this->twitter_oauth_token_secret 
+		];
+
+		\Twitter::reconfig($twitter_token);
+
+		//Create Yeplive Tweet
+		try{
+			$response = \Twitter::postTweet([
+				'status' => "~~~Yeplive~~~\nStreaming now!\n #yeplive yplv.tv/".time()
+			]);
+			} catch(Exception $e) {
+				return false;
+			}
+
+		return  $response;
+
+	}
+
+	public function getAllFriends($fb)
 	{
-		$facebookFriends = $this->getFacebookFriends();
-		$googleFriends = $this->getGoogleFriends();
-		$twitterFriends = $this->getTwitterFriends();
+		$facebookFriends = null;
+		$googleFriends = null;
+		$twitterFriends = null;
+
+		if($this->isFacebookAuthed($fb)){
+			$facebookFriends = $this->getFacebookFriends($fb);
+		}
+		if($this->isGoogleAuthed()){
+			$googleFriends = $this->getGoogleFriends();
+		}
+		if($this->isTwitterAuthed()){
+			$twitterFriends = $this->getTwitterFriends();
+		}
 
 		return [
-			'facebook' => $facebookFriends,
-			'google' => $googleFriends,
-			'twitter' => $twitterFriends
+			'facebook' => $facebookFriends ,
+			'google' => $googleFriends ,
+			'twitter' => $twitterFriends 
 		];
 	}
 
