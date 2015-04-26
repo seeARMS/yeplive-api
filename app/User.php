@@ -346,13 +346,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 		//Create Yeplive Tweet
 		try{
-			$response = \Twitter::postTweet([
-				'status' => "~~~Yeplive~~~\nStreaming now!\n #yeplive yplv.tv/".time()
-			]);
+			$response = \Twitter::get('followers/list');
 			} catch(Exception $e) {
 				return false;
 			}
-
+		dd($response);
 		return  $response;
 
 	}
