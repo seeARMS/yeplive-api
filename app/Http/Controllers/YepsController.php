@@ -93,6 +93,8 @@ class YepsController extends Controller {
 
 		$yep->stream_name = $yep->id . "-" .  strval(time());
 
+		$yep->upload_url = \Config::get('wowza.rtmp.upload_mobile').$yep->stream_name;
+
 		$yep->vod_enable = false;
 
 		$yep->stream_url = \Config::get('wowza.rtmp.test').$yep->stream_name;
@@ -105,7 +107,7 @@ class YepsController extends Controller {
 
 		$yep -> save();
 
-		return response()->json(['success' => 1, 'id' => $yep->id, 'stream_name' => $yep->stream_name]);
+		return response()->json(['success' => 1, 'id' => $yep->id, 'upload_url' => $yep->upload_url]);
 	}
 
 	//PUT /yep/{id}

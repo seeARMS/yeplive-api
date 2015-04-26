@@ -21,7 +21,8 @@ class Yep extends Model{
 		'updated_at',
 		'isMobile',
 		'user_id',
-		'staging'
+		'staging',
+		'upload_url'
 	];
 
 	 protected $dates = ['deleted_at'];
