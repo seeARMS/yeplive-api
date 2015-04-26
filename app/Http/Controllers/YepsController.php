@@ -127,17 +127,11 @@ class YepsController extends Controller {
 			'title',
 			'description',
 			'tags',
-			'start_time',
-			'end_time',
-			'tags'
 		]);
 
 		$validator = \Validator::make( $params, [
-			'channel_id' => 'integer',
 			'title' => 'string|max:100',
 			'description' => 'string|max:255',
-			'start_time' => 'string|max:255',
-			'end_time' => 'string|max:255',
 			'tags' => 'string:max:255'	
 		]);
 
@@ -145,8 +139,15 @@ class YepsController extends Controller {
 		{
 			return \App\Errors::invalid(null, $validator);
 		}
+		
+		if($request->has('title'){
+			$yep -> title = $params['title'];
+		});
 
-		$yep -> fill ($params);
+		if($request->has('title'){
+			$yep -> description = $params['title'];
+		});
+
 
 		//Create tags
 		$tags = $params['tags'] || '';
