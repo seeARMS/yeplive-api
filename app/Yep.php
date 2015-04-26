@@ -22,7 +22,8 @@ class Yep extends Model{
 
 	protected $attributes = [
 		'views' => 0,
-		'staging' => false
+		'staging' => false,
+		'deleted' => false
 	];
 	
 	//
@@ -51,8 +52,6 @@ class Yep extends Model{
 	public function report($reporter, $reason)
 	{
 		$reported = \App\User::find($this->user_id);
-		return $this;
-		return $reported;
 		$data = [
 			'reason' => $reason,
 			'reporter_id' => $reporter->user_id,
@@ -114,8 +113,8 @@ class Yep extends Model{
 		$tags = explode(',',$params['tags']);
 		if($tags[0] == '')
 		{
-			return Yep::all()->where('staging','=',0)->take($quantity);
+			return Yep::all()->where('staging','=',0)->where('deleted','=',0)->take($quantity);
 		}
-		return Yep::withAnyTag($tags)->limit($quantity)->where('staging', '=', 0)->get();
+		return Yep::withAnyTag($tags)->limit($quantity)->where('staging', '=', 0)->where('deleted','=',0)->get();
 	}
 }

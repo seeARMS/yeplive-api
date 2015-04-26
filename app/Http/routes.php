@@ -124,6 +124,9 @@ Route::group(array('prefix' => 'api/v1'), function()
 		Route::put('yeps', [
 			'uses' => 'YepsController@update'
 		]);
+		Route::delete('yeps/{id}', [
+			'uses' => 'YepsController@delete'
+		]);
 		Route::post('yeps/{id}/unstage', [
 			'uses' => 'YepsController@unstage'
 		]);	

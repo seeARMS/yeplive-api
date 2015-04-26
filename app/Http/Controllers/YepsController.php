@@ -92,7 +92,8 @@ class YepsController extends Controller {
 		$yep->vod_enable = false;
 
 		$yep->stream_url = \Config::get('wowza.rtmp.test').$yep->stream_name;
-		$yep->stream_mobile_url = \Config::get('wowza.rtmp.test').$yep->stream_name."/playlist.m3u8";
+//		$yep->stream_mobile_url = \Config::get('wowza.rtmp.test').$yep->stream_name."/playlist.m3u8";
+		$yep->stream_mobile_url = 'http://54.149.106.109:1935/hdfvr/'.$yep->stream_name."/playlist.m3u8";
 
 		if($request->has('staging')){
 			$yep->staging = true;
@@ -145,7 +146,7 @@ class YepsController extends Controller {
 
 		//Create tags
 		$tags = $params['tags'] || '';
-		$tags = explode(',',$params['tags']);
+		$tags = explode(',', $params['tags']);
 
 		if($tags[0] != '' )
 		{
@@ -164,6 +165,26 @@ class YepsController extends Controller {
 		{
 			return response()->json(['success' => 0, 'id' => $yep->id]);
 		}
+	}
+
+	public function delete(Request $request, $id)
+	{
+		$yep = \App\Yep::find($id);
+		if(! $yep)
+		{
+			\App\Errors::notFound();	
+		}
+
+		$user = \JWTAuth::parseToken()->toUser();
+
+		if($user->user_id != $yep->user_id)
+		{
+			return \App\Errors::forbidden("you can't do that");	
+		}
+		$yep->deleted = true;
+		$yep->save();
+
+		return response()->json(['success'=>1, 'id'=>$id], 200);
 	}
 
 	public function unstage(Request $request, $id)
@@ -195,6 +216,7 @@ class YepsController extends Controller {
 			return \App\Errors::notFound('yep not found');
 		}
 
+/*
 		$user = \JWTAuth::parseToken()->toUser();
 		if($user)
 		{
@@ -207,6 +229,7 @@ class YepsController extends Controller {
 		} else {
 				$yep['voted'] = 0;
 		}
+*/
 
 		$yep['votes'] = $yep->votes()->count();
 		$yep['tags'] = $yep->tagNames();
