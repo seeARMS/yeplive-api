@@ -140,13 +140,15 @@ class YepsController extends Controller {
 			return \App\Errors::invalid(null, $validator);
 		}
 		
-		if($request->has('title'){
+		if($request->has('title'))
+		{
 			$yep -> title = $params['title'];
-		});
+		}
 
-		if($request->has('title'){
+		if($request->has('description'))
+		{
 			$yep -> description = $params['title'];
-		});
+		}
 
 
 		//Create tags
