@@ -153,6 +153,16 @@ class YepsController extends Controller {
 			$yep -> description = $params['description'];
 		}
 
+		if($request->has('latitude'))
+		{
+			$yep -> latitude = $params['latitude'];
+		}
+	
+		if($request->has('longitude'))
+		{
+			$yep -> longitude = $params['longitude'];
+		}
+
 
 		//Create tags
 		$tags = $params['tags'] || '';
