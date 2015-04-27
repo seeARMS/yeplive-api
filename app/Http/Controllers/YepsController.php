@@ -128,13 +128,17 @@ class YepsController extends Controller {
 		$params = $request->only([
 			'title',
 			'description',
-			'tags'
+			'tags',
+			'latitude',
+			'longitude'
 		]);
 
 		$validator = \Validator::make( $params, [
 			'title' => 'string|max:100',
 			'description' => 'string|max:255',
-			'tags' => 'string:max:255'	
+			'tags' => 'string:max:255',
+			'latitude' => 'numeric',
+			'longitude' => 'numeric'	
 		]);
 
 		if($validator -> fails())
