@@ -8,6 +8,23 @@ class YepsController extends Controller {
 	{
 	}
 
+	public function getYepPage(Request $request, $name)
+	{
+		$userAgent = $request->header('USER_AGENT');
+		if (in_array($userAgent, array(
+  'facebookexternalhit/1.1 (+https://www.facebook.com/externalhit_uatext.php)',
+  'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)'
+		))){
+			$yep = \App\Yep::where('stream_name','=',$name);
+			return view('yeps.meta',$yep);
+		}
+		else
+		{
+			return view('yeps.meta');
+			return redirect()->to('http://yeplive.com?yep='.$name);
+		}
+	}
+
 	//GET /yeps
 	public function index(Request $request)
 	{

@@ -1,6 +1,11 @@
 <?php 
 //RESTful API
 //ALL {id} tags only accept [0-9]+ see app/providers/RouteServiceProvider.php
+
+Route::get('{yep}', [
+	'uses' => 'YepsController@getYepPage'
+]);
+
 Route::group(array('prefix' => 'api/v1'), function()
 { 
 	//Testing routes
@@ -117,7 +122,7 @@ Route::group(array('prefix' => 'api/v1'), function()
 	// ALL THESE ROUTES REQURE A JWT TOKEN
 	Route::group(['middleware' => 'jwt.auth'], function(){
 		//Social check
-		Route::get('auth/check', [
+		Route::get('auth/social', [
 			'uses' => 'UsersController@checkSocialAuth'
 		]);
 
@@ -192,6 +197,27 @@ Route::group(array('prefix' => 'api/v1'), function()
 			'uses' => 'UsersController@showAllFollower'
 		]);
 		 */
+			Route::post('share',[
+				'uses' => 'UsersController@share'
+			]);
+
+			Route::post('share/facebook',[
+				'uses' => 'UsersController@shareFacebook'
+			]);
+
+
+			Route::post('share/google',[
+				'uses' => 'UsersController@shareGoogle'
+			]);
+
+			Route::get('social/friends', [
+				'uses' => 'UsersController@getFriends'
+			]);
+
+			Route::post('social/link',[
+				'uses'=>'UsersController@linkSocial'
+			]);
+
 
 		//These routes all require the {id} to be the user in the json web token
 		Route::group(['middleware' => 'jwt.checkUser'], function(){
@@ -226,26 +252,6 @@ Route::group(array('prefix' => 'api/v1'), function()
 				'uses' => 'UsersController@shareTwitter'
 			]);
 
-			Route::post('users/{id}/share',[
-				'uses' => 'UsersController@share'
-			]);
-
-			Route::post('users/{id}/share/facebook',[
-				'uses' => 'UsersController@shareFacebook'
-			]);
-
-
-			Route::post('users/{id}/share/google',[
-				'uses' => 'UsersController@shareGoogle'
-			]);
-
-			Route::get('/users/{id}/friends', [
-				'uses' => 'UsersController@getFriends'
-			]);
-
-			Route::post('/users/{id}/social/link',[
-				'uses'=>'UsersController@linkSocial'
-			]);
 			
 
 			/*

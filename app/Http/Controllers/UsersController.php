@@ -269,23 +269,23 @@ class UsersController extends Controller {
 	}
 
 	//GET PERMISSIONS FROM FACEBOOK
-	public function shareFacebook(Request $request, $id)
+	public function shareFacebook(Request $request, \SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb)
 	{
-		$user = \App\User::find($id);
+		$user = \JWTAuth::parseToken()->toUser();
 
 		if(! $user)
 		{
 			return \App\Errors::notFound('user not found');
 		}
 
-		if(! $user->isFacebookAuthed){
+		if(! $user->isFacebookAuthed($fb)){
 			return \App\Errors::unauthorized('user is not authed with facebook');
 		}
-
-		$user->shareFacebook();
-		
-
-		return response()->json(['success' => 1, 'id' => $id],200);
+		if($user->shareFacebook($fb)){
+			return response()->json(['success' => 1, 'id' => $user->user_id],200);	
+		} else {
+			return \App\Errors::invalid('');
+		}
 	}
 
 	public function getFriends(Request $request, $id, \SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb)
@@ -298,7 +298,7 @@ class UsersController extends Controller {
 
 		$friends = $user->getAllFriends($fb);
 
-		return response()->json(['users' => $friends], 200);
+		return response()->json($friends, 200);
 	}
 
 	//
@@ -793,9 +793,8 @@ class UsersController extends Controller {
 		{
 			return \App\Errors::notFound("user not found");	
 		}
-
 		$data = [
-			'id' => $user->id,
+			'id' => $user->user_id,
 			'google_auth' => $user->isGoogleAuthed(),
 			'facebook_auth' => $user->isFacebookAuthed($fb),
 			'twitter_auth' => $user->isTwitterAuthed()

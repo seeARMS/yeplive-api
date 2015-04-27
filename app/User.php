@@ -256,19 +256,19 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	}
 
 	//TODO
-	public function shareFacebook()
+	public function shareFacebook($fb)
 	{
-		$fb->setDefaultAccessToken($user->facebook_access_token);
+		$fb->setDefaultAccessToken($this->facebook_access_token);
 			try {
 				$response = $fb->post('/me/feed', [
-					"message" => "test"
+					"message" =>time(),
+					"link" => "http://yeplive.com"
 				]);
 			} catch (Facebook\Exceptions\FacebookSDKException $e) {
-				return \Errors\invalid('invalid facebook token');
-				dd($e->getMessage());
+				return false;
 			}
 			$data = $response->getGraphObject();
-			dd($data);
+			return true;
 	}
 
 	public function getFacebookFriends($fb)
@@ -285,11 +285,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		$users = [];
 		foreach($data as $friend)
 		{
-			$userFriend = $user->where('facebook_id', '=', $friend->id)->get()->first();
-			array_push($users, $userFriend);
+			$userFriend = \App\User::where('facebook_id', '=', $friend["id"])->get()->first();
+			if($userFriend)
+			{
+				array_push($users, $userFriend);
+			}
 		}
-
-		return response()->json(["users"=>$users], 200);
+		return $users;
 
 	}
 
