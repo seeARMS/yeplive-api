@@ -92,6 +92,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		return $this->hasMany('App\Vote');
 	}
 
+	public function followerCount()
+	{
+		return \App\Follower::where('followee_id', '=', $this->user_id)->count();
+	}
+
+	public function followingCount()
+	{
+		return \App\Follower::where('follower_id', '=', $this->user_id)->count();
+	}
+
 	public function followers()
 	{
 		$followers = \App\Follower::where('followee_id', '=', $this->user_id)->get();
