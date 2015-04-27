@@ -87,9 +87,9 @@ class UsersController extends Controller {
 		}
 		//$user -> yeps = \App\Yep::where('user_id', '=', $user->user_id)->get();	
 		
-		$user -> followers  = $user->followers();
-		$user -> following = $user->following();
-		$user -> yeps = $user->yeps;
+		$user -> followerCount  = count($user->followers());
+		$user -> followingCount = count($user->following());
+		$user -> yepsCount = count($user->yeps);
 		return response()->json($user,200);
 	}
 
