@@ -11,6 +11,6 @@ return [
 		'stream_mp4' => 'https://52.10.133.244/dev-wowza/'
 	],
 	'cloudfront' => [
-		'static' => 'rtmp://sxvdyjg00hi0h.cloudfront.net/cfx/st/'
+		'static' => 'http://sxvdyjg00hi0h.cloudfront.net/cfx/st/'
 	]
 ];
