@@ -86,6 +86,24 @@ class UsersController extends Controller {
 			return \App\Errors::notFound('yep not found');
 		}
 		//$user -> yeps = \App\Yep::where('user_id', '=', $user->user_id)->get();	
+		try{
+			$currentUser = \JWTAuth::parseToken()->toUser();
+			if($currentUser)
+			{
+			$follow = \App\Follower::where('follower_id','=',$currentUser->user_id)
+				->where('followee_id','=',$user->user_id)->get()->first();
+			if($follow){
+				$yep->is_following= 1;
+			} else {
+				$yep->is_following= 0;
+			}
+		} else {
+				$yep->is_following= 0;
+		}
+		} catch(\Exception $e){
+				dd($e);
+		}
+
 		
 		$user -> follower_count  = $user->followerCount();	
 		$user -> following_count = $user->followingCount();
