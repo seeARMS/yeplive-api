@@ -93,12 +93,12 @@ class UsersController extends Controller {
 			$follow = \App\Follower::where('follower_id','=',$currentUser->user_id)
 				->where('followee_id','=',$user->user_id)->get()->first();
 			if($follow){
-				$yep->is_following= 1;
+				$user->is_following = 1;
 			} else {
-				$yep->is_following= 0;
+				$user->is_following = 0;
 			}
 		} else {
-				$yep->is_following= 0;
+				$user->is_following = 0;
 		}
 		} catch(\Exception $e){
 				dd($e);
