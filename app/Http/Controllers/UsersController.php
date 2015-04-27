@@ -149,6 +149,7 @@ class UsersController extends Controller {
 
 			$jwtoken = \JWTAuth::fromUser($user);
 
+			return response()->json(['success' => 1, 'token' => $jwtoken, 'id' => $user->user_id, 'display_name' => $user->display_name, 'picture_path' => $user->picture_path]);	
 			return response()->json(['success' => 1, 'token' => $jwtoken, 'id' => $user->user_id]);	
 		}
 		else if($request->has('twitter_access_token') && $request->has('twitter_user_id') &&
@@ -185,7 +186,7 @@ class UsersController extends Controller {
 			}
 
 			$jwtoken = \JWTAuth::fromUser($user);
-			return response()->json(['success' => 1, 'token' => $jwtoken, 'id' => $user->user_id]);	
+			return response()->json(['success' => 1, 'token' => $jwtoken, 'id' => $user->user_id, 'display_name' => $user->display_name, 'picture_path' => $user->picture_path]);	
 		}
 		else if($request->has('google_access_token') && $request->has('google_user_id'))
 		{
@@ -223,6 +224,7 @@ class UsersController extends Controller {
 				$user -> save();
 			}
 			$jwtoken = \JWTAuth::fromUser($user);
+			return response()->json(['success' => 1, 'token' => $jwtoken, 'id' => $user->user_id, 'display_name' => $user->display_name, 'picture_path' => $user->picture_path]);	
 			return response()->json(['success' => 1, 'token' => $jwtoken, 'id' => $user->user_id]);	
 		}
 		//400
