@@ -413,8 +413,8 @@ class YepsController extends Controller {
 		$yep -> vod_enable = true;
 //		$yep -> vod_path = "rtmp://54.149.106.109/vods3/_definst_/&mp4:amazons3/dev-wowza/".$yep->stream_name.".mp4";
 //		$yep->vod_mobile_path = "http://54.149.106.109:1935/vods3/_definst_/amazons3/dev-wowza/".$yep->stream_name."/playlist.m3u8";
-		$yep -> vod_path = \Config::get('wowoza.rtmp.vod').$yep->stream_name.".mp4";
-		$yep -> vod_mobile_path = \Config::get('wowoza.rtmp.vod').$yep->stream_name."/playlist.m3u8";
+		$yep -> vod_path = \Config::get('wowza.rtmp.vod').$yep->stream_name.".mp4";
+		$yep -> vod_mobile_path = \Config::get('wowza.rtmp.vod').$yep->stream_name."/playlist.m3u8";
 		$yep -> end_time = time();
 
 		$yep -> save();
