@@ -13,4 +13,3 @@ return [
 
 ];
 
-rtmp://52.10.133.244:1935/live/_definst_/mp4:TerryChen2
