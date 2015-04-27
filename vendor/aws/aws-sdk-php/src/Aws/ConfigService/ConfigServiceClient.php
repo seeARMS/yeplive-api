@@ -22,6 +22,7 @@ use Aws\Common\Enum\ClientOptions as Options;
 use Aws\Common\Exception\Parser\JsonQueryExceptionParser;
 use Guzzle\Common\Collection;
 use Guzzle\Service\Resource\Model;
+use Guzzle\Service\Resource\ResourceIteratorInterface;
 
 /**
  * Client to interact with AWS Config
@@ -37,6 +38,7 @@ use Guzzle\Service\Resource\Model;
  * @method Model putDeliveryChannel(array $args = array()) {@command ConfigService PutDeliveryChannel}
  * @method Model startConfigurationRecorder(array $args = array()) {@command ConfigService StartConfigurationRecorder}
  * @method Model stopConfigurationRecorder(array $args = array()) {@command ConfigService StopConfigurationRecorder}
+ * @method ResourceIteratorInterface getGetResourceConfigHistoryIterator(array $args = array()) The input array uses the parameters of the GetResourceConfigHistory operation
  *
  * @link http://docs.aws.amazon.com/aws-sdk-php/v2/guide/service-configservice.html User guide
  * @link http://docs.aws.amazon.com/aws-sdk-php/v2/api/class-Aws.ConfigService.ConfigServiceClient.html API docs

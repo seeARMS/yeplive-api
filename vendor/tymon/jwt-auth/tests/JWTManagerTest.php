@@ -39,9 +39,9 @@ class JWTManagerTest extends \PHPUnit_Framework_TestCase
         $claims = [
             new Subject(1),
             new Issuer('http://example.com'),
-            new Expiration(time() + 3600),
-            new NotBefore(time()),
-            new IssuedAt(time()),
+            new Expiration(123 + 3600),
+            new NotBefore(123),
+            new IssuedAt(123),
             new JwtId('foo')
         ];
         $payload = new Payload($claims, $this->validator);
@@ -68,7 +68,7 @@ class JWTManagerTest extends \PHPUnit_Framework_TestCase
         $token = new Token('foo.bar.baz');
 
         $this->jwt->shouldReceive('decode')->once()->with('foo.bar.baz')->andReturn($payload->toArray());
-        $this->factory->shouldReceive('make')->with($payload->toArray())->andReturn($payload);
+        $this->factory->shouldReceive('setRefreshFlow->make')->with($payload->toArray())->andReturn($payload);
         $this->blacklist->shouldReceive('has')->with($payload)->andReturn(false);
 
         $payload = $this->manager->decode($token);
@@ -84,16 +84,16 @@ class JWTManagerTest extends \PHPUnit_Framework_TestCase
         $claims = [
             new Subject(1),
             new Issuer('http://example.com'),
-            new Expiration(time() + 3600),
-            new NotBefore(time()),
-            new IssuedAt(time()),
+            new Expiration(123 + 3600),
+            new NotBefore(123),
+            new IssuedAt(123),
             new JwtId('foo')
         ];
         $payload = new Payload($claims, $this->validator);
         $token = new Token('foo.bar.baz');
 
         $this->jwt->shouldReceive('decode')->once()->with('foo.bar.baz')->andReturn($payload->toArray());
-        $this->factory->shouldReceive('make')->with($payload->toArray())->andReturn($payload);
+        $this->factory->shouldReceive('setRefreshFlow->make')->with($payload->toArray())->andReturn($payload);
         $this->blacklist->shouldReceive('has')->with($payload)->andReturn(true);
 
         $payload = $this->manager->decode($token);
@@ -105,9 +105,9 @@ class JWTManagerTest extends \PHPUnit_Framework_TestCase
         $claims = [
             new Subject(1),
             new Issuer('http://example.com'),
-            new Expiration(time() - 3600),
-            new NotBefore(time()),
-            new IssuedAt(time()),
+            new Expiration(123 - 3600),
+            new NotBefore(123),
+            new IssuedAt(123),
             new JwtId('foo')
         ];
         $payload = new Payload($claims, $this->validator, true);
@@ -134,16 +134,16 @@ class JWTManagerTest extends \PHPUnit_Framework_TestCase
         $claims = [
             new Subject(1),
             new Issuer('http://example.com'),
-            new Expiration(time() + 3600),
-            new NotBefore(time()),
-            new IssuedAt(time()),
+            new Expiration(123 + 3600),
+            new NotBefore(123),
+            new IssuedAt(123),
             new JwtId('foo')
         ];
         $payload = new Payload($claims, $this->validator);
         $token = new Token('foo.bar.baz');
 
         $this->jwt->shouldReceive('decode')->once()->with('foo.bar.baz')->andReturn($payload->toArray());
-        $this->factory->shouldReceive('make')->with($payload->toArray())->andReturn($payload);
+        $this->factory->shouldReceive('setRefreshFlow->make')->with($payload->toArray())->andReturn($payload);
         $this->blacklist->shouldReceive('has')->with($payload)->andReturn(false);
 
         $this->blacklist->shouldReceive('add')->with($payload)->andReturn(true);
