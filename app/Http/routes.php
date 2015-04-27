@@ -102,6 +102,10 @@ Route::group(array('prefix' => 'api/v1'), function()
 		'uses' => 'UsersController@getFollowers'
 	]);
 
+	Route::post('yeps/{id}/views', [
+		'uses' => 'YepsController@incrementViews'
+	]);
+
 
 	/*
 	 * Get all comments by channel_id
@@ -130,9 +134,6 @@ Route::group(array('prefix' => 'api/v1'), function()
 		Route::post('yeps/{id}/unstage', [
 			'uses' => 'YepsController@unstage'
 		]);	
-		Route::post('yeps/{id}/views', [
-			'uses' => 'YepsController@incrementViews'
-		]);
 		Route::post('yeps/{id}/votes',[
 			'uses' => 'YepsController@vote'
 		]);

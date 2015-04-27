@@ -101,7 +101,6 @@ class UsersController extends Controller {
 				$user->is_following = 0;
 		}
 		} catch(\Exception $e){
-				dd($e);
 		}
 
 		
