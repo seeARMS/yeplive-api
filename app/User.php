@@ -262,7 +262,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 			try {
 				$response = $fb->post('/me/feed', [
 					"message" =>time(),
-					"link" => "http://yeplive.com"
+					"link" => "http://development-vriepmhkv2.elasticbeanstalk.com/api"
 				]);
 			} catch (Facebook\Exceptions\FacebookSDKException $e) {
 				return false;

@@ -11,15 +11,25 @@ class YepsController extends Controller {
 	public function getYepPage(Request $request, $name)
 	{
 		$userAgent = $request->header('USER_AGENT');
-		if (in_array($userAgent, array(
+		if (in_array($userAgent, [
   'facebookexternalhit/1.1 (+https://www.facebook.com/externalhit_uatext.php)',
   'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)'
-		))){
-			$yep = \App\Yep::where('stream_name','=',$name);
+		])){
+			$yep = \App\Yep::where('stream_name','=',$name)->get()->first();
+			if($yep)
+			{
 			return view('yeps.meta',$yep);
+			}
+			return view('yeps.meta');
+			
 		}
 		else
 		{
+			$yep = \App\Yep::where('stream_name','=',$name)->get()->first();
+			if($yep)
+			{
+			return view('yeps.meta',$yep);
+			}
 			return view('yeps.meta');
 			return redirect()->to('http://yeplive.com?yep='.$name);
 		}
