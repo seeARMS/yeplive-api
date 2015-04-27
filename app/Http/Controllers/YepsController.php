@@ -238,21 +238,21 @@ class YepsController extends Controller {
 		{
 			return \App\Errors::notFound('yep not found');
 		}
-
-/*
-		$user = \JWTAuth::parseToken()->toUser();
-		if($user)
+		try{
+			$user = \JWTAuth::parseToken()->toUser();
+if($user)
 		{
 			$vote = $user->voted($yep);
 			if($vote && $vote->vote == 1){
-				$yep['voted'] = 1;
+				$yep->voted = 1;
 			} else {
-				$yep['voted'] = 0;
+				$yep->voted = 0;
 			}
 		} else {
-				$yep['voted'] = 0;
+				$yep->voted = 0;
 		}
-*/
+		} catch(\Exception $e){
+		}
 
 		$yep['votes'] = $yep->votes()->count();
 		$yep['tags'] = $yep->tagNames();
