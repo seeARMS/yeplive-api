@@ -32,7 +32,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		'picture_path', 
 		'display_name', 
 		'twitter_oauth_token',
-		'twitter_oauth_secret',
+		'twitter_oauth_token_secret',
 		'twitter_id',
 		'google_id',
 		'google_access_token'
@@ -298,7 +298,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		$token = $this->twitter_oauth_token;
 		$secret = $this->twitter_oauth_token_secret;
 		$id = $this->twitter_id;
-
 		if($token && $secret && $id)
 		{
 			$twitter_token = [
@@ -358,7 +357,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 		//Create Yeplive Tweet
 		try{
-			$response = \Twitter::get('followers/list');
+			$response = \Twitter::get('friends/list');
 			} catch(Exception $e) {
 				return false;
 			}
@@ -369,19 +368,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	public function getAllFriends($fb)
 	{
-		$facebookFriends = null;
-		$googleFriends = null;
-		$twitterFriends = null;
-
-		if($this->isFacebookAuthed($fb)){
-			$facebookFriends = $this->getFacebookFriends($fb);
-		}
-		if($this->isGoogleAuthed()){
-			$googleFriends = $this->getGoogleFriends();
-		}
-		if($this->isTwitterAuthed()){
-			$twitterFriends = $this->getTwitterFriends();
-		}
+		$facebookFriends = $this->getFacebookFriends($fb);
+		$googleFriends = $this->getGoogleFriends();
+		$twitterFriends = $this->getTwitterFriends();
 
 		return [
 			'facebook' => $facebookFriends ,
