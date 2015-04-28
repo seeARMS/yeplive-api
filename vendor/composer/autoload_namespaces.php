@@ -45,6 +45,7 @@ return array(
     'Doctrine\\Common\\Annotations\\' => array($vendorDir . '/doctrine/annotations/lib'),
     'Doctrine\\Common\\' => array($vendorDir . '/doctrine/common/lib'),
     'Diff' => array($vendorDir . '/phpspec/php-diff/lib'),
+    'DebugBar' => array($vendorDir . '/maximebf/debugbar/src'),
     'Crypt' => array($vendorDir . '/phpseclib/phpseclib/phpseclib'),
     'Cron' => array($vendorDir . '/mtdowling/cron-expression/src'),
     'Conner\\Tagging\\' => array($vendorDir . '/rtconner/laravel-tagging/src'),
