@@ -11,35 +11,34 @@ class YepsController extends Controller {
 	public function getYepPage(Request $request, $name)
 	{
 		$userAgent = $request->header('USER_AGENT');
-		if (in_array($userAgent, [
+		$isFacebook = in_array($userAgent, [
 		'facebookexternalhit/1.1 (+https://www.facebook.com/externalhit_uatext.php)',
 		'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)'
-		])){
+		]);
+		if ($isFacebook){
 			$yep = \App\Yep::where('stream_name','=',$name)->get()->first();
 			if($yep)
 			{
 			return view('yeps.meta',$yep);
 			}
-			return view('yeps.meta');
+			return \App\Errors::notFound('yep not found');
 			
 		}
 		else
 		{
 			$yep = \App\Yep::where('stream_name','=',$name)->get()->first();
+			return redirect()->to('http://yeplive.com?yep='.$name);
 			if($yep)
 			{
-			return view('yeps.meta',$yep);
+				return view('yeps.meta',$yep);
 			}
-			return view('yeps.meta');
-			return redirect()->to('http://yeplive.com?yep='.$name);
+				return view('yeps.meta');
 		}
 	}
 
 	//GET /yeps
 	public function index(Request $request)
 	{
-		\Log::info('REQUEST TO GET ALL YEPS PLS WERK');
-		\Log::info(time());
 		$params = $request->only(
 			'tags',
 			'quantity'

@@ -301,7 +301,10 @@ class UsersController extends Controller {
 			return \App\Errors::notFound('user not found');
 		}
 
-		$message = $request->input('message') || '';
+		$message = $request->input('message');
+		if(! $message){
+			$message = '';
+		}
 
 		if(! $user->isFacebookAuthed($fb)){
 			return \App\Errors::unauthorized('user is not authed with facebook');
