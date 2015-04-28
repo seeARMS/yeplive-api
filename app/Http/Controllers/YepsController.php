@@ -51,15 +51,33 @@ class YepsController extends Controller {
 		{
 			return \App\Errors::invalid(null, $validator);
 		}
-
+		$yeps = [];
 		$yeps = \App\Yep::queryYeps($params);
+		return $yeps;
 
-		foreach($yeps as $yep)
-		{
-			$yep['votes'] = $yep->votes()->count();
+		$yeps->each(function($yep){
+			$yep['votes'] = $yep->votes->count();
 			$yep['tags'] = $yep->tagNames();
-			$yep['user'] = $yep->getUser();
+			$yep['user'] = $yep->user;
+		});
+/*
+		foreach(\App\Yep::with('user','votes')->get() as $yep){
+			$yep['votes'] = $yep->votes()->count();
+			array_push($yeps, $yep);
 		}
+		return $yeps;
+		$yeps = \App\Yep::queryYeps($params);
+*/
+
+/*		
+		foreach($yeps->with('user', 'votes', 'tagNames') as $yep) {
+            $yep['votes'] = $yep->votes()->count();
+            $yep['tags'] = $yep->tagNames;
+            $yep['user'] = $yep->user;
+		
+		 }
+*/
+
 		return response()->json(['yeps' => $yeps], 200);
 	}
 
@@ -280,6 +298,7 @@ if($user)
 		}
 		} catch(\Exception $e){
 				$yep->voted = 0;
+				dd($yep);
 		}
 		
 

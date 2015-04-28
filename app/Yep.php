@@ -35,7 +35,7 @@ class Yep extends Model{
 	//
 	public function user()
 	{
-		return $this->belongsTo('App\User');
+		return $this->belongsTo('App\User', 'user_id');
 	}
 
 	public function getUser()
@@ -119,6 +119,10 @@ class Yep extends Model{
 		$tags = explode(',',$params['tags']);
 		if($tags[0] == '')
 		{
+			return Yep::with('user','votes')->take($quantity)->get();
+			return Yep::take($quantity)->get();
+			return Yep::where('staging','=','0')->take($quantity)->get();
+			dd('test');
 			return Yep::all()->where('staging','=',0)->take($quantity);
 		}
 		return Yep::withAnyTag($tags)->limit($quantity)->where('staging', '=', 0)->get();
