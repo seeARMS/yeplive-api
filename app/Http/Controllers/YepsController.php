@@ -279,7 +279,9 @@ if($user)
 				$yep->voted = 0;
 		}
 		} catch(\Exception $e){
+				$yep->voted = 0;
 		}
+		
 
 		$yep['votes'] = $yep->votes()->count();
 		$yep['tags'] = $yep->tagNames();
