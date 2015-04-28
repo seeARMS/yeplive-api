@@ -117,8 +117,8 @@ class UsersController extends Controller {
 		{
 			return \App\Errors::notFound('yep not found');
 		}
-		dd("nice");
-		$yeps = \App\Yep::where('user_id', '=', $user->user_id)->sortByDesc('created_at')->get();	
+
+		$yeps = \App\Yep::where('user_id', '=', $user->user_id)->orderBy('created_at','desc')->get();	
 
 		return response()->json(['yeps' => $yeps], 200);	
 	}
