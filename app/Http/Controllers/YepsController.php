@@ -179,7 +179,7 @@ class YepsController extends Controller {
 			return \App\Errors::forbidden("user is banned");
 		}
 
-		$yep= \App\Yep::find($params['yep_id']);
+		$yep= \App\Yep::find($id);
 
 		if(!$yep)
 		{
