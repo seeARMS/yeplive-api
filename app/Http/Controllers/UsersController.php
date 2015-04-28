@@ -117,11 +117,34 @@ class UsersController extends Controller {
 		{
 			return \App\Errors::notFound('yep not found');
 		}
-		$yeps = \App\Yep::where('user_id', '=', $user->user_id)->get();	
+		dd("nice");
+		$yeps = \App\Yep::where('user_id', '=', $user->user_id)->sortByDesc('created_at')->get();	
 
 		return response()->json(['yeps' => $yeps], 200);	
 	}
 
+
+	public function setFacebookToken(Request $request, \SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb)
+	{		
+		$user = \JWTAuth::parseToken()->toUser();
+
+		if(! $user)
+		{
+			return \App\Errors::notFound('user not found');
+		}
+
+		if(! $user->isFacebookAuthed($fb)){
+			return \App\Errors::unauthorized('user is not authed with facebook');
+		}
+
+		
+		if($request->has('access_token')){
+			$user->facebook_access_token = $request->input('access_token');
+			return response()->json(['success'=>1, 'id'=>$user->user_id]);
+		} else {
+			return \App\Errors::invalid('no token provided');
+		}
+	}
 
 	/*
 	 * POST : Take in social login tokens and return with token and user id

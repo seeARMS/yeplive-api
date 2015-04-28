@@ -207,6 +207,10 @@ Route::group(array('prefix' => 'api/v1'), function()
 			Route::post('share/facebook',[
 				'uses' => 'UsersController@shareFacebook'
 			]);
+	
+			Route::post('/token/facebook',[
+				'uses' => 'UsersController@setFacebookToken'
+			]);
 
 
 			Route::post('share/google',[
