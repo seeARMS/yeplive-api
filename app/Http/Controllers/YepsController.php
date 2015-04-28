@@ -348,7 +348,6 @@ if($user)
 		}
 		} catch(\Exception $e){
 				$yep->voted = 0;
-				dd($yep);
 		}
 		
 
