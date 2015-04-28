@@ -22,7 +22,8 @@ class Yep extends Model{
 		'isMobile',
 		'user_id',
 		'staging',
-		'upload_url'
+		'upload_url',
+		'votes'
 	];
 
 	 protected $dates = ['deleted_at'];

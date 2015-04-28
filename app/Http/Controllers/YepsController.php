@@ -54,7 +54,7 @@ class YepsController extends Controller {
 		$yeps = [];
 		$yeps = \App\Yep::queryYeps($params);
 		$yeps->each(function($yep){
-			$yep['votes'] = $yep->votes->count();
+			$yep['vote_count'] = $yep->votes->count();
 			$yep['tags'] = $yep->tagNames();
 		});
 
