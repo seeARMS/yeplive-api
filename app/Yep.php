@@ -120,10 +120,6 @@ class Yep extends Model{
 		if($tags[0] == '')
 		{
 			return Yep::with('user','votes')->take($quantity)->get();
-			return Yep::take($quantity)->get();
-			return Yep::where('staging','=','0')->take($quantity)->get();
-			dd('test');
-			return Yep::all()->where('staging','=',0)->take($quantity);
 		}
 		return Yep::withAnyTag($tags)->limit($quantity)->where('staging', '=', 0)->get();
 	}
