@@ -38,9 +38,6 @@ class YepsController extends Controller {
 	//GET /yeps
 	public function index(Request $request)
 	{
-//\Debugbar::startMeasure('render','Time for rendering');
-//\Debugbar::stopMeasure('render');
-		return 'test';
 		$params = $request->only(
 			'tags',
 			'quantity'
