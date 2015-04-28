@@ -148,6 +148,9 @@ Route::group(array('prefix' => 'api/v1'), function()
 		Route::post('yeps/{id}/complete',[
 			'uses' => 'YepsController@streamComplete'
 		]);
+		Route::post('thumbnail/{id}', [
+			'uses' => 'YepsController@addVideoThumbnail'
+		]);
 
 		/*
 		Route::get('yeps/{id}/votes',[

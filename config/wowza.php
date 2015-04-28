@@ -1,7 +1,9 @@
 <?php
 
 return [
-
+	'thumbnail' => [
+		'host' => 'http://52.10.133.244:8086'
+	],
 	'rtmp' => [
 		'test' => 'rtmp://52.10.133.244:1935/test/_definst_/mp4:',
 		'hdfvr' => '',

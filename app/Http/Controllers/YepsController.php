@@ -156,6 +156,58 @@ class YepsController extends Controller {
 		return response()->json(['success' => 1, 'id' => $yep->id, 'upload_url' => $yep->upload_url]);
 	}
 
+	public function addVideoThumbnail(Request $request, $id)
+	{
+		/*
+		$params = $request->only(
+			'yep_id'
+		);
+
+
+		$validator = \Validator::make( $params, [
+			'yep_id' => 'integer'
+		]);
+
+
+		if($validator -> fails())
+		{
+			return \App\Errors::invalid(null, $validator);
+		}
+		
+		*/
+
+		$user = \JWTAuth::parseToken()->toUser();
+
+		if($user -> isBanned()){
+			return \App\Errors::forbidden("user is banned");
+		}
+
+		$yep= \App\Yep::find($id);
+
+		if(!$yep)
+		{
+			return \App\Errors::notFound('yep not found');
+		}
+
+		$width = '427';
+		$height = '240';
+		$application_name = 'test';
+		$stream_name = $yep -> stream_name;
+		$yep_id = $yep -> id;
+
+		$imagePath = \Config::get('wowza.thumbnail.host').'/transcoderthumbnail?application='.$application_name.'&streamname='.$stream_name.'&format=jpg&size='.$width.'x'.$height;
+
+		$fileName = $stream_name.'-thumbnail.jpg';
+
+		$imageUrl = \App\Algorithm\ProS3::storeYepThumbnail($imagePath, $fileName);
+
+		$yep -> image_path = $imageUrl;
+		$yep -> save();
+
+		return response()->json(['success' => 1, 'image_url' => $imageUrl, 'id' => $yep_id]);
+	}
+
+
 	//PUT /yep/{id}
 	public function update(Request $request, $id)
 	{
