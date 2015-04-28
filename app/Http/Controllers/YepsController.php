@@ -153,20 +153,25 @@ class YepsController extends Controller {
 		return response()->json(['success' => 1, 'id' => $yep->id, 'upload_url' => $yep->upload_url]);
 	}
 
-	public function addVideoThumbnail(Request $request)
+	public function addVideoThumbnail(Request $request, $id)
 	{
+		/*
 		$params = $request->only(
 			'yep_id'
 		);
+
 
 		$validator = \Validator::make( $params, [
 			'yep_id' => 'integer'
 		]);
 
+
 		if($validator -> fails())
 		{
 			return \App\Errors::invalid(null, $validator);
 		}
+		
+		*/
 
 		$user = \JWTAuth::parseToken()->toUser();
 
