@@ -119,7 +119,7 @@ class Yep extends Model{
 		$tags = explode(',',$params['tags']);
 		if($tags[0] == '')
 		{
-			return Yep::with('user','votes')->take($quantity)->get();
+			return Yep::with('user')->take($quantity)->get();
 		}
 		return Yep::withAnyTag($tags)->limit($quantity)->where('staging', '=', 0)->get();
 	}
