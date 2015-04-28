@@ -301,10 +301,12 @@ class UsersController extends Controller {
 			return \App\Errors::notFound('user not found');
 		}
 
+		$message = $request->input('message') || '';
+
 		if(! $user->isFacebookAuthed($fb)){
 			return \App\Errors::unauthorized('user is not authed with facebook');
 		}
-		if($user->shareFacebook($fb)){
+		if($user->shareFacebook($fb, $message)){
 			return response()->json(['success' => 1, 'id' => $user->user_id],200);	
 		} else {
 			return \App\Errors::invalid('');
