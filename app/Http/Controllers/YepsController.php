@@ -185,6 +185,7 @@ class YepsController extends Controller {
 		$height = '240';
 		$application_name = 'test';
 		$stream_name = $yep -> stream_name;
+		$yep_id = $yep -> id;
 
 		$imagePath = \Config::get('wowza.thumbnail.host').'/transcoderthumbnail?application='.$application_name.'&streamname='.$stream_name.'&format=jpg&size='.$width.'x'.$height;
 
@@ -195,7 +196,7 @@ class YepsController extends Controller {
 		$yep -> image_path = $imageUrl;
 		$yep -> save();
 
-		return response()->json(['success' => 1, 'image_url' => $imageUrl]);
+		return response()->json(['success' => 1, 'image_url' => $imageUrl, 'id' => $yep_id]);
 	}
 
 
