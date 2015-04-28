@@ -38,6 +38,8 @@ class YepsController extends Controller {
 	//GET /yeps
 	public function index(Request $request)
 	{
+		\Log::info('REQUEST TO GET ALL YEPS PLS WERK');
+		\Log::info(time());
 		$params = $request->only(
 			'tags',
 			'quantity'
