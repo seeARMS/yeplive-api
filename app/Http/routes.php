@@ -11,12 +11,14 @@ Route::group(array('prefix' => 'api/v1'), function()
 	//Testing routes
 	if (\App::environment('local'))
 	{
+		/*
 		Route::get('facebook/login', function(SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb)
 		{
 			// Send an array of permissions to request
 			$login_url = $fb->getLoginUrl(['email','public_profile', 'user_friends']);
 			echo '<a href="' . $login_url . '">Login with Facebook</a>';
 		});
+		*/
 
 		Route::get('facebook/callback', [
 			'uses' => 'UsersController@facebookCallback'
@@ -51,9 +53,11 @@ Route::group(array('prefix' => 'api/v1'), function()
 	/*
 	 * API Health Check
 	 */
+	/*
 	Route::get('/', function(){
 		return response()->json(['name' => 'Yeplive Web API', 'version' => '1.0']);
 	});
+	*/
 
 	// Internal apis 
 	Route::group(['prefix' => 'internal'], function(){

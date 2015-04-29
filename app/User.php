@@ -334,7 +334,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		
 		$queryAndroid = ParseInstallation::query();
 		$queryAndroid->equalTo('deviceType', 'android');
-		 
+
 		ParsePush::send(array(
 			"where" => $queryAndroid,
 			"data" => array(
