@@ -475,6 +475,25 @@ class UsersController extends Controller {
 			
 	}
 
+	public function massFollow(Request $request)
+	{
+		$followees = $request->input('users');
+
+		try {
+			$user = \JWTAuth::parseToken()->toUser();
+		} catch(\Exception $e) {
+			return \App\Errors::unauthorized('user is not authorized');
+		}
+
+		foreach($followees as $followee)
+		{
+			$following_obj = new \App\Follower;
+			$following_obj->followee_id = $user->user_id;
+			$following_obj->follower_id = $currentUser->user_id;
+			$following_obj->save();
+		}		
+	}
+
 	/*
 	 * POST : Add a follower and followee relationship
 	 *

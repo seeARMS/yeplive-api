@@ -89,6 +89,9 @@ Route::group(array('prefix' => 'api/v1'), function()
 		'uses' => 'UsersController@socialAuth'
 	]);
 
+	Route::post('follow', [
+		'uses' => 'UsersController@massFollow'
+	]);
 	Route::get('yeps', [
 		'uses' => 'YepsController@index'
 	]);

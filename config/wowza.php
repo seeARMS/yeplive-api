@@ -5,7 +5,7 @@ return [
 		'host' => 'http://54.149.243.236:8086'
 	],
 	'rtmp' => [
-		'test' => 'rtmp://wowza-edge-prod-beta.elasticbeanstalk.com/liveedge/_definst_/',
+		'stream' => 'rtmp://wowza-edge-prod-beta.elasticbeanstalk.com/liveedge/_definst_/mp4:',
 		'hdfvr' => '',
 		'vod' => 'rtmp://52.10.133.244/vods3/_definst_/&mp4:amazons3/dev-wowza/',
 		'hlslive_web' => 'http://52.10.133.244/testing-env-yy.elasticbeanstalk.com:1935/',
