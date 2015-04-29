@@ -2,7 +2,7 @@
 
 return [
 	'thumbnail' => [
-		'host' => 'http://52.10.133.244:8086'
+		'host' => 'http://54.149.243.236:8086'
 	],
 	'rtmp' => [
 		'test' => 'rtmp://wowza-edge-prod-beta.elasticbeanstalk.com/liveedge/_definst_/mp4:',
