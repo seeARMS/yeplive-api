@@ -31,7 +31,7 @@ return [
     |
     */
 
-    'rest_key' => env('PARSE_REST_ID'),//'your-rest-key',
+    'rest_key' => env('PARSE_REST_KEY'),//'your-rest-key',
 
     /*
     |--------------------------------------------------------------------------

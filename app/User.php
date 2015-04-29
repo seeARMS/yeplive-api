@@ -6,6 +6,18 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
+use Parse\ParseObject;
+use Parse\ParseQuery;
+use Parse\ParseACL;
+use Parse\ParsePush;
+use Parse\ParseUser;
+use Parse\ParseInstallation;
+use Parse\ParseException;
+use Parse\ParseAnalytics;
+use Parse\ParseFile;
+use Parse\ParseButt;
+use Parse\ParseClient;
+
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract{
 
 	use Authenticatable, CanResetPassword;
@@ -315,6 +327,23 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		} else {
 			return false;
 		}
+	}
+
+	public function notifyFollowers()
+	{
+		
+		$queryAndroid = ParseInstallation::query();
+		$queryAndroid->equalTo('deviceType', 'android');
+		 
+		ParsePush::send(array(
+			"where" => $queryAndroid,
+			"data" => array(
+				"alert" => "Your suitcase has been filled with tiny robots!"
+			)
+		));
+
+		return true;	
+
 	}
 
 	public function shareTwitter()

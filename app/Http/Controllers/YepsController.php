@@ -115,6 +115,9 @@ class YepsController extends Controller {
 			return \App\Errors::forbidden("user is banned");
 		}
 
+		dd($user->notifyFollowers());
+		
+
 		$params['user_id'] = $user -> user_id;
 
 		$filtered_params = array_filter($params, 'strlen');
