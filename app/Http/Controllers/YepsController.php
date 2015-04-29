@@ -173,7 +173,7 @@ class YepsController extends Controller {
 		}
 		
 		*/
-
+		
 		$user = \JWTAuth::parseToken()->toUser();
 
 		if($user -> isBanned()){
@@ -193,7 +193,7 @@ class YepsController extends Controller {
 		$stream_name = $yep -> stream_name;
 		$yep_id = $yep -> id;
 
-		$imagePath = \Config::get('wowza.thumbnail.host').'/transcoderthumbnail?application='.$application_name.'&streamname='.$stream_name.'&format=jpg&size='.$width.'x'.$height;
+		$imagePath = \Config::get('wowza.thumbnail.host').'/transcoderthumbnail?application='.$application_name.'&streamname='.$stream_name.'&format=jpeg&size='.$width.'x'.$height;
 
 		$fileName = $stream_name.'-thumbnail.jpg';
 
