@@ -352,7 +352,7 @@ if($user)
 		}
 		
 
-		$yep['votes'] = $yep->votes()->count();
+		$yep['vote_count'] = $yep->votes()->count();
 		$yep['tags'] = $yep->tagNames();
 		$yep['user'] = $yep->getUser();
 		
