@@ -192,7 +192,7 @@ class YepsController extends Controller {
 
 		$width = '427';
 		$height = '240';
-		$application_name = 'test';
+		$application_name = 'liveorigin';
 		$stream_name = $yep -> stream_name;
 		$yep_id = $yep -> id;
 
