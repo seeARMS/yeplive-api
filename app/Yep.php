@@ -49,6 +49,11 @@ class Yep extends Model{
 		return $this->hasMany('App\Vote');
 	}
 
+	public function tags()
+	{
+		return $this->morphMany('Conner\Tagging\Tagged','taggable');
+	}
+
 	//find yeps based on similar tags
 	public function getSimilar()
 	{

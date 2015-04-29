@@ -485,13 +485,15 @@ class UsersController extends Controller {
 			return \App\Errors::unauthorized('user is not authorized');
 		}
 
-		foreach($followees as $followee)
+		foreach($followees as $followee_id)
 		{
 			$following_obj = new \App\Follower;
-			$following_obj->followee_id = $user->user_id;
+			$following_obj->followee_id = $folloee->user_id;
 			$following_obj->follower_id = $currentUser->user_id;
 			$following_obj->save();
 		}		
+
+		return response()->json(['success'=>1, 'id'=>$user->user_id]);
 	}
 
 	/*

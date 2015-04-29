@@ -155,6 +155,7 @@ class YepsController extends Controller {
 		return response()->json(['success' => 1, 'id' => $yep->id, 'upload_url' => $yep->upload_url]);
 	}
 
+
 	public function addVideoThumbnail(Request $request, $id)
 	{
 		/*

@@ -101,6 +101,9 @@ Route::group(array('prefix' => 'api/v1'), function()
 	Route::get('yeps/{id}/similar', [
 		'uses' => 'YepsController@similar'
 	]);
+	Route::get('tags',[
+		'uses' => 'TagsController@getTagsInArea'	
+	]);
 	Route::get('users',[
 		'uses' => 'UsersController@index'
 	]);
