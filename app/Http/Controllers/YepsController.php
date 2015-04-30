@@ -154,7 +154,10 @@ class YepsController extends Controller {
 			$yep->staging = true;
 		};
 
+
 		$yep -> save();
+
+		$success = \App\Algorithm\Socket::newYep($yep);
 
 //		$upload_web = \Config::get('wowza.rtmp.upload_web').$yep->stream_name;
 
@@ -539,6 +542,8 @@ if($user)
 		$yep -> end_time = time();
 
 		$yep -> save();
+
+		$success = \App\Algorithm\Soccket::yepComplete($yep);
 
 		return response()->json(["success" => 1, "id" => $yep->id], 200);
 		
