@@ -143,7 +143,10 @@ class YepsController extends Controller {
 
 		$yep->vod_enable = false;
 
-		$yep->stream_url = \Config::get('wowza.rtmp.stream').$yep->stream_name;
+//		$yep->stream_url = \Config::get('wowza.rtmp.stream').$yep->stream_name;
+
+		$yep->stream_url = \Config::get('wowza.rtsp.android').$yep->stream_name;
+
 //		$yep->stream_mobile_url = \Config::get('wowza.rtmp.test').$yep->stream_name."/playlist.m3u8";
 		$yep->stream_mobile_url = 'http://54.149.106.109:1935/hdfvr/'.$yep->stream_name."/playlist.m3u8";
 
