@@ -2,15 +2,15 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class Message extends Model {
+class Comments extends Model {
 
 	//
 	protected $fillable = [
-		'sender_id',
-		'channel_id',
-		'display_name',
-		'message',
-		'timestamp'
+		'user_id',
+		'yep_id',
+		'comment',
+		'created_at',
+		'updated_at'
 	];
 
 

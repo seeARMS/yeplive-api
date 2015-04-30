@@ -64,17 +64,17 @@ Route::group(array('prefix' => 'api/v1'), function()
 
 		// communicate with socket.io chat server
 		// We may not need this
-		Route::post('chat/{id}/connect', [
+		Route::post('chat/{yep_id}/connect', [
 			'uses' => 'ChatController@connection'
 		]);
 
 		// We may not need this
-		Route::post('chat/{id}/disconnect', [
+		Route::post('chat/{yep_id}/disconnect', [
 			'uses' => 'ChatController@disconnection'
 		]);
 		
 		// This should be moved to Comment Controller
-		Route::get('chat/{id}/messages', [
+		Route::get('chat/{yep_id}/messages', [
 			'uses' => 'ChatController@messages'
 		]);
 
@@ -123,10 +123,10 @@ Route::group(array('prefix' => 'api/v1'), function()
 
 
 	/*
-	 * Get all comments by channel_id
+	 * Get all comments by yep_id
 	 */
-	Route::get('comment/{channel_id}', [
-		'uses' => 'CommentController@getComment'
+	Route::get('comments/{yep_id}', [
+		'uses' => 'CommentController@getComments'
 	]);
 
 	// ALL THESE ROUTES REQURE A JWT TOKEN
@@ -286,7 +286,7 @@ Route::group(array('prefix' => 'api/v1'), function()
 				 * This api will be called from only registered users
 				 * This should be called asynchronously
 				 */
-				Route::post('user/{id}/chat/{channel_id}/messages',[
+				Route::post('user/{user_id}/chat/{yep_id}/messages',[
 					'uses' => 'ChatController@compileMessages'
 				]);
 			});

@@ -48,12 +48,17 @@ class ChatController extends Controller {
 
 	}
 
-	public function messages(Request $request, $id)
+	public function messages(Request $request, $yep_id)
 	{
 		//$yep= \App\Yep::where('channel_id', '=', $id)->get()-first();
-		$yep = \App\Yep::find($id);
+		$yep = \App\Yep::find($yep_id);
 
-		$messages = \App\Message::where('channel_id', '=', $id)->get();
+		if( !$yep )
+		{
+			return \App\Errors::notFound('yep not found');
+		}
+
+		$messages = \App\Comments::where('yep_id', '=', $yep_id)->get();
 	
 		return response()->json($messages, 200);	
 	}
@@ -97,17 +102,14 @@ class ChatController extends Controller {
 	}
 	*/
 
-	public function compileMessages(Request $request, $user_id, $channel_id)
+	public function compileMessages(Request $request, $user_id, $yep_id)
 	{
-		
-		// Check if user is the owner of this channel
 		// Only channel owner can compile chat messages
-		// Assuming channel_id is yep_id (This may have to be changed later on)
-		$yep = \App\Yep::find($channel_id);
+		$yep = \App\Yep::find($yep_id);
 
 		if( !$yep || $yep->user_id != $user_id )
 		{
-			return response()->json(['error' => 'unauthorized'], 401);
+			return \App\Errors::notFound('yep not found');
 		}
 
 		$messageObj = $request->only(
@@ -120,19 +122,18 @@ class ChatController extends Controller {
 
 			foreach($messageObj as $message)
 			{
-					$params['sender_id']	= $message->sender_id;
-					$params['message']		= $message->message;
-					$params['timestamp']	= $message->timestamp;
-					$params['display_name'] = $message->display_name;
-					$params['channel_id']	= $channel_id;
+					$params['user_id']		= $message->user_id;
+					$params['comment']		= $message->comment;
+					$params['created_at']	= $message->created_at;
+					$params['yep_id']		= $yep_id;
 					\App\Message::create($params);
 			}
 
 		} catch (\Exception $e) {
-			return response()->json(['error' => 'invalid input'], 401);
+			return \App\Errors::invalid('invalid inputs');
 		}
 		
-		return response()->json(['success' => '1'], 200);
+		return response()->json({"success": 1});
 	}
 
 }

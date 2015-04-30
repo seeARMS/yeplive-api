@@ -18,6 +18,7 @@ return array(
     'ChangeGoogleNameToId' => $baseDir . '/database/migrations/2015_04_25_174613_change_google_name_to_id.php',
     'ChangeMessagesTable' => $baseDir . '/database/migrations/2015_04_15_211316_change_messages_table.php',
     'ChangeVotesToYeps' => $baseDir . '/database/migrations/2015_04_10_182205_change_votes_to_yeps.php',
+    'CreateCommentsTable' => $baseDir . '/database/migrations/2015_04_30_211229_create_comments_table.php',
     'CreateFollowersTable' => $baseDir . '/database/migrations/2015_04_13_155536_create_followers_table.php',
     'CreateJobsTable' => $baseDir . '/database/migrations/2015_04_30_165848_create_jobs_table.php',
     'CreateMessagesTable' => $baseDir . '/database/migrations/2015_04_12_151758_create_messages_table.php',
