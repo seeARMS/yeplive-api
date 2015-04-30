@@ -16,7 +16,7 @@ return [
 
 	],
 	'rtsp' => [
-		'android' => 'rtsp://wowza-edge-prod-beta.elasticbeanstalk.com/liveedge/_definst_/'
+		'android' => 'rtsp://52.10.124.225/liveedge/_definst_/'
 	],
 	'cloudfront' => [
 		'static' => 'http://dwvjlx2oulfs.cloudfront.net/'
