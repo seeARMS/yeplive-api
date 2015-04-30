@@ -140,6 +140,7 @@ class YepsController extends Controller {
 
 		$yep->upload_url = \Config::get('wowza.rtmp.upload_mobile').$yep->stream_name;
 
+
 		$yep->vod_enable = false;
 
 		$yep->stream_url = \Config::get('wowza.rtmp.stream').$yep->stream_name;
@@ -152,7 +153,10 @@ class YepsController extends Controller {
 
 		$yep -> save();
 
-		return response()->json(['success' => 1, 'id' => $yep->id, 'upload_url' => $yep->upload_url]);
+//		$upload_web = \Config::get('wowza.rtmp.upload_web').$yep->stream_name;
+
+		return response()->json(['success' => 1, 'id' => $yep->id, 'upload_url' => $yep->upload_url,
+			'stream_name' => $yep->stream_name]);
 	}
 
 
@@ -528,7 +532,7 @@ if($user)
 //		$yep -> vod_path = "rtmp://54.149.106.109/vods3/_definst_/&mp4:amazons3/dev-wowza/".$yep->stream_name.".mp4";
 //		$yep->vod_mobile_path = "http://54.149.106.109:1935/vods3/_definst_/amazons3/dev-wowza/".$yep->stream_name."/playlist.m3u8";
 		$yep -> vod_path = \Config::get('wowza.cloudfront.static').$yep->stream_name.".mp4";
-		$yep -> vod_mobile_path = \Config::get('wowza.rtmp.vod').$yep->stream_name."/playlist.m3u8";
+		$yep -> vod_mobile_path = \Config::get('wowza.cloudfront.static').$yep->stream_name."/playlist.m3u8";
 		$yep -> end_time = time();
 
 		$yep -> save();
