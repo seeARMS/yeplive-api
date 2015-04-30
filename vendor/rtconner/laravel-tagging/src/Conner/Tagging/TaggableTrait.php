@@ -6,6 +6,20 @@
 trait TaggableTrait {
 
 	/**
+	 * Boot the soft taggable trait for a model.
+	 *
+	 * @return void
+	 */
+	public static function bootTaggableTrait()
+	{
+		if(\Config::get('tagging.untag_on_delete')) {
+			static::deleting(function($model) {
+				$model->untag();
+			});
+		}
+	}
+	
+	/**
 	 * Return collection of tags related to the tagged model
 	 *
 	 * @return Illuminate\Database\Eloquent\Collection
@@ -191,9 +205,11 @@ trait TaggableTrait {
 	 * @return Collection
 	 */
 	public static function existingTags() {
+		$instance = new static();
+		
 		return Tagged::distinct()
 			->join('tagging_tags', 'tag_slug', '=', 'tagging_tags.slug')
-			->where('taggable_type', '=', get_called_class())
+			->where('taggable_type', '=', (new static)->getMorphClass())
 			->orderBy('tag_slug', 'ASC')
 			->get(array('tag_slug as slug', 'tag_name as name', 'tagging_tags.count as count'));
 	}

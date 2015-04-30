@@ -15,11 +15,11 @@ There are no real limits on what characters can be used in a tag. It uses a slug
 
 #### Composer Install (for Laravel 5)
 	
-	composer require rtconner/laravel-tagging "~1.0.1"
+	composer require rtconner/laravel-tagging "~1.0.3"
 
 #### Install and then Run the migrations
 
-The service provider is does not load on every page load, so it should not slow down your app.
+The service provider does not load on every page load, so it should not slow down your app.
 
 ```php
 'providers' => array(
@@ -35,7 +35,7 @@ After these two steps are done, you can edit config/tagging.php with your prefer
 	
 #### Setup your models
 
-    class Article extends \Eloquent {
+    class Article extends \Illuminate\Database\Eloquent\Model {
         use \Conner\Tagging\TaggableTrait;
     }
 

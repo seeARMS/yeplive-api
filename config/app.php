@@ -149,8 +149,7 @@ return [
     'SammyK\LaravelFacebookSdk\LaravelFacebookSdkServiceProvider',
 		'GrahamCampbell\Parse\ParseServiceProvider',
 		'Thujohn\Twitter\TwitterServiceProvider',
-		'Barryvdh\Debugbar\ServiceProvider',
-		'GrahamCampbell\Throttle\ThrottleServiceProvider',
+		'Barryvdh\Debugbar\ServiceProvider'
 
 	],
 
@@ -203,8 +202,7 @@ return [
 		'Twitter' => 'Thujohn\Twitter\Facades\Twitter',
 		'Socialize' => 'Laravel\Socialite\Facades\Socialite',
 		'PushNotification' => 'Laraviet\LaravelPushNotification\Facades\PushNotification',
-		'Debugbar' => 'Barryvdh\Debugbar\Facade',
-		'Throttle' => 'GrahamCampbell\Throttle\Facades\Throttle'
+		'Debugbar' => 'Barryvdh\Debugbar\Facade'
 	],
 
 ];
