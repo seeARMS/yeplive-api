@@ -150,6 +150,7 @@ return [
 		'GrahamCampbell\Parse\ParseServiceProvider',
 		'Thujohn\Twitter\TwitterServiceProvider',
 		'Barryvdh\Debugbar\ServiceProvider',
+		'GrahamCampbell\Throttle\ThrottleServiceProvider',
 
 	],
 
@@ -203,6 +204,7 @@ return [
 		'Socialize' => 'Laravel\Socialite\Facades\Socialite',
 		'PushNotification' => 'Laraviet\LaravelPushNotification\Facades\PushNotification',
 		'Debugbar' => 'Barryvdh\Debugbar\Facade',
+		'Throttle' => 'GrahamCampbell\Throttle\Facades\Throttle'
 	],
 
 ];
