@@ -125,7 +125,7 @@ class Yep extends Model{
 		$tags = explode(',',$params['tags']);
 		if($tags[0] == '')
 		{
-			return Yep::with('user')->orderBy('created_at','desc')->take($quantity)->get();
+			return Yep::with('user')->orderBy('vod_enable','asc')->orderBy('created_at','desc')->take($quantity)->get();
 		}
 		return Yep::withAnyTag($tags)->limit($quantity)->where('staging', '=', 0)->get();
 	}
