@@ -53,8 +53,14 @@ class TagsController extends Controller {
 				$tags[$tag->tag_slug] += 1;
 			}
 		}
+
+		$returnTags = [];
+
+		foreach ($tags as $key => $value) {
+			array_push($returnTags, ['name' => $key, 'count' => $value]);
+		}
 	
-		return $tags;	
+		return response()->json(['tags'=> $returnTags]);	
 
 	}
 
