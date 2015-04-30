@@ -157,7 +157,7 @@ class YepsController extends Controller {
 
 		$yep -> save();
 
-		$success = \App\Algorithm\Socket::newYep($yep);
+//`		$success = \App\Algorithm\Socket::newYep($yep);
 
 //		$upload_web = \Config::get('wowza.rtmp.upload_web').$yep->stream_name;
 
