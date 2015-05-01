@@ -8,6 +8,10 @@ class YepsController extends Controller {
 	{
 	}
 
+	public function loader(Request $request){
+		return 'loaderio-d9d729e1f9c98b37dcec64365e3dd5e3';
+	}
+
 	public function getYepPage(Request $request, $name)
 	{
 		$userAgent = $request->header('USER_AGENT');
