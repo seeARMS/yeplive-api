@@ -98,6 +98,9 @@ Route::group(array('prefix' => 'api/v1'), function()
 	Route::post('follow', [
 		'uses' => 'UsersController@massFollow'
 	]);
+	Route::get('yeps/by-name', [
+		'uses' => 'YepsController@getYepByName'
+	]);
 	Route::get('yeps', [
 		'uses' => 'YepsController@index'
 	]);

@@ -565,4 +565,13 @@ if($user)
 		return response()->json(["success" => 1, "id" => $yep->id], 200);
 		
 	}
+
+	public function getYepByName(Request $request, $id)
+	{
+		$name = $requst->input('name');
+
+		$yep = Yep::where('stream_name','=',$name)->first();
+
+		return response()->json(["yep"=>$yep]);
+	}
 }

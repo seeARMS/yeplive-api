@@ -15,6 +15,7 @@ return array(
     'AddTimestampsToVotes' => $baseDir . '/database/migrations/2015_04_10_210115_add_timestamps_to_votes.php',
     'AddUploadUrlToYeps' => $baseDir . '/database/migrations/2015_04_26_222545_add_upload_url_to_yeps.php',
     'AddViewsToProgram' => $baseDir . '/database/migrations/2015_04_09_012759_add_views_to_program.php',
+    'ChagneFacebookAccessToken' => $baseDir . '/database/migrations/2015_05_01_053807_ChagneFacebookAccessToken.php',
     'ChangeGoogleNameToId' => $baseDir . '/database/migrations/2015_04_25_174613_change_google_name_to_id.php',
     'ChangeMessagesTable' => $baseDir . '/database/migrations/2015_04_15_211316_change_messages_table.php',
     'ChangeVotesToYeps' => $baseDir . '/database/migrations/2015_04_10_182205_change_votes_to_yeps.php',
