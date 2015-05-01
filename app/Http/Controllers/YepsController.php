@@ -593,7 +593,7 @@ if($user)
 
 		if($key != 'evaniscool')
 		{
-			return \App\Erros:notFound();
+			return \App\Errors::notFound();
 		}
 
 		if(! $yep)
