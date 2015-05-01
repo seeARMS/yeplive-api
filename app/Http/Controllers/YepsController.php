@@ -566,11 +566,20 @@ if($user)
 		
 	}
 
-	public function getYepByName(Request $request, $id)
+	public function getYepByName(Request $request)
 	{
-		$name = $requst->input('name');
+		$params = $request->only('name');
 
-		$yep = Yep::where('stream_name','=',$name)->first();
+		$validator = \Validator::make( $params, [
+			'name' => 'string',
+		]);
+
+		if($validator -> fails())
+		{
+			return \App\Errors::invalid(null, $validator);
+		}
+
+		$yep = \App\Yep::where('stream_name','=',$params['name'])->first();
 
 		return response()->json(["yep"=>$yep]);
 	}
