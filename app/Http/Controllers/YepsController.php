@@ -58,10 +58,7 @@ class YepsController extends Controller {
 		}
 
 		$yeps = \App\Yep::queryYeps($params);
-		return $yeps;
-		dd($yeps);
 
-		/*
 		$yeps->each(function($yep){
 			$yep['vote_count'] = $yep->upvotes();
 			$yep['tags'] = $yep->tagNames();
@@ -165,7 +162,11 @@ class YepsController extends Controller {
 
 		$yep -> save();
 		
-		$success = \App\Algorithm\Socket::newYep($yep);
+		try{
+			$success = \App\Algorithm\Socket::newYep($yep);
+		}
+		catch (\Exception $e){
+		}
 
 //		$upload_web = \Config::get('wowza.rtmp.upload_web').$yep->stream_name;
 
