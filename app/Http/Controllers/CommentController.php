@@ -40,7 +40,13 @@ class CommentController extends Controller {
 		}
 
 		$commnets = \DB::table('yeplive_users')
-					->select('comments.created_at')
+					->select('comments.created_at',
+								'comments.updated_at',
+								'comments.comment',
+								'yeplive_users.user_id',
+								'yeplive_users.name',
+								'yeplive_users.display_name',
+								'yeplive_users.picture_path')
 					->join('comments', function($join) use ($yep_id)
 					{
 						$join->on('comments.user_id', '=', 'yeplive_users.user_id')
