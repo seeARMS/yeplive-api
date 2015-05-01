@@ -10,22 +10,28 @@ class Socket {
 
 	public static function newView($yep)
 	{
-		$data = $yep->toArray();
-		$success = postSocket('/socket/yeps/views', $data);
+		$data = [
+			'view_count' => $yep->views,
+			'yep_id' => $yep->id
+		];
+		$success = self::postSocket('/socket/yeps/views', $data);
 		return $success;
 	}
 
 	public static function newVote($yep)
 	{
-		$data = $yep->toArray();
-		$success = postSocket('/socket/yeps/votes', $data);
+		$data = [
+			'vote_count' => $yep->upvotes(),
+			'yep_id' => $yep->id
+		];
+		$success = self::postSocket('/socket/yeps/votes', $data);
 		return $success;
 	}
 
 	public static function yepComplete($yep)
 	{
 		$data = $yep->toArray();
-		$success = Socket::postSocket('/socket/yeps/complete', $data);
+		$success = self::postSocket('/socket/yeps/complete', $data);
 		return $success;
 	}
 
@@ -34,7 +40,9 @@ class Socket {
 	{
 		$client = new \GuzzleHttp\Client();
 		$url = \Config::get('socket.url').$route;
-		$response = $client->post($url,  ['json' => $data]);
+		$response = $client->post($url,  ['json' => $data,
+			'timeout' => 3	
+		]);
 		if($response->getStatusCode() !== 200){
 			return false;
 		}

@@ -49,6 +49,13 @@ class Yep extends Model{
 		return $this->hasMany('App\Vote');
 	}
 
+	public function upvotes()
+	{
+		return \App\Vote::where('yep_id','=',$this->id)
+			->where('vote','=','1')
+			->count();
+	}
+
 	public function tags()
 	{
 		return $this->morphMany('Conner\Tagging\Tagged','taggable');

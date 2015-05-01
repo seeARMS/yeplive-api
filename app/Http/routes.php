@@ -2,7 +2,13 @@
 //RESTful API
 //ALL {id} tags only accept [0-9]+ see app/providers/RouteServiceProvider.php
 
-Route::get('{yep}', [
+
+
+Route::get('loaderio-d9d729e1f9c98b37dcec64365e3dd5e3', [
+	'uses' => 'YepsController@loader'
+]);
+
+Route::get('yep/{hash}', [
 	'uses' => 'YepsController@getYepPage'
 ]);
 

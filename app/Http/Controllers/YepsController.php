@@ -8,6 +8,10 @@ class YepsController extends Controller {
 	{
 	}
 
+	public function loader(Request $request){
+		return 'loaderio-d9d729e1f9c98b37dcec64365e3dd5e3';
+	}
+
 	public function getYepPage(Request $request, $name)
 	{
 		$userAgent = $request->header('USER_AGENT');
@@ -55,7 +59,7 @@ class YepsController extends Controller {
 		$yeps = [];
 		$yeps = \App\Yep::queryYeps($params);
 		$yeps->each(function($yep){
-			$yep['vote_count'] = $yep->votes->count();
+			$yep['vote_count'] = $yep->upvotes();
 			$yep['tags'] = $yep->tagNames();
 		});
 
@@ -156,8 +160,8 @@ class YepsController extends Controller {
 
 
 		$yep -> save();
-
-//`		$success = \App\Algorithm\Socket::newYep($yep);
+		
+		$success = \App\Algorithm\Socket::newYep($yep);
 
 //		$upload_web = \Config::get('wowza.rtmp.upload_web').$yep->stream_name;
 
@@ -364,7 +368,7 @@ if($user)
 		}
 		
 
-		$yep['vote_count'] = $yep->votes()->count();
+		$yep['vote_count'] = $yep->upvotes();
 		$yep['tags'] = $yep->tagNames();
 		$yep['user'] = $yep->getUser();
 		
@@ -432,6 +436,11 @@ if($user)
 		}
 		$yep -> views = $yep ->views + 1;
 		$yep -> save();
+
+		//TODO
+		\App\Algorithm\Socket::newView($yep);
+
+		
 		return response()->json(['success' => 1, 'id' => $yep->id, 'views'=>$yep->views],200);
 		return response()->json(['views' => $yep ->views], 200);
 	}
@@ -446,6 +455,9 @@ if($user)
 			return \App\Errors::notFound('yep not found');
 		}
 		$data = $yep->vote($user);
+
+		$success = \App\Algorithm\Socket::newVote($yep);
+
 		return response()->json($data, 200);
 	}
 
@@ -543,7 +555,7 @@ if($user)
 
 		$yep -> save();
 
-		$success = \App\Algorithm\Soccket::yepComplete($yep);
+		$success = \App\Algorithm\Socket::yepComplete($yep);
 
 		return response()->json(["success" => 1, "id" => $yep->id], 200);
 		
