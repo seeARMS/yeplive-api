@@ -12,6 +12,7 @@ return array(
     'Stringy\\' => array($vendorDir . '/danielstjules/stringy/src'),
     'SammyK\\LaravelFacebookSdk\\' => array($vendorDir . '/sammyk/laravel-facebook-sdk/src/LaravelFacebookSdk'),
     'React\\Promise\\' => array($vendorDir . '/react/promise/src'),
+    'Predis\\' => array($vendorDir . '/predis/predis/src'),
     'Parse\\' => array($vendorDir . '/parse/php-sdk/src/Parse'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
     'League\\OAuth1\\' => array($vendorDir . '/league/oauth1-client/src'),

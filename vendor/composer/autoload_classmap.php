@@ -9,6 +9,7 @@ return array(
     'AddDeeltedToYeps' => $baseDir . '/database/migrations/2015_04_26_133525_add_deelted_to_yeps.php',
     'AddDeletedToYeps' => $baseDir . '/database/migrations/2015_04_26_023425_add_deleted_to_yeps.php',
     'AddMobileHLSUrls' => $baseDir . '/database/migrations/2015_04_17_191539_add_mobile_HLS_urls.php',
+    'AddPortraitToYeps' => $baseDir . '/database/migrations/2015_05_01_200437_AddPortraitToYeps.php',
     'AddPushNotificationSettingsToUsers' => $baseDir . '/database/migrations/2015_04_09_132913_add_push_notification_settings_to_users.php',
     'AddStagingToYeps' => $baseDir . '/database/migrations/2015_04_25_210209_add_staging_to_yeps.php',
     'AddStreamInfoToYeps' => $baseDir . '/database/migrations/2015_04_13_220052_add_stream_info_to_yeps.php',

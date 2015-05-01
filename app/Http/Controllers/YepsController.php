@@ -57,30 +57,18 @@ class YepsController extends Controller {
 			return \App\Errors::invalid(null, $validator);
 		}
 
-		$yeps = \App\Yep::queryYeps($params);
-
-		$yeps->each(function($yep){
-			$yep['vote_count'] = $yep->upvotes();
-			$yep['tags'] = $yep->tagNames();
-		});
-
-/*
-		foreach(\App\Yep::with('user','votes')->get() as $yep){
-			$yep['votes'] = $yep->votes()->count();
-			array_push($yeps, $yep);
+		if($params['quantity'])
+		{
+			$yeps = \App\Yep::queryYeps($params);
 		}
-		return $yeps;
-		$yeps = \App\Yep::queryYeps($params);
-*/
-
-/*		
-		foreach($yeps->with('user', 'votes', 'tagNames') as $yep) {
-            $yep['votes'] = $yep->votes()->count();
-            $yep['tags'] = $yep->tagNames;
-            $yep['user'] = $yep->user;
-		
-		 }
-*/
+		else 
+		{
+			$yeps = \Cache::rememberForever('yeps', function() use ($params)
+			{
+				$params['quantity'] = 100000;
+				return \App\Yep::queryYeps($params);
+			});
+		}
 
 		return response()->json(['yeps' => $yeps], 200);
 	}
@@ -159,8 +147,9 @@ class YepsController extends Controller {
 			$yep->staging = true;
 		};
 
-
 		$yep -> save();
+	
+		\Cache::forget('yeps');
 		
 		try{
 			$success = \App\Algorithm\Socket::newYep($yep);
@@ -177,23 +166,18 @@ class YepsController extends Controller {
 
 	public function addVideoThumbnail(Request $request, $id)
 	{
-		/*
-		$params = $request->only(
-			'yep_id'
-		);
 
+		$params = $request -> only ('portrait');
 
 		$validator = \Validator::make( $params, [
-			'yep_id' => 'integer'
+			'portrait' => 'boolean'	
 		]);
-
 
 		if($validator -> fails())
 		{
 			return \App\Errors::invalid(null, $validator);
 		}
-		
-		*/
+
 		
 		$user = \JWTAuth::parseToken()->toUser();
 
@@ -221,6 +205,12 @@ class YepsController extends Controller {
 		$imageUrl = \App\Algorithm\ProS3::storeYepThumbnail($imagePath, $fileName);
 
 		$yep -> image_path = $imageUrl;
+		if(! $params['portrait'])
+		{
+			$yep->portrait = false;
+		} else {
+		$yep -> portrait = $params['portrait'];
+		}
 		$yep -> save();
 
 		return response()->json(['success' => 1, 'image_url' => $imageUrl, 'id' => $yep_id]);
