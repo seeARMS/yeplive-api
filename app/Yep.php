@@ -130,6 +130,7 @@ class Yep extends Model{
 	{	
 		$quantity = $params['quantity'] != null ? $params['quantity'] : 10;
 		return self::with('user')
+			->where('staging',0)
 			->orderBy('vod_enable','asc')
 			->orderBy('created_at','desc')
 			->take($quantity)

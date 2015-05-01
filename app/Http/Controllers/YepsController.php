@@ -566,6 +566,7 @@ if($user)
 		
 	}
 
+	//USED BY LAMBDA
 	public function getYepByName(Request $request)
 	{
 		$params = $request->only('name');
@@ -582,5 +583,28 @@ if($user)
 		$yep = \App\Yep::where('stream_name','=',$params['name'])->first();
 
 		return response()->json(["yep"=>$yep]);
+	}
+	
+	public function stageYep(Request $request, $id)
+	{
+		$yep = \App\Yep::find($id);
+
+		$key = $request->input('key');
+
+		if($key != 'evaniscool')
+		{
+			return \App\Erros:notFound();
+		}
+
+		if(! $yep)
+		{
+			return \App\Errors::notFound('yep not found');
+		}
+
+		$yep -> staging = 1;
+
+		$yep->save();
+	
+		return response()->json(["success" => 1, "id" => $id]);
 	}
 }

@@ -101,6 +101,9 @@ Route::group(array('prefix' => 'api/v1'), function()
 	Route::get('yeps/by-name', [
 		'uses' => 'YepsController@getYepByName'
 	]);
+	Route::get('yeps/{id}/stage-yep', [
+		'uses' => 'YepsController@stageYep'
+	]);
 	Route::get('yeps', [
 		'uses' => 'YepsController@index'
 	]);
