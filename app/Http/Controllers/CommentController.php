@@ -31,6 +31,7 @@ class CommentController extends Controller {
 
 	public function getComments(Request $request, $yep_id)
 	{
+
 		$yep = \App\Yep::find($yep_id);
 
 		if(!$yep)
@@ -38,8 +39,8 @@ class CommentController extends Controller {
 			return \App\Errors::notFound('yep not found');
 		}
 
-		$commnets = DB::table('yeplive_users')
-					->join('comments', function($join)
+		$commnets = \DB::table('yeplive_users')
+					->join('comments', function($join) use ($yep_id)
 					{
 						$join->on('comments.user_id', '=', 'yeplive_users.user_id')
 							 ->where('comments.yep_id', '=', $yep_id);
