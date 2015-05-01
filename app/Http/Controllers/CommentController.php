@@ -40,13 +40,14 @@ class CommentController extends Controller {
 		}
 
 		$commnets = \DB::table('yeplive_users')
+					->select('comments.created_at')
 					->join('comments', function($join) use ($yep_id)
 					{
 						$join->on('comments.user_id', '=', 'yeplive_users.user_id')
 							 ->where('comments.yep_id', '=', $yep_id);
-					})->get();
+					})->orderBy('comments.created_at', 'desc')->get();
 
-		return response()->json(['success' => 1, 'messages' => $commnets]);
+		return response()->json(['success' => 1, 'comments' => $commnets]);
 
 	}
 
