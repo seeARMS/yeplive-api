@@ -56,8 +56,12 @@ class YepsController extends Controller {
 		{
 			return \App\Errors::invalid(null, $validator);
 		}
-		$yeps = [];
+
 		$yeps = \App\Yep::queryYeps($params);
+		return $yeps;
+		dd($yeps);
+
+		/*
 		$yeps->each(function($yep){
 			$yep['vote_count'] = $yep->upvotes();
 			$yep['tags'] = $yep->tagNames();

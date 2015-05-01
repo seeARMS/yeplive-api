@@ -129,10 +129,14 @@ class Yep extends Model{
 	static function queryYeps($params)
 	{	
 		$quantity = $params['quantity'] != null ? $params['quantity'] : 10;
+		return self::with('user','tags.tag_name','votes')
+			->orderBy('vod_enable','asc')
+			->orderBy('created_at','desc')
+			->take($quantity)
+			->get();
 		$tags = explode(',',$params['tags']);
 		if($tags[0] == '')
 		{
-			return Yep::with('user')->orderBy('vod_enable','asc')->orderBy('created_at','desc')->take($quantity)->get();
 		}
 		return Yep::withAnyTag($tags)->limit($quantity)->where('staging', '=', 0)->get();
 	}
