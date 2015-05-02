@@ -11,9 +11,9 @@ class EventServiceProvider extends ServiceProvider {
 	 * @var array
 	 */
 	protected $listen = [
-		'event.name' => [
-			'EventListener',
-		],
+		'\App\Events\YepCreated' => [
+			'\App\Handlers\Events\FollowersNotification'
+		]
 	];
 
 	/**
@@ -26,6 +26,8 @@ class EventServiceProvider extends ServiceProvider {
 	{
 		parent::boot($events);
 
+		\Event::listen('\App\Events\YepCreated',
+                    '\App\Handlers\Events\FollowersNotification');
 		//
 	}
 

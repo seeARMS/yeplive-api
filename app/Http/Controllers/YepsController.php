@@ -8,19 +8,24 @@ class YepsController extends Controller {
 	{
 	}
 
+	//Method called on all routes?
+	public function all()
+	{
+
+	}
+
+	//FOR LOADER.IO LOAD TESTING
 	public function loader(Request $request){
 		return 'loaderio-d9d729e1f9c98b37dcec64365e3dd5e3';
 	}
 
 	public function getYepPage(Request $request, $hash)
 	{
+		$id = \App\Algorithm\ProHash::toID($hash);
 
-//		$id = \App\Algorithm\ProHash::toID($hash);
-
-		$url = \Config::get('webclient.root').'/watch/'.$hash;
+		$url = \Config::get('webclient.root').'/#watch/'.$id;
 
 		return redirect()->to($url);
-
 	}
 
 	public function getYepByHash(Request $request)
@@ -49,15 +54,15 @@ class YepsController extends Controller {
 	
 	}
 
-	//GET /yeps
 	public function index(Request $request)
 	{
 		$params = $request->only(
 			'tags',
 			'quantity'
 		);
+
 		$validator = \Validator::make( $params, [
-			'tags' => 'string',
+			'tags' => 'string|max:255',
 			'quantity' => 'integer'
 		]);
 
@@ -69,9 +74,7 @@ class YepsController extends Controller {
 		if($params['quantity'])
 		{
 			$yeps = \App\Yep::queryYeps($params);
-		}
-		else 
-		{
+		} else  {
 			$yeps = \Cache::rememberForever('yeps', function() use ($params)
 			{
 				$params['quantity'] = 100000;
@@ -86,6 +89,7 @@ class YepsController extends Controller {
 	public function store(Request $request)
 	{
 		$params = $request->only(
+			'is_web',
 			'channel_id',
 			'title',
 			'latitude',
@@ -97,6 +101,7 @@ class YepsController extends Controller {
 
 	
 		$validator = \Validator::make( $params, [
+			'is_web' => 'boolean',
 			'channel_id' => 'integer',
 			'title' => 'string|max:100',
 			'latitude' => 'required|numeric',
@@ -115,15 +120,12 @@ class YepsController extends Controller {
 			return \App\Errors::forbidden("user is banned");
 		}
 
-
 		$params['user_id'] = $user -> user_id;
 
 		$filtered_params = array_filter($params, 'strlen');
 
 		$yep= \App\Yep::create($filtered_params);
-		\Log::info($yep);
 
-		//Create tags
 		$tags = explode(',',$params['tags']);
 
 		if($tags[0] != '' )
@@ -138,34 +140,44 @@ class YepsController extends Controller {
 
 		$yep->stream_name = $yep->id . "-" .  strval(time());
 
-		$yep->upload_url = \Config::get('wowza.rtmp.upload_mobile').$yep->stream_name;
 
 		$yep->url_hash = \App\Algorithm\ProHash::toHash($yep->id);
 	
 		$yep->vod_enable = false;
 
-//		$yep->stream_url = \Config::get('wowza.rtmp.stream').$yep->stream_name;
+		if(! $params['is_web'])
+		{
+			$yep->is_web = 0;
+			$yep->upload_url = \Config::get('wowza.rtmp.upload_mobile').$yep->stream_name;
+			$yep->stream_url = \Config::get('wowza.android.rtsp').$yep->stream_name;
+			$yep->stream_hls = \Config::get('wowza.android.hls').$yep->stream_name;
+		} else {
+			$yep->is_web = 1;
+			$yep->stream_url = \Config::get('wowza.web.rtsp').$yep->stream_name;
+			$yep->stream_hls = \Config::get('wowza.web.hls').$yep->stream_name.'/playlist.m3u8';
+		}
 
-		$yep->stream_url = \Config::get('wowza.rtsp.android').$yep->stream_name;
-
-//		$yep->stream_mobile_url = \Config::get('wowza.rtmp.test').$yep->stream_name."/playlist.m3u8";
-		$yep->stream_mobile_url = 'http://54.149.106.109:1935/hdfvr/'.$yep->stream_name."/playlist.m3u8";
+		$yep->stream_mobile_url = '';
 
 		if($request->has('staging')){
 			$yep->staging = true;
 		};
 
 		$yep -> save();
-	
+
+//		$response = \Event::fire(new \App\Events\YepCreated($yep));
+
+		event(new \App\Events\YepCreated($yep));
+
+		try{	
 		\Cache::forget('yeps');
+		} catch(\Exception $e){
+		}
 		
 		try{
 			$success = \App\Algorithm\Socket::newYep($yep);
+		} catch (\Exception $e){
 		}
-		catch (\Exception $e){
-		}
-
-//		$upload_web = \Config::get('wowza.rtmp.upload_web').$yep->stream_name;
 
 		return response()->json(['success' => 1, 'id' => $yep->id, 'upload_url' => $yep->upload_url,
 			'stream_name' => $yep->stream_name]);
@@ -174,7 +186,6 @@ class YepsController extends Controller {
 
 	public function addVideoThumbnail(Request $request, $id)
 	{
-
 		$params = $request -> only ('portrait');
 
 		$validator = \Validator::make( $params, [
@@ -185,8 +196,7 @@ class YepsController extends Controller {
 		{
 			return \App\Errors::invalid(null, $validator);
 		}
-
-		
+	
 		$user = \JWTAuth::parseToken()->toUser();
 
 		if($user -> isBanned()){
@@ -219,6 +229,7 @@ class YepsController extends Controller {
 		} else {
 		$yep -> portrait = $params['portrait'];
 		}
+
 		$yep -> save();
 
 		return response()->json(['success' => 1, 'image_url' => $imageUrl, 'id' => $yep_id]);
@@ -229,10 +240,12 @@ class YepsController extends Controller {
 	public function update(Request $request, $id)
 	{
 		$yep= \App\Yep::find($id);
+
 		if(! $yep)
 		{
 			return \App\Errors::notFound('yep not found');
 		}
+
 		$user = \JWTAuth::parseToken()->toUser();
 		
 		if($yep -> user_id != $user ->user_id)
@@ -263,7 +276,7 @@ class YepsController extends Controller {
 			return \App\Errors::invalid(null, $validator);
 		}
 
-		if($request->has('staging')
+		if($request->has('staging'))
 		{
 			$yep -> staging = $params['staging'];
 		}
@@ -288,8 +301,6 @@ class YepsController extends Controller {
 			$yep -> longitude = $params['longitude'];
 		}
 
-
-		//Create tags
 		$tags = $params['tags'] || '';
 		$tags = explode(',', $params['tags']);
 
@@ -315,6 +326,7 @@ class YepsController extends Controller {
 	public function delete(Request $request, $id)
 	{
 		$yep = \App\Yep::find($id);
+
 		if(! $yep)
 		{
 			\App\Errors::notFound();	
@@ -334,20 +346,24 @@ class YepsController extends Controller {
 	public function unstage(Request $request, $id)
 	{
 		$yep = \App\Yep::find($id);
+
 		if (! $yep)
 		{
 			return \App\Errors::notFound('yep not found');
 		}
+
 		$user = \JWTAuth::parseToken()->toUser();
+
 		if($user->user_id != $yep->user_id)
 		{
 			return \App\Errors::forbidden("you can't do that");	
 		}
+
 		$yep->staging = false;
+
 		$yep->save();
 
 		return response()->json(['success'=>1, 'id'=>$id], 200);
-
 	}
 
 	//GET /yep/{id}
@@ -359,24 +375,25 @@ class YepsController extends Controller {
 		{
 			return \App\Errors::notFound('yep not found');
 		}
-		try{
-			$user = \JWTAuth::parseToken()->toUser();
-if($user)
+
+		try
 		{
-			$vote = $user->voted($yep);
-			if($vote && $vote->vote == 1){
-				$yep->voted = 1;
+			$user = \JWTAuth::parseToken()->toUser();
+			if($user)
+			{
+				$vote = $user->voted($yep);
+				if($vote && $vote->vote == 1){
+					$yep->voted = 1;
+				} else {
+					$yep->voted = 0;
+				}
 			} else {
-				$yep->voted = 0;
+					$yep->voted = 0;
 			}
-		} else {
-				$yep->voted = 0;
-		}
-		} catch(\Exception $e){
+			} catch(\Exception $e){
 				$yep->voted = 0;
 		}
 		
-
 		$yep['vote_count'] = $yep->upvotes();
 		$yep['tags'] = $yep->tagNames();
 		$yep['user'] = $yep->getUser();
@@ -384,11 +401,6 @@ if($user)
 		return $yep;
 	}
 
-	//Method called on all routes?
-	public function all()
-	{
-
-	}
 
 	//GET /yep/{id}/similar
 	public function similar(Request $request, $id)
@@ -415,6 +427,7 @@ if($user)
 		}
 
 		$yep= \App\Yep::find($id);
+
 		if (! $yep)
 		{
 			return \App\Errors::notFound('yep not found');
@@ -439,33 +452,42 @@ if($user)
 	public function incrementViews(Request $request, $id)
 	{
 		$yep= \App\Yep::find($id);
+
 		if(! $yep)
 		{
 			return \App\Errors::notFound("yep not found");
 		}
+
 		$yep -> views = $yep ->views + 1;
+
 		$yep -> save();
-
-		//TODO
-		\App\Algorithm\Socket::newView($yep);
-
 		
+		try{ 
+			\App\Algorithm\Socket::newView($yep);
+		} catch (\Exception $e){}
+	
 		return response()->json(['success' => 1, 'id' => $yep->id, 'views'=>$yep->views],200);
-		return response()->json(['views' => $yep ->views], 200);
 	}
 
 	//VOTE FOR A YEP
 	public function vote(Request $request, $id)
 	{
 		$user = \JWTAuth::parseToken()->toUser();
+
 		$yep = \App\Yep::find($id);
+
 		if(! $yep)
 		{
 			return \App\Errors::notFound('yep not found');
 		}
+
 		$data = $yep->vote($user);
 
-		$success = \App\Algorithm\Socket::newVote($yep);
+		try{
+			\App\Algorithm\Socket::newVote($yep);
+		} catch (\Exception $e){
+
+		}
 
 		return response()->json($data, 200);
 	}
@@ -474,15 +496,20 @@ if($user)
 	public function userVote(Request $request, $id)
 	{
 		$yep = \App\Yep::find($id);
+
 		if(! $yep)
 		{
 			return \App\Errors::notFound('yep not found');
 		}
+
 		$user = \JWTAuth::parseToken()->toUser();
+
 		$vote = $yep->my_vote($user);
+
 		if($vote->count() == 0){
 			return response()->json(['vote' => 0], 200);
 		}		
+
 		return response()->json(['vote' => $vote -> first() -> vote], 200);
 	}
 
@@ -502,13 +529,16 @@ if($user)
 		}
 
 		$yep = \App\Yep::find($id);
+
 		if(! $yep)
 		{
 			return \App\Errors::notFound('yep not found');
 		}
 
 		$reporter = \JWTAuth::parseToken()->toUser();
+
 		$data = $yep->report($reporter, $params['reason']);	
+
 		return response()->json(['success' => 1, 'id' => $id]);
 	}
 
@@ -516,58 +546,72 @@ if($user)
 	public function votes(Request $request, $id)
 	{
 		$yep = \App\Yep::find($id);
+
 		if(! $yep)
 		{
 			return \App\Errors::notFound('yep not found');
 		}
+
 		return response()->json(['votes' => $yep->votes->where('vote',1)->count()], 200);
 	}
+
 	public function viewCount(Request $request, $id)
 	{
 		$yep = \App\Yep::find($id);
+
 		if (! $yep)
 		{
 			return \App\Errors::notFound('yep not found');
 		}
+
 		$views = $yep->views;
 
 		return response()->json(['success' => 1, 'id' => $yep->id, 'views'=>$views],200);
 	}
 	public function tags(Request $request, $id)
 	{
-		$yep= \App\Yep::find($id);
+		$yep = \App\Yep::find($id);
+
 		if (! $yep)
 		{
 			return \App\Errors::notFound('yep not found');
 		}
+
 		return $yep->tagNames();
 	}
 
 	public function streamComplete(Request $request, $id){
 		$yep = \App\Yep::find($id);
+
 		if (! $yep)
 		{
 			return \App\Errors::notFound('yep not found');
 		}
+
 		$user = \JWTAuth::parseToken()->toUser();
+
 		if($user->user_id != $yep->user_id)
 		{
 			return \App\Errors::forbidden("you can't do that");	
 		}
 
 		$yep -> vod_enable = true;
-//		$yep -> vod_path = "rtmp://54.149.106.109/vods3/_definst_/&mp4:amazons3/dev-wowza/".$yep->stream_name.".mp4";
-//		$yep->vod_mobile_path = "http://54.149.106.109:1935/vods3/_definst_/amazons3/dev-wowza/".$yep->stream_name."/playlist.m3u8";
+
 		$yep -> vod_path = \Config::get('wowza.cloudfront.static').$yep->stream_name.".mp4";
+
 		$yep -> vod_mobile_path = \Config::get('wowza.cloudfront.static').$yep->stream_name."/playlist.m3u8";
+
 		$yep -> end_time = time();
 
 		$yep -> save();
 
-		$success = \App\Algorithm\Socket::yepComplete($yep);
+		try {
+			$success = \App\Algorithm\Socket::yepComplete($yep);
+		} catch (\Exception $e) {
 
-		return response()->json(["success" => 1, "id" => $yep->id], 200);
-		
+		}
+
+		return response()->json(["success" => 1, "id" => $yep->id], 200);		
 	}
 
 	//USED BY LAMBDA

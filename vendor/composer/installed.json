@@ -4748,5 +4748,53 @@
             "throttle",
             "throttling"
         ]
+    },
+    {
+        "name": "rap2hpoutre/laravel-log-viewer",
+        "version": "v0.2.7",
+        "version_normalized": "0.2.7.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/rap2hpoutre/laravel-log-viewer.git",
+            "reference": "4c9d0f49efbf4a39e97f82928178bd0ad7b54916"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/rap2hpoutre/laravel-log-viewer/zipball/4c9d0f49efbf4a39e97f82928178bd0ad7b54916",
+            "reference": "4c9d0f49efbf4a39e97f82928178bd0ad7b54916",
+            "shasum": ""
+        },
+        "require": {
+            "illuminate/support": "4.2.*|5.*",
+            "php": ">=5.4.0"
+        },
+        "time": "2015-04-22 06:32:43",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "src/controllers"
+            ],
+            "psr-0": {
+                "Rap2hpoutre\\LaravelLogViewer\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "rap2hpoutre",
+                "email": "raphael@ornikar.com"
+            }
+        ],
+        "description": "A Laravel log reader",
+        "keywords": [
+            "log",
+            "log-reader",
+            "log-viewer",
+            "logging"
+        ]
     }
 ]

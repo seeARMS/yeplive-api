@@ -150,7 +150,8 @@ return [
 		'GrahamCampbell\Parse\ParseServiceProvider',
 		'Thujohn\Twitter\TwitterServiceProvider',
 		'Barryvdh\Debugbar\ServiceProvider',
-		'GrahamCampbell\Throttle\ThrottleServiceProvider'
+		'GrahamCampbell\Throttle\ThrottleServiceProvider',
+		'Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider',
 
 	],
 

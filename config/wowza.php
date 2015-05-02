@@ -18,6 +18,15 @@ return [
 	'rtsp' => [
 		'android' => 'rtsp://52.24.36.82/liveedge/_definst_/'
 	],
+	'android' => [
+		'rtsp' => 'rtsp://52.24.36.82/liveedge/_definst_/',
+		'hls' => 'http://52.24.36.82/liveedge/'
+	],
+	'web' => [
+		'rtsp' => 'rstp://52.24.42.180/hdfvr/_definst_/',
+		'hls' => 'http://52.24.42.180:1935/hdfvr/',
+		'streamer' => 'http://52.24.42.180'	
+	],
 	'cloudfront' => [
 		'static' => 'http://dwvjlx2oulfs.cloudfront.net/'
 	]
