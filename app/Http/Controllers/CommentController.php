@@ -10,12 +10,12 @@ class CommentController extends Controller {
 	public function addComment(Request $request, $yep_id)
 	{
 		$params = $request->only(
-			'created_at',
+			'created_time',
 			'comment'
 		);
 
 		$validator = \Validator::make( $params, [
-			'created_at' => 'integer',
+			'created_time' => 'integer',
 			'comment' => 'string'
 		]);
 
@@ -29,7 +29,7 @@ class CommentController extends Controller {
 		$comment['yep_id'] = $yep_id;
 		$comment['user_id'] = $user->user_id;
 		$comment['comment'] = $params['comment'];
-		$comment['created_at'] = $params['created_at'];
+		$comment['created_time'] = $params['created_time'];
 
 		try {
 			\App\Comments::create($comment);
