@@ -12,32 +12,41 @@ class YepsController extends Controller {
 		return 'loaderio-d9d729e1f9c98b37dcec64365e3dd5e3';
 	}
 
-	public function getYepPage(Request $request, $name)
+	public function getYepPage(Request $request, $hash)
 	{
-		$userAgent = $request->header('USER_AGENT');
-		$isFacebook = in_array($userAgent, [
-		'facebookexternalhit/1.1 (+https://www.facebook.com/externalhit_uatext.php)',
-		'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)'
+
+//		$id = \App\Algorithm\ProHash::toID($hash);
+
+		$url = \Config::get('webclient.root').'/watch/'.$hash;
+
+		return redirect()->to($url);
+
+	}
+
+	public function getYepByHash(Request $request)
+	{
+		$params = $request -> only('hash');
+
+		$validator = \Validator::make( $params, [
+			'hash' => 'string'
 		]);
-		if ($isFacebook){
-			$yep = \App\Yep::where('stream_name','=',$name)->get()->first();
-			if($yep)
-			{
-			return view('yeps.meta',$yep);
-			}
-			return \App\Errors::notFound('yep not found');
-			
-		}
-		else
+
+		if($validator -> fails())
 		{
-			$yep = \App\Yep::where('stream_name','=',$name)->get()->first();
-			return redirect()->to('http://yeplive.com?yep='.$name);
-			if($yep)
-			{
-				return view('yeps.meta',$yep);
-			}
-				return view('yeps.meta');
+			return \App\Errors::invalid(null, $validator);
 		}
+
+		$id = \App\Algorithm\ProHash::toID($params['hash']);
+
+		$yep = \App\Yep::find($id);
+
+		if(! $yep)
+		{
+			return \App\Errors::notFound('yep not found');
+		}
+
+		return response()->json(['yep'=>$yep]);
+	
 	}
 
 	//GET /yeps
@@ -86,8 +95,6 @@ class YepsController extends Controller {
 			'tags'
 		);
 
-		\Log::info('REQUEST');
-		\Log::info($params);
 	
 		$validator = \Validator::make( $params, [
 			'channel_id' => 'integer',
@@ -133,7 +140,8 @@ class YepsController extends Controller {
 
 		$yep->upload_url = \Config::get('wowza.rtmp.upload_mobile').$yep->stream_name;
 
-
+		$yep->url_hash = \App\Algorithm\ProHash::toHash($yep->id);
+	
 		$yep->vod_enable = false;
 
 //		$yep->stream_url = \Config::get('wowza.rtmp.stream').$yep->stream_name;
@@ -237,7 +245,8 @@ class YepsController extends Controller {
 			'description',
 			'tags',
 			'latitude',
-			'longitude'
+			'longitude',
+			'staging'
 		]);
 
 		$validator = \Validator::make( $params, [
@@ -245,7 +254,8 @@ class YepsController extends Controller {
 			'description' => 'string|max:255',
 			'tags' => 'string:max:255',
 			'latitude' => 'numeric',
-			'longitude' => 'numeric'	
+			'longitude' => 'numeric',
+			'staging' => 'boolean'
 		]);
 
 		if($validator -> fails())
@@ -253,6 +263,10 @@ class YepsController extends Controller {
 			return \App\Errors::invalid(null, $validator);
 		}
 
+		if($request->has('staging')
+		{
+			$yep -> staging = $params['staging'];
+		}
 		
 		if($request->has('title'))
 		{

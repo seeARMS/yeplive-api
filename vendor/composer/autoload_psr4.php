@@ -23,6 +23,7 @@ return array(
     'GuzzleHttp\\Stream\\' => array($vendorDir . '/guzzlehttp/streams/src'),
     'GuzzleHttp\\Ring\\' => array($vendorDir . '/guzzlehttp/ringphp/src'),
     'GuzzleHttp\\' => array($vendorDir . '/guzzlehttp/guzzle/src'),
+    'GrahamCampbell\\Throttle\\' => array($vendorDir . '/graham-campbell/throttle/src'),
     'GrahamCampbell\\Parse\\' => array($vendorDir . '/graham-campbell/parse/src'),
     'Facebook\\' => array($vendorDir . '/facebook/php-sdk-v4/src/Facebook'),
     'ClassPreloader\\' => array($vendorDir . '/classpreloader/classpreloader/src'),

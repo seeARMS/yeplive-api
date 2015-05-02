@@ -32,7 +32,8 @@
         "SammyK\\LaravelFacebookSdk\\LaravelFacebookSdkServiceProvider",
         "GrahamCampbell\\Parse\\ParseServiceProvider",
         "Thujohn\\Twitter\\TwitterServiceProvider",
-        "Barryvdh\\Debugbar\\ServiceProvider"
+        "Barryvdh\\Debugbar\\ServiceProvider",
+        "GrahamCampbell\\Throttle\\ThrottleServiceProvider"
     ],
     "eager": [
         "Illuminate\\Auth\\AuthServiceProvider",
@@ -55,7 +56,8 @@
         "SammyK\\LaravelFacebookSdk\\LaravelFacebookSdkServiceProvider",
         "GrahamCampbell\\Parse\\ParseServiceProvider",
         "Thujohn\\Twitter\\TwitterServiceProvider",
-        "Barryvdh\\Debugbar\\ServiceProvider"
+        "Barryvdh\\Debugbar\\ServiceProvider",
+        "GrahamCampbell\\Throttle\\ThrottleServiceProvider"
     ],
     "deferred": {
         "command.app.name": "Illuminate\\Foundation\\Providers\\ArtisanServiceProvider",

@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8a169cc6ab89999c05166003533362d2",
+    "hash": "3f471494ed8aae51a66b60c92e0aff47",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -906,6 +906,65 @@
                 "parse-sdk"
             ],
             "time": "2015-02-05 21:03:41"
+        },
+        {
+            "name": "graham-campbell/throttle",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/GrahamCampbell/Laravel-Throttle.git",
+                "reference": "9e1c35f154ad299a9673638f189eb4beb15254a2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/GrahamCampbell/Laravel-Throttle/zipball/9e1c35f154ad299a9673638f189eb4beb15254a2",
+                "reference": "9e1c35f154ad299a9673638f189eb4beb15254a2",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/cache": "5.0.*|5.1.*",
+                "illuminate/contracts": "5.0.*|5.1.*",
+                "illuminate/http": "5.0.*|5.1.*",
+                "illuminate/support": "5.0.*|5.1.*",
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "graham-campbell/testbench": "~2.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "GrahamCampbell\\Throttle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Graham Campbell",
+                    "email": "graham@mineuk.com"
+                }
+            ],
+            "description": "Throttle Is A Rate Limiter For Laravel 5",
+            "keywords": [
+                "Graham Campbell",
+                "GrahamCampbell",
+                "Laravel Throttle",
+                "Laravel-Throttle",
+                "framework",
+                "laravel",
+                "rate limit",
+                "throttle",
+                "throttling"
+            ],
+            "time": "2015-04-24 19:21:42"
         },
         {
             "name": "guzzle/guzzle",
@@ -4545,7 +4604,8 @@
     "stability-flags": {
         "sammyk/laravel-facebook-sdk": 20,
         "facebook/php-sdk-v4": 20,
-        "google/apiclient": 10
+        "google/apiclient": 10,
+        "graham-campbell/throttle": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

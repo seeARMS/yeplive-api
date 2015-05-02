@@ -1,69 +1,19 @@
 <?php 
 //RESTful API
-//ALL {id} tags only accept [0-9]+ see app/providers/RouteServiceProvider.php
 
-
-
+//Load testing
 Route::get('loaderio-d9d729e1f9c98b37dcec64365e3dd5e3', [
 	'uses' => 'YepsController@loader'
 ]);
 
-Route::get('yep/{hash}', [
+Route::get('{hash}', [
 	'uses' => 'YepsController@getYepPage'
 ]);
 
-Route::group(array('prefix' => 'api/v1'), function()
+Route::group(['prefix' => 'api/v1',
+		'before' => 'throttle:30,1'
+		], function()
 { 
-	//Testing routes
-	if (\App::environment('local'))
-	{
-		/*
-		Route::get('facebook/login', function(SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb)
-		{
-			// Send an array of permissions to request
-			$login_url = $fb->getLoginUrl(['email','public_profile', 'user_friends']);
-			echo '<a href="' . $login_url . '">Login with Facebook</a>';
-		});
-		*/
-
-		Route::get('facebook/callback', [
-			'uses' => 'UsersController@facebookCallback'
-		]);
-
-		Route::get('twitter/login', [
-			'uses' => 'UsersController@loginTwitter'	
-		]);
-
-		Route::get('twitter/callback', [	
-			'uses' => 'UsersController@twitterCallback'
-		]);
-
-		Route::get('google/login', [
-			'uses' => 'UsersController@loginGoogle'	
-		]);
-
-		Route::get('google/callback', [	
-			'uses' => 'UsersController@googleCallback'
-		]);
-
-		Route::group(array('prefix' => 'test'), function()
-		{
-			/*create/sign up as a user for testing*/
-			Route::post('auth', [
-				'uses' => 'UsersController@authenticate'
-			]);
-
-		});
-	}
-	
-	/*
-	 * API Health Check
-	 */
-	/*
-	Route::get('/', function(){
-		return response()->json(['name' => 'Yeplive Web API', 'version' => '1.0']);
-	});
-	*/
 
 	// Internal apis 
 	Route::group(['prefix' => 'internal'], function(){

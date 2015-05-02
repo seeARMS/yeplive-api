@@ -4687,5 +4687,66 @@
             "predis",
             "redis"
         ]
+    },
+    {
+        "name": "graham-campbell/throttle",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/GrahamCampbell/Laravel-Throttle.git",
+            "reference": "9e1c35f154ad299a9673638f189eb4beb15254a2"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/GrahamCampbell/Laravel-Throttle/zipball/9e1c35f154ad299a9673638f189eb4beb15254a2",
+            "reference": "9e1c35f154ad299a9673638f189eb4beb15254a2",
+            "shasum": ""
+        },
+        "require": {
+            "illuminate/cache": "5.0.*|5.1.*",
+            "illuminate/contracts": "5.0.*|5.1.*",
+            "illuminate/http": "5.0.*|5.1.*",
+            "illuminate/support": "5.0.*|5.1.*",
+            "php": ">=5.5.9"
+        },
+        "require-dev": {
+            "graham-campbell/testbench": "~2.0"
+        },
+        "time": "2015-04-24 19:21:42",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "4.0-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "GrahamCampbell\\Throttle\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Graham Campbell",
+                "email": "graham@mineuk.com"
+            }
+        ],
+        "description": "Throttle Is A Rate Limiter For Laravel 5",
+        "keywords": [
+            "Graham Campbell",
+            "GrahamCampbell",
+            "Laravel Throttle",
+            "Laravel-Throttle",
+            "framework",
+            "laravel",
+            "rate limit",
+            "throttle",
+            "throttling"
+        ]
     }
 ]
