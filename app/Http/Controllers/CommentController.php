@@ -26,10 +26,10 @@ class CommentController extends Controller {
 
 		$user = \JWTAuth::parseToken()->toUser();
 
-		$comment['yep_id'] = $yep_id;
+		$comment['yep_id'] = (int)$yep_id;
 		$comment['user_id'] = $user->user_id;
 		$comment['comment'] = $params['comment'];
-		$comment['created_time'] = $params['created_time'];
+		$comment['created_time'] = (int)$params['created_time'];
 
 		try {
 			\App\Comments::create($comment);
