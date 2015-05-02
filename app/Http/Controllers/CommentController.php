@@ -7,26 +7,39 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller {
 
-	public function addComment(Request $request, $id, $channel_id)
+	public function addComment(Request $request, $yep_id)
 	{
 		$params = $request->only(
-			'timestamp',
-			'message'
+			'created_at',
+			'comment'
 		);
 
-		$user = \App\User::find($id);
+		$validator = \Validator::make( $params, [
+			'created_at' => 'integer',
+			'comment' => 'string'
+		]);
 
-		$params['channel_id'] = $channel_id;
-		$params['display_name'] = $user->display_name;
-		$params['sender_id'] = $id;
-
-		try {
-			\App\Comments::create($params);
-		} catch ( \Comments $e){
-			return response()->json(['error' => 'invalid input'], 401);
+		if($validator -> fails())
+		{
+			return \App\Errors::invalid(null, $validator);
 		}
 
-		return response()->json(['success' => '1'], 200);
+		$user = \JWTAuth::parseToken()->toUser();
+
+		$comment['yep_id'] = $yep_id;
+		$comment['user_id'] = $user->user_id;
+		$comment['comment'] = $params['comment'];
+		$comment['created_at'] = $params['created_at'];
+
+		try {
+			\App\Comments::create($comment);
+		} catch ( \Comments $e){
+			return \App\Errors::invalid('invalid input');
+		}
+
+		$comment['display_name'] = $user->display_name;
+
+		return response()->json(['success' => '1', 'comment' => $comment]);
 	}
 
 	public function getComments(Request $request, $yep_id)

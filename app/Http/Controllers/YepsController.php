@@ -16,8 +16,8 @@ class YepsController extends Controller {
 	{
 		$userAgent = $request->header('USER_AGENT');
 		$isFacebook = in_array($userAgent, [
-		'facebookexternalhit/1.1 (+https://www.facebook.com/externalhit_uatext.php)',
-		'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)'
+			'facebookexternalhit/1.1 (+https://www.facebook.com/externalhit_uatext.php)',
+			'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)'
 		]);
 		if ($isFacebook){
 			$yep = \App\Yep::where('stream_name','=',$name)->get()->first();
