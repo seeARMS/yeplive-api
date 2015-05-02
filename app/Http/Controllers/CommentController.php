@@ -53,8 +53,8 @@ class CommentController extends Controller {
 		}
 
 		$commnets = \DB::table('yeplive_users')
-					->select('comments.created_at',
-								'comments.updated_at',
+					->select('comments.created_time',
+								'comments.updated_time',
 								'comments.comment',
 								'yeplive_users.user_id',
 								'yeplive_users.name',
@@ -64,7 +64,7 @@ class CommentController extends Controller {
 					{
 						$join->on('comments.user_id', '=', 'yeplive_users.user_id')
 							 ->where('comments.yep_id', '=', $yep_id);
-					})->orderBy('comments.created_at', 'desc')->get();
+					})->orderBy('comments.created_time', 'desc')->get();
 
 		return response()->json(['success' => 1, 'comments' => $commnets]);
 
