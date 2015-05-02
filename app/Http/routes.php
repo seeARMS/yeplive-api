@@ -173,31 +173,38 @@ Route::group(['prefix' => 'api/v1',
 		Route::get('users/{id}/followers',[
 			'uses' => 'UsersController@showAllFollower'
 		]);
+		*/
+		Route::post('share',[
+			'uses' => 'UsersController@share'
+		]);
+
+		Route::post('share/facebook',[
+			'uses' => 'UsersController@shareFacebook'
+		]);
+
+		Route::post('/token/facebook',[
+			'uses' => 'UsersController@setFacebookToken'
+		]);
+
+
+		Route::post('share/google',[
+			'uses' => 'UsersController@shareGoogle'
+		]);
+
+		Route::get('social/friends', [
+			'uses' => 'UsersController@getFriends'
+		]);
+
+		Route::post('social/link',[
+			'uses' => 'UsersController@linkSocial'
+		]);
+
+		/*
+		 * User add a comment to a yep
 		 */
-			Route::post('share',[
-				'uses' => 'UsersController@share'
-			]);
-
-			Route::post('share/facebook',[
-				'uses' => 'UsersController@shareFacebook'
-			]);
-	
-			Route::post('/token/facebook',[
-				'uses' => 'UsersController@setFacebookToken'
-			]);
-
-
-			Route::post('share/google',[
-				'uses' => 'UsersController@shareGoogle'
-			]);
-
-			Route::get('social/friends', [
-				'uses' => 'UsersController@getFriends'
-			]);
-
-			Route::post('social/link',[
-				'uses'=>'UsersController@linkSocial'
-			]);
+		Route::post('comments/{yep_id}',[
+			'uses' => 'CommentController@addComment'
+		]);
 
 
 		//These routes all require the {id} to be the user in the json web token
@@ -231,15 +238,6 @@ Route::group(['prefix' => 'api/v1',
 
 			Route::post('users/{id}/share/twitter',[
 				'uses' => 'UsersController@shareTwitter'
-			]);
-
-			
-
-			/*
-			 * User add a comment to a channel
-			 */
-			Route::post('user/{id}/comment/{channel_id}',[
-				'uses' => 'CommentController@addComment'
 			]);
 
 			Route::group(['prefix' => 'internal'], function(){

@@ -7,26 +7,39 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller {
 
-	public function addComment(Request $request, $id, $channel_id)
+	public function addComment(Request $request, $yep_id)
 	{
 		$params = $request->only(
-			'timestamp',
-			'message'
+			'created_time',
+			'comment'
 		);
 
-		$user = \App\User::find($id);
+		$validator = \Validator::make( $params, [
+			'created_time' => 'integer',
+			'comment' => 'string'
+		]);
 
-		$params['channel_id'] = $channel_id;
-		$params['display_name'] = $user->display_name;
-		$params['sender_id'] = $id;
-
-		try {
-			\App\Comments::create($params);
-		} catch ( \Comments $e){
-			return response()->json(['error' => 'invalid input'], 401);
+		if($validator -> fails())
+		{
+			return \App\Errors::invalid(null, $validator);
 		}
 
-		return response()->json(['success' => '1'], 200);
+		$user = \JWTAuth::parseToken()->toUser();
+
+		$comment['yep_id'] = $yep_id;
+		$comment['user_id'] = $user->user_id;
+		$comment['comment'] = $params['comment'];
+		$comment['created_time'] = $params['created_time'];
+
+		try {
+			\App\Comments::create($comment);
+		} catch ( \Comments $e){
+			return \App\Errors::invalid('invalid input');
+		}
+
+		$comment['display_name'] = $user->display_name;
+
+		return response()->json(['success' => '1', 'comment' => $comment]);
 	}
 
 	public function getComments(Request $request, $yep_id)
@@ -40,8 +53,8 @@ class CommentController extends Controller {
 		}
 
 		$commnets = \DB::table('yeplive_users')
-					->select('comments.created_at',
-								'comments.updated_at',
+					->select('comments.created_time',
+								'comments.updated_time',
 								'comments.comment',
 								'yeplive_users.user_id',
 								'yeplive_users.name',
@@ -51,7 +64,7 @@ class CommentController extends Controller {
 					{
 						$join->on('comments.user_id', '=', 'yeplive_users.user_id')
 							 ->where('comments.yep_id', '=', $yep_id);
-					})->orderBy('comments.created_at', 'desc')->get();
+					})->orderBy('comments.created_time', 'desc')->get();
 
 		return response()->json(['success' => 1, 'comments' => $commnets]);
 

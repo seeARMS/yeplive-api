@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCommentsTable extends Migration {
+class CreateCommentsTable4 extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -20,8 +20,8 @@ class CreateCommentsTable extends Migration {
 			$table->foreign('user_id')->references('user_id')->on('yeplive_users');
 			$table->foreign('yep_id')->references('id')->on('yeps');
 			$table->string('comment');
-			$table->unsignedInteger('created_at');
-			$table->unsignedInteger('updated_at');
+			$table->integer('created_time')->default(null);
+			$table->integer('updated_time')->default(null);
 		});
 	}
 
