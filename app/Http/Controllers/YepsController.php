@@ -74,11 +74,26 @@ class YepsController extends Controller {
 		if($params['quantity'])
 		{
 			$yeps = \App\Yep::queryYeps($params);
+			foreach($yeps as $yep){
+				$tags = [];
+				foreach($yep->tagsObj as $tag){
+					array_push($tags, $tag->tag_name);
+				}
+				$yep->tags = $tags;
+			}
 		} else  {
 			$yeps = \Cache::rememberForever('yeps', function() use ($params)
 			{
 				$params['quantity'] = 100000;
-				return \App\Yep::queryYeps($params);
+				$res = \App\Yep::queryYeps($params);
+				foreach($res as $yep){
+					$tags = [];
+					foreach($yep->tags as $tag){
+						array_push($tags, $tag->tag_name);
+					}
+					$yep->tags = $tags;
+				}
+				return $res;
 			});
 		}
 

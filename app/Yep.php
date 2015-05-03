@@ -56,7 +56,7 @@ class Yep extends Model{
 			->count();
 	}
 
-	public function tags()
+	public function tagsObj()
 	{
 		return $this->morphMany('Conner\Tagging\Tagged','taggable');
 	}
@@ -130,7 +130,7 @@ class Yep extends Model{
 	{	
 		$quantity = $params['quantity'] != null ? $params['quantity'] : 10;
 		$timeAgo = \Carbon\Carbon::now()->subDay();
-		return self::with('user')
+		return self::with('user', 'tagsObj')
 			->where('staging','=',0)
 			->where('created_at','>',$timeAgo)
 			->orderBy('vod_enable','asc')
