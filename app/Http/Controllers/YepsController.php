@@ -140,7 +140,7 @@ class YepsController extends Controller {
 
 		$yep->stream_name = $yep->id . "-" .  strval(time());
 
-		$yep -> is_custom_marker = 0;
+		$yep->is_custom_marker = 0;
 
 		$yep->url_hash = \App\Algorithm\ProHash::toHash($yep->id);
 	
@@ -166,6 +166,8 @@ class YepsController extends Controller {
 
 		$yep -> save();
 
+		$shareUrl = \Config::get('webserver.alias').\App\Algorithm\ProHash::toHash($yep->id);
+
 //		$response = \Event::fire(new \App\Events\YepCreated($yep));
 
 		event(new \App\Events\YepCreated($yep));
@@ -180,8 +182,12 @@ class YepsController extends Controller {
 		} catch (\Exception $e){
 		}
 
-		return response()->json(['success' => 1, 'id' => $yep->id, 'upload_url' => $yep->upload_url,
-			'stream_name' => $yep->stream_name]);
+		return response()->json(['success' => 1,
+			'id' => $yep->id,
+			 'upload_url' => $yep->upload_url,
+			 'stream_name' => $yep->stream_name,
+			 'share_url' => $shareUrl
+		]);
 	}
 
 
