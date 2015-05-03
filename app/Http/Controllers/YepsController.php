@@ -311,7 +311,7 @@ class YepsController extends Controller {
 		}
 		if($request->has('portrait'))
 		{
-			$yep -> portrait = $params['portrait']	
+			$yep -> portrait = $params['portrait'];
 		}
 
 		$tags = $params['tags'] || '';
