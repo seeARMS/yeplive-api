@@ -51,5 +51,7 @@ return array(
     'Cron' => array($vendorDir . '/mtdowling/cron-expression/src'),
     'Conner\\Tagging\\' => array($vendorDir . '/rtconner/laravel-tagging/src'),
     'Carbon' => array($vendorDir . '/nesbot/carbon/src'),
+    'Bugsnag_' => array($vendorDir . '/bugsnag/bugsnag/src'),
+    'Bugsnag\\BugsnagLaravel\\' => array($vendorDir . '/bugsnag/bugsnag-laravel/src'),
     'Aws' => array($vendorDir . '/aws/aws-sdk-php/src'),
 );

@@ -16,6 +16,7 @@ class YepsController extends Controller {
 
 	//FOR LOADER.IO LOAD TESTING
 	public function loader(Request $request){
+		\Bugsnag::notifyError('ErrorType', 'Test Error');
 		return 'loaderio-d9d729e1f9c98b37dcec64365e3dd5e3';
 	}
 

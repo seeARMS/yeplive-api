@@ -15,7 +15,7 @@ There are no real limits on what characters can be used in a tag. It uses a slug
 
 #### Composer Install (for Laravel 5)
 	
-	composer require rtconner/laravel-tagging "~1.0.3"
+	composer require rtconner/laravel-tagging "~1.0.4"
 
 #### Install and then Run the migrations
 
@@ -63,7 +63,7 @@ After these two steps are done, you can edit config/tagging.php with your prefer
 
 ### Configure
 
-See config/tagging.php for configuration options.
+[See config/tagging.php](config/tagging.php) for configuration options.
 
 #### Credits
 

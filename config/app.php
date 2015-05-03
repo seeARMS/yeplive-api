@@ -152,6 +152,7 @@ return [
 		'Barryvdh\Debugbar\ServiceProvider',
 		'GrahamCampbell\Throttle\ThrottleServiceProvider',
 		'Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider',
+		'Bugsnag\BugsnagLaravel\BugsnagLaravelServiceProvider'
 
 	],
 
@@ -205,7 +206,8 @@ return [
 		'Socialize' => 'Laravel\Socialite\Facades\Socialite',
 		'PushNotification' => 'Laraviet\LaravelPushNotification\Facades\PushNotification',
 		'Debugbar' => 'Barryvdh\Debugbar\Facade',
-		'Throttle' => 'GrahamCampbell\Throttle\Facades\Throttle'
+		'Throttle' => 'GrahamCampbell\Throttle\Facades\Throttle',
+		'Bugsnag' => 'Bugsnag\BugsnagLaravel\BugsnagFacade'
 	],
 
 ];

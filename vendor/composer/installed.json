@@ -2345,53 +2345,6 @@
         ]
     },
     {
-        "name": "nikic/php-parser",
-        "version": "v1.2.2",
-        "version_normalized": "1.2.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/nikic/PHP-Parser.git",
-            "reference": "08f97eb4efa029e2fafb6d8c98b71731bf0cf621"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/08f97eb4efa029e2fafb6d8c98b71731bf0cf621",
-            "reference": "08f97eb4efa029e2fafb6d8c98b71731bf0cf621",
-            "shasum": ""
-        },
-        "require": {
-            "ext-tokenizer": "*",
-            "php": ">=5.3"
-        },
-        "time": "2015-04-03 14:33:59",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.2-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "files": [
-                "lib/bootstrap.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Nikita Popov"
-            }
-        ],
-        "description": "A PHP parser written in PHP",
-        "keywords": [
-            "parser",
-            "php"
-        ]
-    },
-    {
         "name": "phpseclib/phpseclib",
         "version": "0.3.10",
         "version_normalized": "0.3.10.0",
@@ -4228,65 +4181,6 @@
         ]
     },
     {
-        "name": "rtconner/laravel-tagging",
-        "version": "1.0.3",
-        "version_normalized": "1.0.3.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/rtconner/laravel-tagging.git",
-            "reference": "07c3ebf57f03619cb930203f4919b76bd6d91d18"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/rtconner/laravel-tagging/zipball/07c3ebf57f03619cb930203f4919b76bd6d91d18",
-            "reference": "07c3ebf57f03619cb930203f4919b76bd6d91d18",
-            "shasum": ""
-        },
-        "require": {
-            "laravel/framework": "~5.0",
-            "php": "~5.3"
-        },
-        "require-dev": {
-            "doctrine/dbal": "~2.5",
-            "orchestra/testbench": "~3.0",
-            "phpseclib/phpseclib": ">=0.3.7",
-            "phpunit/phpunit": "~4.0"
-        },
-        "time": "2015-04-30 01:15:10",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "migrations"
-            ],
-            "psr-0": {
-                "Conner\\Tagging\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Robert Conner",
-                "email": "rtconner@smarter.bz"
-            }
-        ],
-        "description": "Use PHP traits to extend Laravel Eloquent Models to allow Tags. Models can be marked as Taggable.",
-        "homepage": "https://smartersoftware.net/packages/laravel-tagging-taggable",
-        "keywords": [
-            "Taggable",
-            "eloquent",
-            "laravel",
-            "laravel5",
-            "tag",
-            "tagged",
-            "tagging",
-            "tags"
-        ]
-    },
-    {
         "name": "tymon/jwt-auth",
         "version": "0.5.3",
         "version_normalized": "0.5.3.0",
@@ -4795,6 +4689,212 @@
             "log-reader",
             "log-viewer",
             "logging"
+        ]
+    },
+    {
+        "name": "nikic/php-parser",
+        "version": "v1.3.0",
+        "version_normalized": "1.3.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/nikic/PHP-Parser.git",
+            "reference": "dff239267fd1befa1cd40430c9ed12591aa720ca"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/dff239267fd1befa1cd40430c9ed12591aa720ca",
+            "reference": "dff239267fd1befa1cd40430c9ed12591aa720ca",
+            "shasum": ""
+        },
+        "require": {
+            "ext-tokenizer": "*",
+            "php": ">=5.3"
+        },
+        "time": "2015-05-02 15:40:40",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.3-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "lib/bootstrap.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Nikita Popov"
+            }
+        ],
+        "description": "A PHP parser written in PHP",
+        "keywords": [
+            "parser",
+            "php"
+        ]
+    },
+    {
+        "name": "rtconner/laravel-tagging",
+        "version": "1.0.4",
+        "version_normalized": "1.0.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/rtconner/laravel-tagging.git",
+            "reference": "087dfccd33f00e0705903c8dd56cc6a9f2d4c2ff"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/rtconner/laravel-tagging/zipball/087dfccd33f00e0705903c8dd56cc6a9f2d4c2ff",
+            "reference": "087dfccd33f00e0705903c8dd56cc6a9f2d4c2ff",
+            "shasum": ""
+        },
+        "require": {
+            "illuminate/database": "~5.0",
+            "illuminate/support": "~5.0",
+            "php": "~5.3"
+        },
+        "require-dev": {
+            "doctrine/dbal": "~2.5",
+            "orchestra/testbench": "~3.0",
+            "phpseclib/phpseclib": ">=0.3.7",
+            "phpunit/phpunit": "~4.0"
+        },
+        "time": "2015-05-03 18:32:26",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "migrations"
+            ],
+            "psr-0": {
+                "Conner\\Tagging\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Robert Conner",
+                "email": "rtconner@smarter.bz"
+            }
+        ],
+        "description": "Use PHP traits to extend Laravel Eloquent Models to allow Tags. Models can be marked as Taggable.",
+        "homepage": "https://smartersoftware.net/packages/laravel-tagging-taggable",
+        "keywords": [
+            "Taggable",
+            "eloquent",
+            "laravel",
+            "laravel5",
+            "tag",
+            "tagged",
+            "tagging",
+            "tags"
+        ]
+    },
+    {
+        "name": "bugsnag/bugsnag",
+        "version": "v2.5.4",
+        "version_normalized": "2.5.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/bugsnag/bugsnag-php.git",
+            "reference": "f013ca96b359a9675358710a52ba1aee6c508925"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/bugsnag/bugsnag-php/zipball/f013ca96b359a9675358710a52ba1aee6c508925",
+            "reference": "f013ca96b359a9675358710a52ba1aee6c508925",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.2.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "3.7.*"
+        },
+        "time": "2015-04-13 19:09:41",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Bugsnag_": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "James Smith",
+                "email": "notifiers@bugsnag.com",
+                "homepage": "https://bugsnag.com"
+            }
+        ],
+        "description": "Official Bugsnag notifier for PHP applications.",
+        "homepage": "https://github.com/bugsnag/bugsnag-php",
+        "keywords": [
+            "bugsnag",
+            "errors",
+            "exceptions",
+            "logging",
+            "tracking"
+        ]
+    },
+    {
+        "name": "bugsnag/bugsnag-laravel",
+        "version": "v1.4.2",
+        "version_normalized": "1.4.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/bugsnag/bugsnag-laravel.git",
+            "reference": "eab38bc44ead6a522132a9bbbde63225f6db7e20"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/bugsnag/bugsnag-laravel/zipball/eab38bc44ead6a522132a9bbbde63225f6db7e20",
+            "reference": "eab38bc44ead6a522132a9bbbde63225f6db7e20",
+            "shasum": ""
+        },
+        "require": {
+            "bugsnag/bugsnag": ">=2.5.0",
+            "illuminate/support": "4.*|5.*",
+            "php": ">=5.3.0"
+        },
+        "time": "2015-03-18 21:07:12",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Bugsnag\\BugsnagLaravel\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "James Smith",
+                "email": "notifiers@bugsnag.com"
+            }
+        ],
+        "description": "Official Bugsnag notifier for Laravel applications.",
+        "homepage": "https://github.com/bugsnag/bugsnag-laravel",
+        "keywords": [
+            "bugsnag",
+            "errors",
+            "exceptions",
+            "laravel",
+            "logging",
+            "tracking"
         ]
     }
 ]
