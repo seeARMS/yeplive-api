@@ -88,7 +88,7 @@ class YepsController extends Controller {
 				$res = \App\Yep::queryYeps($params);
 				foreach($res as $yep){
 					$tags = [];
-					foreach($yep->tags as $tag){
+					foreach($yep->tagsObj as $tag){
 						array_push($tags, $tag->tag_name);
 					}
 					$yep->tags = $tags;
