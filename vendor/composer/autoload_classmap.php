@@ -2776,6 +2776,7 @@ return array(
     'Rap2hpoutre\\LaravelLogViewer\\LogViewerController' => $vendorDir . '/rap2hpoutre/laravel-log-viewer/src/controllers/LogViewerController.php',
     'RecreateNewEmail' => $baseDir . '/database/migrations/2015_04_26_051450_recreate_new_email.php',
     'RecreateNewEmail2' => $baseDir . '/database/migrations/2015_04_26_051721_recreate_new_email2.php',
+    'RemakeComments' => $baseDir . '/database/migrations/2015_05_03_202629_remake_comments.php',
     'RenameProgramsToYeps' => $baseDir . '/database/migrations/2015_04_10_180544_rename_programs_to_yeps.php',
     'SebastianBergmann\\Comparator\\ArrayComparator' => $vendorDir . '/sebastian/comparator/src/ArrayComparator.php',
     'SebastianBergmann\\Comparator\\Comparator' => $vendorDir . '/sebastian/comparator/src/Comparator.php',
