@@ -236,7 +236,6 @@ class YepsController extends Controller {
 			$imagePath = \Config::get('wowza.thumbnail.host').'/transcoderthumbnail?application='.$application_name.'&streamname='.$stream_name.'&format=jpeg&size='.$width.'x'.$height;
 		}
 	
-		$imagePath = \Config::get(
 
 		$fileName = $stream_name.'-thumbnail.jpg';
 
