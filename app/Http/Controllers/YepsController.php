@@ -266,7 +266,8 @@ class YepsController extends Controller {
 			'tags',
 			'latitude',
 			'longitude',
-			'staging'
+			'staging',
+			'portrait'
 		]);
 
 		$validator = \Validator::make( $params, [
@@ -275,7 +276,8 @@ class YepsController extends Controller {
 			'tags' => 'string:max:255',
 			'latitude' => 'numeric',
 			'longitude' => 'numeric',
-			'staging' => 'boolean'
+			'staging' => 'boolean',
+			'portrait' => 'boolean'
 		]);
 
 		if($validator -> fails())
@@ -306,6 +308,10 @@ class YepsController extends Controller {
 		if($request->has('longitude'))
 		{
 			$yep -> longitude = $params['longitude'];
+		}
+		if($request->has('portrait'))
+		{
+			$yep -> portrait = $params['portrait']	
 		}
 
 		$tags = $params['tags'] || '';

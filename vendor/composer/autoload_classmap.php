@@ -24,6 +24,7 @@ return array(
     'AddViewsToProgram' => $baseDir . '/database/migrations/2015_04_09_012759_add_views_to_program.php',
     'ChagneFacebookAccessToken' => $baseDir . '/database/migrations/2015_05_01_053807_ChagneFacebookAccessToken.php',
     'ChangeGoogleNameToId' => $baseDir . '/database/migrations/2015_04_25_174613_change_google_name_to_id.php',
+    'ChangeIp' => $baseDir . '/database/migrations/2015_05_03_141054_ChangeIp.php',
     'ChangeMessagesTable' => $baseDir . '/database/migrations/2015_04_15_211316_change_messages_table.php',
     'ChangeVotesToYeps' => $baseDir . '/database/migrations/2015_04_10_182205_change_votes_to_yeps.php',
     'CreateCommentsTable4' => $baseDir . '/database/migrations/2015_05_02_183625_create_comments_table4.php',
