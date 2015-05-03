@@ -12,6 +12,7 @@ class CreateCommentsTable4 extends Migration {
 	 */
 	public function up()
 	{
+	/*
 		Schema::create('comments', function(Blueprint $table)
 		{
 			$table->bigIncrements('id');
@@ -23,6 +24,7 @@ class CreateCommentsTable4 extends Migration {
 			$table->integer('created_time')->default(null);
 			$table->integer('updated_time')->default(null);
 		});
+		*/
 	}
 
 	/**

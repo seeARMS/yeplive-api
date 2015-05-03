@@ -122,7 +122,6 @@ class UsersController extends Controller {
 	public function socialAuth(Request $request, \SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb)
 	{
 		$user_ip = $request->ip();
-		dd($user_ip);
 		//FACEBOOK
 		if($request->has('facebook_access_token') && $request->has('facebook_user_id'))
 		{
