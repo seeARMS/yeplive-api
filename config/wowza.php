@@ -29,5 +29,8 @@ return [
 	],
 	'cloudfront' => [
 		'static' => 'http://dwvjlx2oulfs.cloudfront.net/'
+	],
+	's3' => [
+		'static' => 'http://s3-us-west-2.amazonaws.com/dev-wowza/'
 	]
 ];

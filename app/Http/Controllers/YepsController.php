@@ -140,6 +140,7 @@ class YepsController extends Controller {
 
 		$yep->stream_name = $yep->id . "-" .  strval(time());
 
+		$yep -> is_custom_marker = 0;
 
 		$yep->url_hash = \App\Algorithm\ProHash::toHash($yep->id);
 	
@@ -599,7 +600,10 @@ class YepsController extends Controller {
 
 		$yep -> vod_path = \Config::get('wowza.cloudfront.static').$yep->stream_name.".mp4";
 
+		$yep -> vod_fallback = \Config::get('wowza.s3.static').$yep->stream_name.".mp4";
+
 		$yep -> vod_mobile_path = \Config::get('wowza.cloudfront.static').$yep->stream_name."/playlist.m3u8";
+
 
 		$yep -> end_time = time();
 
@@ -649,7 +653,7 @@ class YepsController extends Controller {
 			return \App\Errors::notFound('yep not found');
 		}
 
-		$yep -> staging = 1;
+	$yep -> staging = 1;
 
 		$yep->save();
 	

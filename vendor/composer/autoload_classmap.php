@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AddCustomMarkerToYeps' => $baseDir . '/database/migrations/2015_05_03_022440_AddCustomMarkerToYeps.php',
     'AddDeeltedToYeps' => $baseDir . '/database/migrations/2015_04_26_133525_add_deelted_to_yeps.php',
     'AddDeletedToYeps' => $baseDir . '/database/migrations/2015_04_26_023425_add_deleted_to_yeps.php',
     'AddHLSStreamToYeps' => $baseDir . '/database/migrations/2015_05_02_194335_AddHLSStreamToYeps.php',
@@ -18,6 +19,7 @@ return array(
     'AddTimestampsToVotes' => $baseDir . '/database/migrations/2015_04_10_210115_add_timestamps_to_votes.php',
     'AddUploadUrlToYeps' => $baseDir . '/database/migrations/2015_04_26_222545_add_upload_url_to_yeps.php',
     'AddUrlHashToYeps' => $baseDir . '/database/migrations/2015_05_02_013231_AddUrlHashToYeps.php',
+    'AddVODFallbackToYeps' => $baseDir . '/database/migrations/2015_05_03_021603_AddVODFallbackToYeps.php',
     'AddViewsToProgram' => $baseDir . '/database/migrations/2015_04_09_012759_add_views_to_program.php',
     'ChagneFacebookAccessToken' => $baseDir . '/database/migrations/2015_05_01_053807_ChagneFacebookAccessToken.php',
     'ChangeGoogleNameToId' => $baseDir . '/database/migrations/2015_04_25_174613_change_google_name_to_id.php',
