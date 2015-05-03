@@ -4,6 +4,9 @@ return [
 	'thumbnail' => [
 		'host' => 'http://54.149.243.236:8086'
 	],
+	'thumbnail_web' => [
+		'host' => 'http://52.24.42.180:8086'
+	],
 	'rtmp' => [
 		'stream' => 'rtmp://wowza-edge-prod-beta.elasticbeanstalk.com/liveedge/_definst_/mp4:',
 		'hdfvr' => '',

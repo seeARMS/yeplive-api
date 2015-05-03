@@ -43,6 +43,7 @@ return array(
     'CreateVotesTable' => $baseDir . '/database/migrations/2015_04_05_231604_create_votes_table.php',
     'CreateWarningsTable' => $baseDir . '/database/migrations/2015_04_05_231545_create_warnings_table.php',
     'DatabaseSeeder' => $baseDir . '/database/seeds/DatabaseSeeder.php',
+    'Dropcomments' => $baseDir . '/database/migrations/2015_05_03_163150_dropcomments.php',
     'File_Iterator' => $vendorDir . '/phpunit/php-file-iterator/src/Iterator.php',
     'File_Iterator_Facade' => $vendorDir . '/phpunit/php-file-iterator/src/Facade.php',
     'File_Iterator_Factory' => $vendorDir . '/phpunit/php-file-iterator/src/Factory.php',

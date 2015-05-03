@@ -5,11 +5,12 @@ class RoutesTest extends TestCase{
 	{
 		parent::setUp(); // Don't forget this!
 		//clear all databases
+		\App\Yep::truncate();
     DB::table('yeps')->truncate();
 		$tableNames = Schema::getConnection()->getDoctrineSchemaManager()->listTableNames();
 		foreach ($tableNames as $name) {
     //if you don't want to truncate migrations
-    if ($name == 'migrations') {
+    if ($name == 'migrations' || $name=='comments') {
         continue;
     }
 }

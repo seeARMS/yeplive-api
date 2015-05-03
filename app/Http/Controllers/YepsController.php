@@ -219,11 +219,24 @@ class YepsController extends Controller {
 
 		$width = '427';
 		$height = '240';
-		$application_name = 'liveorigin';
+			
+		if($yep -> is_web)
+		{
+			$application_name = 'hdfvr';
+		} else {
+			$application_name = 'liveorigin';
+		}
+		
 		$stream_name = $yep -> stream_name;
 		$yep_id = $yep -> id;
 
-		$imagePath = \Config::get('wowza.thumbnail.host').'/transcoderthumbnail?application='.$application_name.'&streamname='.$stream_name.'&format=jpeg&size='.$width.'x'.$height;
+		if($yep -> is_web){
+			$imagePath = \Config::get('wowza.thumbnail_web.host').'/transcoderthumbnail?application='.$application_name.'&streamname='.$stream_name.'&format=jpeg&size='.$width.'x'.$height;
+		} else {	
+			$imagePath = \Config::get('wowza.thumbnail.host').'/transcoderthumbnail?application='.$application_name.'&streamname='.$stream_name.'&format=jpeg&size='.$width.'x'.$height;
+		}
+	
+		$imagePath = \Config::get(
 
 		$fileName = $stream_name.'-thumbnail.jpg';
 
