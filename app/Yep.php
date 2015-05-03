@@ -129,8 +129,10 @@ class Yep extends Model{
 	static function queryYeps($params)
 	{	
 		$quantity = $params['quantity'] != null ? $params['quantity'] : 10;
+		$timeAgo = \Carbon\Carbon::now()->subDay();
 		return self::with('user')
-			->where('staging',0)
+			->where('staging','=',0)
+			->where('created_at','>',$timeAgo)
 			->orderBy('vod_enable','asc')
 			->orderBy('created_at','desc')
 			->take($quantity)

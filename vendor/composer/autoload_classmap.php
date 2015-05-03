@@ -10,6 +10,7 @@ return array(
     'AddDeeltedToYeps' => $baseDir . '/database/migrations/2015_04_26_133525_add_deelted_to_yeps.php',
     'AddDeletedToYeps' => $baseDir . '/database/migrations/2015_04_26_023425_add_deleted_to_yeps.php',
     'AddHLSStreamToYeps' => $baseDir . '/database/migrations/2015_05_02_194335_AddHLSStreamToYeps.php',
+    'AddIPToUsers' => $baseDir . '/database/migrations/2015_05_03_035536_AddIPToUsers.php',
     'AddIsWebToYeps' => $baseDir . '/database/migrations/2015_05_02_184227_AddIsWebToYeps.php',
     'AddMobileHLSUrls' => $baseDir . '/database/migrations/2015_04_17_191539_add_mobile_HLS_urls.php',
     'AddPortraitToYeps' => $baseDir . '/database/migrations/2015_05_01_200437_AddPortraitToYeps.php',

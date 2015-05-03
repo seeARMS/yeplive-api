@@ -6,35 +6,6 @@ class UsersController extends Controller {
 	public function __construct()
 	{
 	}
-
-	/*
-	 * POST : Authenticate a user
-	 *
-	 * @param  {Array}    $request      An array consists of user email and password keys
-	 * @return {Array}    response()    User token (if any), Authentication status
-	 */
-	public function authenticate(Request $request)
-	{
-		$credentials = $request->only('email', 'password');
-		$user = \App\User::where('email', '=', $credentials['email'])->first(); 
-		if($user)
-		{
-			$output = \App\Algorithm\ProAuth::jwtAuth($credentials);
-			return response()->json([$output['status'] => $output['message']], $output['code']);
-		}
-		else
-		{
-			$password = $credentials['password'];
-					$credentials['password'] = \Hash::make($credentials['password']);
-					$user = \App\Algorithm\ProSave::user($credentials);
-					$output = \App\Algorithm\ProAuth::jwtAuth(array('email' => $user['email'], 'password' => $password));
-					return response()->json([ 'user_id' => $user['user_id'],
-												'email' => $user['email'], 
-												$output['status'] => $output['message'] 
-											], 200);
-		}
-	}
-
 	/*
 	 * GET : Check user auth token
 	 *
@@ -44,7 +15,6 @@ class UsersController extends Controller {
 	{
 		try {
 			$user = \JWTAuth::parseToken()->toUser();
-//			$user -> yeps = \App\Yep::where('user_id', '=', $user->user_id)->get();	
 			return $user;
 		} catch (\JWTException $e){
 			return response()->json(['error' => 'no_token'], 401);
@@ -151,6 +121,8 @@ class UsersController extends Controller {
 	 */
 	public function socialAuth(Request $request, \SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb)
 	{
+		$user_ip = $request->ip();
+		dd($user_ip);
 		//FACEBOOK
 		if($request->has('facebook_access_token') && $request->has('facebook_user_id'))
 		{
@@ -184,6 +156,7 @@ class UsersController extends Controller {
 				$user = \App\User::create($newUserParams);
 			} else { 
 				$user -> facebook_access_token = $params['facebook_access_token'];
+				$user -> registration_id = $user_ip;
 				$user -> save();
 			}
 
@@ -222,6 +195,7 @@ class UsersController extends Controller {
 			} else {
 				$user -> twitter_oauth_token = $request->input('twitter_access_token');
 				$user -> twitter_oauth_token_secret = $request->input('twitter_secret_token');
+				$user -> registration_id = $user_ip;
 				$user -> save();
 			}
 
@@ -261,6 +235,7 @@ class UsersController extends Controller {
 				$user = \App\User::create($newUserParams);
 			} else {
 				$user -> google_access_token = $request->input('google_access_token');
+				$user -> registration_id = $user_ip;
 				$user -> save();
 			}
 			$jwtoken = \JWTAuth::fromUser($user);
