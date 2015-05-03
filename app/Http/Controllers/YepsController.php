@@ -338,6 +338,11 @@ class YepsController extends Controller {
 			}
 		}
 
+		try{	
+		\Cache::forget('yeps');
+		} catch(\Exception $e){
+		}
+
 		if($yep -> save())
 		{
 			return response()->json(['success' => 1, 'id' => $yep->id]);
