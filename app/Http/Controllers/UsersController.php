@@ -155,7 +155,7 @@ class UsersController extends Controller {
 				$user = \App\User::create($newUserParams);
 			} else { 
 				$user -> facebook_access_token = $params['facebook_access_token'];
-				$user -> registration_id = $user_ip;
+				$user -> registration_ip = $user_ip;
 				$user -> save();
 			}
 
@@ -194,7 +194,7 @@ class UsersController extends Controller {
 			} else {
 				$user -> twitter_oauth_token = $request->input('twitter_access_token');
 				$user -> twitter_oauth_token_secret = $request->input('twitter_secret_token');
-				$user -> registration_id = $user_ip;
+				$user -> registration_ip = $user_ip;
 				$user -> save();
 			}
 
@@ -234,7 +234,7 @@ class UsersController extends Controller {
 				$user = \App\User::create($newUserParams);
 			} else {
 				$user -> google_access_token = $request->input('google_access_token');
-				$user -> registration_id = $user_ip;
+				$user -> registration_ip = $user_ip;
 				$user -> save();
 			}
 			$jwtoken = \JWTAuth::fromUser($user);
