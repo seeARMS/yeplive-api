@@ -24,7 +24,7 @@ class YepsController extends Controller {
 	{
 		$id = \App\Algorithm\ProHash::toID($hash);
 
-		$url = \Config::get('webclient.root').'/#watch/'.$id;
+		$url = \Config::get('webclient.root').'/watch/'.$id;
 
 		return redirect()->to($url);
 	}
