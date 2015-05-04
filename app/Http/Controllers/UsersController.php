@@ -34,7 +34,7 @@ class UsersController extends Controller {
 			return \App\Errors::invalid('must supply name');
 		}
 
-		$user = \App\User::where('display_name','=',$name)->get()->orderBy('created_at','desc')->first();
+		$user = \App\User::where('display_name','=',$name)->get()->first();
 
 		if(! $user)
 		{
@@ -352,7 +352,7 @@ class UsersController extends Controller {
 			return \App\Errors::notFound('user not found');
 		}
 
-		$yep = \App\Yep::where('user_id','=',$user->user_id)->orderBy('created_at')->get()->first();
+		$yep = \App\Yep::where('user_id','=',$user->user_id)->orderBy('created_at','desc')->get()->first();
 
 		if(! $yep)
 		{
