@@ -364,7 +364,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		//Create Yeplive Tweet
 		try{
 			$response = \Twitter::postTweet([
-				'status' => "~~~Yeplive™~~~\nStreaming now!\n #yeplive yplv.tv/".$yep->hash
+				'status' => "~~~Yeplive™~~~\nStreaming now!\n #yeplive yplv.tv/".$hash
 			]);
 			} catch(Exception $e) {
 				return false;

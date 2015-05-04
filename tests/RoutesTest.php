@@ -6,6 +6,7 @@ class RoutesTest extends TestCase{
 		parent::setUp(); // Don't forget this!
 		//clear all databases
 		\App\Yep::truncate();
+		/*
     DB::table('yeps')->truncate();
 		$tableNames = Schema::getConnection()->getDoctrineSchemaManager()->listTableNames();
 		foreach ($tableNames as $name) {
@@ -13,9 +14,9 @@ class RoutesTest extends TestCase{
     if ($name == 'migrations' || $name=='comments') {
         continue;
     }
-}
+		*/
+		}
 	
-	}
 
 	public function testRootRoute()
 	{
