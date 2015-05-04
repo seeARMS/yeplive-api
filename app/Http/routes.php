@@ -12,8 +12,8 @@ Route::get('{hash}', [
 
 Route::get('admin/logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 
-Route::group(['prefix' => 'api/v1',
-		'before' => 'throttle:30,1'
+Route::group(['prefix' => 'api/v1'//,
+//		'before' => 'throttle:30,1'
 		], function()
 { 
 
