@@ -31,7 +31,7 @@ class YepsController extends Controller {
 
 	public function showAll()
 	{
-		$yeps = \App\Yeps::all();
+		$yeps = \App\Yep::all();
 		return $yeps;
 	}
 
