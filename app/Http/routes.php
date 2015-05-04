@@ -199,6 +199,11 @@ Route::group(['prefix' => 'api/v1',
 			'uses' => 'UsersController@linkSocial'
 		]);
 
+		Route::post('share/twitter',[
+			'uses' => 'UsersController@shareTwitter'
+		]);
+
+
 		/*
 		 * User add a comment to a yep
 		 */
@@ -236,9 +241,6 @@ Route::group(['prefix' => 'api/v1',
 				'uses' => 'UsersController@changeEmail'
 			]);
 
-			Route::post('users/{id}/share/twitter',[
-				'uses' => 'UsersController@shareTwitter'
-			]);
 
 			Route::group(['prefix' => 'internal'], function(){
 				/*

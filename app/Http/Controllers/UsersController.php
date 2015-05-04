@@ -341,7 +341,12 @@ class UsersController extends Controller {
 
 	public function shareTwitter(Request $request, $id)
 	{
-		$user = \App\User::find($id);
+		try {
+			$user = \JWTAuth::parseToken()->toUser();
+		} catch(\Exception $e) {
+			return \App\Errors::unauthorized('user is not authorized');
+		}
+
 		if(! $user)
 		{
 			return \App\Errors::notFound('user not found');
