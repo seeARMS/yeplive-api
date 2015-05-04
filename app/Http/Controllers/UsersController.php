@@ -34,7 +34,7 @@ class UsersController extends Controller {
 			return \App\Errors::invalid('must supply name');
 		}
 
-		$user = \App\User::where('display_name','=',$name)->get()->first();
+		$user = \App\User::where('display_name','=',$name)->get()->orderBy('created_at','desc')->first();
 
 		if(! $user)
 		{
