@@ -353,6 +353,11 @@ class UsersController extends Controller {
 		}
 
 		$yep = \App\Yep::where('user_id','=',$user->user_id)->orderBy('created_at')->get()->first();
+
+		if(! $yep)
+		{
+			return \App\Errors::invalid('no');
+		}
 		
 		$hash = \App\Algorithm\ProHash::toHash($yep->id);
 
