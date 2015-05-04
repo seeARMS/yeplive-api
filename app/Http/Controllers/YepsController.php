@@ -29,6 +29,12 @@ class YepsController extends Controller {
 		return redirect()->to($url);
 	}
 
+	public function showAll()
+	{
+		$yeps = \App\Yeps::all();
+		return $yeps;
+	}
+
 	public function getYepByHash(Request $request)
 	{
 		$params = $request -> only('hash');

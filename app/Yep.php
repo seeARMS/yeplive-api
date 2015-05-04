@@ -21,7 +21,6 @@ class Yep extends Model{
 		'updated_at',
 		'isMobile',
 		'user_id',
-		'staging',
 		'upload_url',
 		'votes'
 	];

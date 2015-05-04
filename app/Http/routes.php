@@ -59,6 +59,9 @@ Route::group(['prefix' => 'api/v1'//,
 	Route::get('yeps', [
 		'uses' => 'YepsController@index'
 	]);
+	Route::get('yeps/all',[
+		'uses' => 'YepsController@showAll'
+	]);
 	Route::get('yeps/{id}', [
 		'uses' => 'YepsController@show'
 	]);
