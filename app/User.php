@@ -347,7 +347,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	}
 
-	public function shareTwitter()
+	public function shareTwitter($hash)
 	{
 		if(! $this->isTwitterAuthed())
 		{
@@ -364,7 +364,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		//Create Yeplive Tweet
 		try{
 			$response = \Twitter::postTweet([
-				'status' => "~~~Yeplive~~~\nStreaming now!\n #yeplive yplv.tv/".time()
+				'status' => "~~~Yeplive™~~~\nStreaming now!\n #yeplive yplv.tv/".$yep->hash
 			]);
 			} catch(Exception $e) {
 				return false;

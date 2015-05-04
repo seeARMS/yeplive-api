@@ -339,7 +339,7 @@ class UsersController extends Controller {
 
 	}
 
-	public function shareTwitter(Request $request, $id)
+	public function shareTwitter(Request $request)
 	{
 		try {
 			$user = \JWTAuth::parseToken()->toUser();
@@ -352,13 +352,17 @@ class UsersController extends Controller {
 			return \App\Errors::notFound('user not found');
 		}
 
-		if($user->shareTwitter())
+		$yep = \App\Yep::where('user_id','=',$user->user_id)->orderBy('created_at')->get()->first();
+		
+		$hash = \App\Algorithm\ProHash::toHash($yep->id);
+
+		if($user->shareTwitter($hash))
 		{
 			return response()->json(["success"=>1, "id"=>$id],200);		
 		} 
 		else
 		{
-			return \App\Error::invalid('an error occured when sharing');
+			return \App\Errors::invalid('an error occured when sharing');
 		}
 	}
 
