@@ -363,7 +363,7 @@ class UsersController extends Controller {
 
 		if($user->shareTwitter($hash))
 		{
-			return response()->json(["success"=>1, "id"=>$id],200);		
+			return response()->json(["success"=>1],200);		
 		} 
 		else
 		{
