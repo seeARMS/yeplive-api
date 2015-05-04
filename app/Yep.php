@@ -32,6 +32,16 @@ class Yep extends Model{
 		'views' => 0,
 		'staging' => false
 	];
+
+	public function setTagsFromTitle()
+	{
+		$title = $this->title;
+		preg_match_all('/#([^\s]+)/', $title, $matches);
+		foreach($matches[1] as $tag)
+		{
+			$this->tag(strtolower($tag));
+		}
+	}
 	
 	//
 	public function user()

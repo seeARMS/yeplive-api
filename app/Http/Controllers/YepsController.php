@@ -142,6 +142,8 @@ class YepsController extends Controller {
 
 		$yep= \App\Yep::create($filtered_params);
 
+
+		/*
 		$tags = explode(',',$params['tags']);
 
 		if($tags[0] != '' )
@@ -151,6 +153,7 @@ class YepsController extends Controller {
 				$yep->tag(strtolower($tagName));
 			}
 		}
+		*/
 
 		$yep->start_time = time();
 
@@ -177,12 +180,15 @@ class YepsController extends Controller {
 		$yep->stream_mobile_url = '';
 
 		if($request->has('staging')){
-			$yep->staging = true;
+			$yep->staging = $request->input('staging');
 		};
+
+		$yep->setTagsFromTitle();
 
 		$yep -> save();
 
 		$shareUrl = \Config::get('webserver.alias').\App\Algorithm\ProHash::toHash($yep->id);
+
 
 //		$response = \Event::fire(new \App\Events\YepCreated($yep));
 
@@ -321,6 +327,7 @@ class YepsController extends Controller {
 		if($request->has('title'))
 		{
 			$yep -> title = $params['title'];
+			$yep -> setTagsFromTitle();
 		}
 
 		if($request->has('description'))
@@ -342,6 +349,7 @@ class YepsController extends Controller {
 			$yep -> portrait = $params['portrait'];
 		}
 
+/*
 		$tags = $params['tags'] || '';
 		$tags = explode(',', $params['tags']);
 
@@ -353,6 +361,7 @@ class YepsController extends Controller {
 				$yep->tag(strtolower($tagName));
 			}
 		}
+		*/
 
 		try{	
 		\Cache::forget('yeps');
@@ -698,7 +707,7 @@ class YepsController extends Controller {
 			return \App\Errors::notFound('yep not found');
 		}
 
-	$yep -> staging = 1;
+		$yep -> staging = 1;
 
 		$yep->save();
 	
