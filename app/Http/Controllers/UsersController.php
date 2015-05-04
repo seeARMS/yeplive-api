@@ -279,11 +279,20 @@ class UsersController extends Controller {
 		if(! $message){
 			$message = '';
 		}
+		$yep = \App\Yep::where('user_id','=',$user->user_id)->orderBy('created_at','desc')->get()->first();
+
+		if(! $yep)
+		{
+			return \App\Errors::invalid('no');
+		}
+		
+		$hash = \App\Algorithm\ProHash::toHash($yep->id);
+
 
 		if(! $user->isFacebookAuthed($fb)){
 			return \App\Errors::unauthorized('user is not authed with facebook');
 		}
-		if($user->shareFacebook($fb, $message)){
+		if($user->shareFacebook($fb, $message, $hash)){
 			return response()->json(['success' => 1, 'id' => $user->user_id],200);	
 		} else {
 			return \App\Errors::invalid('');

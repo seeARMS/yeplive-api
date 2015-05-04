@@ -269,13 +269,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	}
 
 	//TODO
-	public function shareFacebook($fb, $message)
+	public function shareFacebook($fb, $message, $hash)
 	{
 		$fb->setDefaultAccessToken($this->facebook_access_token);
 			try {
 				$response = $fb->post('/me/feed', [
 					"message" => $message,
-					"link" => "http://development-vriepmhkv2.elasticbeanstalk.com/api"
+					"link" => "http://yplv.tv/".$hash
 				]);
 			} catch (Facebook\Exceptions\FacebookSDKException $e) {
 				return false;
