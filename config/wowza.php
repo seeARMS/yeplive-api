@@ -23,6 +23,7 @@ return [
 	],
 	'android' => [
 		'rtsp' => 'rtsp://52.24.36.82/liveedge/_definst_/',
+		'rtsp_backup' => 'rtsp://54.149.243.236/liveorigin/',
 		'hls' => 'http://52.24.36.82/liveedge/'
 	],
 	'web' => [
