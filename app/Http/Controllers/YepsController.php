@@ -714,7 +714,7 @@ class YepsController extends Controller {
 			return \App\Errors::notFound('yep not found');
 		}
 
-		if($request->has('staging'){
+		if($request->has('staging')){
 			$yep -> staging = $request->input('staging');
 		} else {
 			$yep -> staging = 1;
