@@ -178,7 +178,6 @@ class YepsController extends Controller {
 			//$yep->stream_url = \Config::get('wowza.android.rtsp').$yep->stream_name;
 			$yep->stream_url = \Config::get('wowza.android.rtsp_backup').$yep->stream_name;
 			$yep->stream_hls = \Config::get('wowza.android.rtmp_backup').$yep->stream_name;			
-			$yep->stream_rtmp = \Config::get('wowza.android.rtmp_backup').$yep->stream_name;
 		} else {
 			$yep->is_web = 1;
 			$yep->stream_url = \Config::get('wowza.web.rtsp').$yep->stream_name;
