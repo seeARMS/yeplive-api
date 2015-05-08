@@ -400,7 +400,7 @@ class YepsController extends Controller {
 
 	public function delete(Request $request, $id)
 	{
-		$yep = \App\Yep::find($id);
+		$yep = \App\Yep::queryYep($id);
 
 		if(! $yep)
 		{
