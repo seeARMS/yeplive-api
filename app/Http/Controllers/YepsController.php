@@ -288,7 +288,8 @@ class YepsController extends Controller {
 	//PUT /yep/{id}
 	public function update(Request $request, $id)
 	{
-		$yep= \App\Yep::find($id);
+//		$yep= \App\Yep::find($id);
+		$yep = \App\Yep::queryYep($id);
 
 		if(! $yep)
 		{

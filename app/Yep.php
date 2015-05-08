@@ -135,6 +135,17 @@ class Yep extends Model{
 			->where('yep_id', $this->id)->get(); 
 	}
 
+	static function queryYep($id)
+	{
+		$yep = self::with('user','tagsObj')
+			->find($id);
+		$tags = [];
+		foreach($yep->tagsObj as $tag){
+			array_push($tags, $tag->tag_name);
+		}
+		return $yep;
+	}
+
 	static function queryYeps($params)
 	{	
 		$quantity = $params['quantity'] != null ? $params['quantity'] : 10;
