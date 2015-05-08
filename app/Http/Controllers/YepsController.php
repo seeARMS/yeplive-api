@@ -240,7 +240,7 @@ class YepsController extends Controller {
 			return \App\Errors::forbidden("user is banned");
 		}
 
-		$yep= \App\Yep::find($id);
+		$yep= \App\Yep::queryYep($id);
 
 		if(!$yep)
 		{
@@ -280,6 +280,11 @@ class YepsController extends Controller {
 		}
 
 		$yep -> save();
+
+		try{
+			$success = \App\Algorithm\Socket::newYep($yep);
+		} catch (\Exception $e){
+		}
 
 		return response()->json(['success' => 1, 'image_url' => $imageUrl, 'id' => $yep_id]);
 	}
@@ -371,11 +376,12 @@ class YepsController extends Controller {
 			}
 		}
 		*/
-
+/*
 		try{
 			$success = \App\Algorithm\Socket::newYep($yep);
 		} catch (\Exception $e){
 		}
+*/
 
 		try{	
 		\Cache::forget('yeps');
