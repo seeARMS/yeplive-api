@@ -53,6 +53,9 @@ Route::group(['prefix' => 'api/v1'//,
 	Route::get('yeps/by-name', [
 		'uses' => 'YepsController@getYepByName'
 	]);
+	Route::get('yeps/{id}/force-complete',[
+		'uses' => 'YepsController@forceComplete'
+	]);
 	Route::get('yeps/{id}/stage-yep', [
 		'uses' => 'YepsController@stageYep'
 	]);
