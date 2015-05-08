@@ -14,6 +14,7 @@ class YepsController extends Controller {
 
 	}
 
+
 	//FOR LOADER.IO LOAD TESTING
 	public function loader(Request $request){
 		\Bugsnag::notifyError('ErrorType', 'Test Error');
@@ -199,7 +200,7 @@ class YepsController extends Controller {
 
 //		$response = \Event::fire(new \App\Events\YepCreated($yep));
 
-		event(new \App\Events\YepCreated($yep));
+//		event(new \App\Events\YepCreated($yep));
 
 		try{	
 		\Cache::forget('yeps');
@@ -370,6 +371,11 @@ class YepsController extends Controller {
 		}
 		*/
 
+		try{
+			$success = \App\Algorithm\Socket::newYep($yep);
+		} catch (\Exception $e){
+		}
+
 		try{	
 		\Cache::forget('yeps');
 		} catch(\Exception $e){
@@ -422,6 +428,7 @@ class YepsController extends Controller {
 		}
 
 		$yep->staging = false;
+
 
 		$yep->save();
 
@@ -669,6 +676,11 @@ class YepsController extends Controller {
 		$yep -> end_time = time();
 
 		$yep -> save();
+
+		try{	
+		\Cache::forget('yeps');
+		} catch(\Exception $e){
+		}
 
 		try {
 			$success = \App\Algorithm\Socket::yepComplete($yep);
