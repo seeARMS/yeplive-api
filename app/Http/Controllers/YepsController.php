@@ -415,6 +415,10 @@ class YepsController extends Controller {
 		}
 		$yep->delete();
 
+		try{ 
+			\App\Algorithm\Socket::yepDelete($yep);
+		} catch (\Exception $e){}
+
 		return response()->json(['success'=>1, 'id'=>$id], 200);
 	}
 

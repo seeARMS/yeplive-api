@@ -18,6 +18,13 @@ class Socket {
 		return $success;
 	}
 
+	public static function yepDelete($yep)
+	{
+		$data = $yep->toArray();
+		$success = self::postSocket('/socket/yeps/delete', $data);
+		return $success;
+	}
+
 	public static function newVote($yep)
 	{
 		$data = [
