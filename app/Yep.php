@@ -139,7 +139,6 @@ class Yep extends Model{
 	{
 		$yep = self::with('user','tagsObj')
 			->find($id);
-		$yep['vote_count'] = $yep->upvotes();
 		$tags = [];
 		foreach($yep->tagsObj as $tag){
 			array_push($tags, $tag->tag_name);
