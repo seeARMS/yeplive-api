@@ -21,6 +21,11 @@ class YepsController extends Controller {
 		return 'loaderio-d9d729e1f9c98b37dcec64365e3dd5e3';
 	}
 
+	public function controlPanel()
+	{
+		
+	}
+
 	public function getYepPage(Request $request, $hash)
 	{
 		$id = \App\Algorithm\ProHash::toID($hash);
@@ -29,6 +34,7 @@ class YepsController extends Controller {
 
 		return redirect()->to($url);
 	}
+
 
 	public function showAll()
 	{
@@ -104,6 +110,7 @@ class YepsController extends Controller {
 				return $res;
 			});
 		}
+
 
 		return response()->json(['yeps' => $yeps], 200);
 	}
@@ -774,5 +781,10 @@ class YepsController extends Controller {
 		}
 
 		return true;
+	}
+
+	private function sortYeps($yeps)
+	{
+		
 	}
 }

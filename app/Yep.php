@@ -135,7 +135,7 @@ class Yep extends Model{
 			->where('yep_id', $this->id)->get(); 
 	}
 
-	static function queryYep($id)
+	public static function queryYep($id)
 	{
 		$yep = self::with('user','tagsObj')
 			->find($id);
@@ -150,21 +150,36 @@ class Yep extends Model{
 		return $yep;
 	}
 
-	static function queryYeps($params)
+	public static function queryYeps($params)
 	{	
 		$quantity = $params['quantity'] != null ? $params['quantity'] : 10;
+
 		$timeAgo = \Carbon\Carbon::now()->subDay();
-		return self::with('user', 'tagsObj')
+
+		$yeps = self::with('user','tagsObj')
 			->where('staging','=',0)
 			->where('created_at','>',$timeAgo)
 			->orderBy('vod_enable','asc')
+			->orderBy('views','desc')
 			->orderBy('created_at','desc')
 			->take($quantity)
 			->get();
+
+		return $yeps;
+		
+
 		$tags = explode(',',$params['tags']);
 		if($tags[0] == '')
 		{
 		}
 		return Yep::withAnyTag($tags)->limit($quantity)->where('staging', '=', 0)->get();
 	}
+
+	public static function sortingAlgorithm($yeps)
+	{
+		$yeps->sort(function($a, $b){
+			
+		});
+		return $yeps;
+	}	
 }

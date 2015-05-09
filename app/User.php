@@ -411,4 +411,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		];
 	}
 
+	public function isPopular()
+	{
+		return	self::followerCount() > 50;
+	}
+
 }
