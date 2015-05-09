@@ -266,19 +266,19 @@ class YepsController extends Controller {
 			$imagePath = \Config::get('wowza.thumbnail.host').'/transcoderthumbnail?application='.$application_name.'&streamname='.$stream_name.'&format=jpeg&size='.$width.'x'.$height;
 		}
 	
-
 		$fileName = $stream_name.'-thumbnail.jpg';
 
 		$imageUrl = \App\Algorithm\ProS3::storeYepThumbnail($imagePath, $fileName);
 
 		$yep -> image_path = $imageUrl;
+/*
 		if(! $params['portrait'])
 		{
 			$yep->portrait = false;
 		} else {
-		$yep -> portrait = $params['portrait'];
+			$yep -> portrait = $params['portrait'];
 		}
-
+*/
 		$yep -> save();
 
 		try{
@@ -660,7 +660,7 @@ class YepsController extends Controller {
 	}
 
 	public function streamComplete(Request $request, $id){
-		$yep = \App\Yep::find($id);
+		$yep = \App\Yep::queryYep($id);
 
 		if (! $yep)
 		{
