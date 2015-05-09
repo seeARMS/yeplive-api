@@ -560,7 +560,8 @@ class YepsController extends Controller {
 	{
 		$user = \JWTAuth::parseToken()->toUser();
 
-		$yep = \App\Yep::find($id);
+		$yep = \App\Yep::queryYep($id);
+		$yep['vote_count'] = $yep->upvotes();
 
 		if(! $yep)
 		{
