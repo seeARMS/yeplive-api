@@ -674,35 +674,20 @@ class YepsController extends Controller {
 			return \App\Errors::forbidden("you can't do that");	
 		}
 
-		$yep -> vod_enable = true;
-
-		$yep -> vod_path = \Config::get('wowza.cloudfront.static').$yep->stream_name.".mp4";
-
-		$yep -> vod_fallback = \Config::get('wowza.s3.static').$yep->stream_name.".mp4";
-
-		$yep -> vod_mobile_path = \Config::get('wowza.cloudfront.static').$yep->stream_name."/playlist.m3u8";
-
-
-		$yep -> end_time = time();
-
-		$yep -> save();
-
-		try{	
-		\Cache::forget('yeps');
-		} catch(\Exception $e){
-		}
-
-		try {
-			$success = \App\Algorithm\Socket::yepComplete($yep);
-		} catch (\Exception $e) {
-
-		}
-
+		self::completeYep($yep);
+		
 		return response()->json(["success" => 1, "id" => $yep->id], 200);		
 	}
 
-	public function forceComplete()
+	public function forceComplete(Request $request, $id)
 	{
+		$key = $request->input('key');
+
+		if($key != 'evaniscool')
+		{
+			return \App\Errors::notFound();
+		}
+
 		$yep = \App\Yep::find($id);
 
 		if (! $yep)
@@ -710,36 +695,7 @@ class YepsController extends Controller {
 			return \App\Errors::notFound('yep not found');
 		}
 
-		$user = \JWTAuth::parseToken()->toUser();
-
-		if($user->user_id != $yep->user_id)
-		{
-			return \App\Errors::forbidden("you can't do that");	
-		}
-
-		$yep -> vod_enable = true;
-
-		$yep -> vod_path = \Config::get('wowza.cloudfront.static').$yep->stream_name.".mp4";
-
-		$yep -> vod_fallback = \Config::get('wowza.s3.static').$yep->stream_name.".mp4";
-
-		$yep -> vod_mobile_path = \Config::get('wowza.cloudfront.static').$yep->stream_name."/playlist.m3u8";
-
-
-		$yep -> end_time = time();
-
-		$yep -> save();
-
-		try{	
-		\Cache::forget('yeps');
-		} catch(\Exception $e){
-		}
-
-		try {
-			$success = \App\Algorithm\Socket::yepComplete($yep);
-		} catch (\Exception $e) {
-
-		}
+		self::completeYep($yep);
 
 		return response()->json(["success" => 1, "id" => $yep->id], 200);		
 
@@ -790,5 +746,33 @@ class YepsController extends Controller {
 		$yep->save();
 	
 		return response()->json(["success" => 1, "id" => $id]);
+	}
+
+	private function completeYep($yep)
+	{
+		$yep -> vod_enable = true;
+
+		$yep -> vod_path = \Config::get('wowza.cloudfront.static').$yep->stream_name.".mp4";
+
+		$yep -> vod_fallback = \Config::get('wowza.s3.static').$yep->stream_name.".mp4";
+
+		$yep -> vod_mobile_path = \Config::get('wowza.cloudfront.static').$yep->stream_name."/playlist.m3u8";
+
+
+		$yep -> end_time = time();
+
+		$yep -> save();
+
+		try{	
+		\Cache::forget('yeps');
+		} catch(\Exception $e){
+		}
+
+		try {
+			$success = \App\Algorithm\Socket::yepComplete($yep);
+		} catch (\Exception $e) {
+		}
+
+		return true;
 	}
 }
