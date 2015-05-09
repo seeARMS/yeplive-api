@@ -5,7 +5,7 @@ return [
 		'host' => 'http://54.149.243.236:8086'
 	],
 	'thumbnail_web' => [
-		'host' => 'http://52.24.42.180:8086'
+		'host' => 'http://52.24.223.236:8086'
 	],
 	'rtmp' => [
 		'stream' => 'rtmp://wowza-edge-prod-beta.elasticbeanstalk.com/liveedge/_definst_/mp4:',
@@ -29,9 +29,9 @@ return [
 		'hls' => 'http://52.24.36.82/liveedge/'
 	],
 	'web' => [
-		'rtsp' => 'rstp://52.24.42.180/hdfvr/_definst_/',
-		'hls' => 'http://52.24.42.180:1935/hdfvr/',
-		'streamer' => 'http://52.24.42.180'	
+		'rtsp' => 'rstp://52.24.223.236/hdfvr/_definst_/',
+		'hls' => 'http://52.24.223.236:1935/hdfvr/',
+		'streamer' => 'http://52.24.223.236'	
 	],
 	'cloudfront' => [
 		'static' => 'http://dwvjlx2oulfs.cloudfront.net/'
