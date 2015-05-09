@@ -139,6 +139,10 @@ class Yep extends Model{
 	{
 		$yep = self::with('user','tagsObj')
 			->find($id);
+		if(! $yep)
+		{
+			return null;
+		}
 		$tags = [];
 		foreach($yep->tagsObj as $tag){
 			array_push($tags, $tag->tag_name);
