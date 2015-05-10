@@ -175,6 +175,22 @@ class Yep extends Model{
 		return Yep::withAnyTag($tags)->limit($quantity)->where('staging', '=', 0)->get();
 	}
 
+	public static function queryLiveYeps($params)
+	{
+		$quantity = $params['quantity'] != null ? $params['quantity'] : 1000;
+
+		$timeAgo = \Carbon\Carbon::now()->subDay();
+
+		$yeps = self::with('user','tagsObj','votes')
+			->where('staging','=',0)
+			->where('created_at','>',$timeAgo)
+			->where('vod_enable', 0)
+			->orderBy('views','desc')
+			->orderBy('created_at','desc')
+			->take($quantity)
+			->get();
+	}
+
 	public static function sortingAlgorithm($yeps)
 	{
 		$yeps->sort(function($a, $b){

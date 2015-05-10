@@ -69,6 +69,14 @@ Route::group(['prefix' => 'api/v1'//,
 	Route::get('yeps/all',[
 		'uses' => 'YepsController@showAll'
 	]);
+/*
+	Route::get('yeps/trending',[
+		'uses' => 'YepsController@showTrending'
+	]);
+	Route::get('yeps/live',[
+		'uses' => 'YepsController@showLive'
+	]);
+*/
 	Route::get('yeps/{id}', [
 		'uses' => 'YepsController@show'
 	]);

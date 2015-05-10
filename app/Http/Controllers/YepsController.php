@@ -22,8 +22,8 @@ class YepsController extends Controller {
 	}
 
 	public function controlPanel()
-	{
-		return view('control-panel');
+	{	
+		return view('yeps.control-panel');
 	}
 
 	public function getYepPage(Request $request, $hash)
@@ -40,6 +40,29 @@ class YepsController extends Controller {
 	{
 		$yeps = \App\Yep::all();
 		return $yeps;
+	}
+
+	public function showTrending(Request $request)
+	{
+	}
+
+	public function showLive()
+	{
+		$params = $requst->all();
+
+		$yeps = \App\Yep::queryLiveYeps();
+
+		foreach($yeps as $yep)
+		{
+			$tags = [];
+			foreach($yep->tagsObj as $tag){
+				array_push($tags, $tag->tag_name);
+			}
+			$yep->vote_count = $yep->votes->count();
+			$yep->tags = $tags;
+		}
+
+		return response()->json(['yeps'=>$yeps],200); 
 	}
 
 	public function getYepByHash(Request $request)
