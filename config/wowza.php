@@ -39,7 +39,7 @@ return [
 		//http://[buttfront-domain-name]/[application]/[appInstance]/[streamName]/manifest.f4m
 	],
 	'cloudfront' => [
-		'static' => 'http://dsk99qsb45q1n.cloudfront.net/'
+		'static' => 'http://dwvjlx2oulfs.cloudfront.net/'
 	],
 	's3' => [
 		'static' => 'http://s3-us-west-2.amazonaws.com/dev-wowza/'
