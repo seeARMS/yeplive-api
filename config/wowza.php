@@ -2,7 +2,7 @@
 
 return [
 	'thumbnail' => [
-		'host' => 'http://54.149.243.236:8086'
+		'host' => 'http://52.11.118.105:8086'
 	],
 	'thumbnail_web' => [
 		'host' => 'http://52.24.223.236:8086'

@@ -292,7 +292,7 @@ class YepsController extends Controller {
 		{
 			$application_name = 'hdfvr';
 		} else {
-			$application_name = 'liveorigin';
+			$application_name = 'cf';
 		}
 		
 		$stream_name = $yep -> stream_name;
