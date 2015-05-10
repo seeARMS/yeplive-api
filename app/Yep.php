@@ -156,7 +156,7 @@ class Yep extends Model{
 
 		$timeAgo = \Carbon\Carbon::now()->subDay();
 
-		$yeps = self::with('user','tagsObj')
+		$yeps = self::with('user','tagsObj','votes')
 			->where('staging','=',0)
 			->where('created_at','>',$timeAgo)
 			->orderBy('vod_enable','asc')

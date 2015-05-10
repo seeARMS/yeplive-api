@@ -23,7 +23,7 @@ class YepsController extends Controller {
 
 	public function controlPanel()
 	{
-		
+		return view('control-panel');
 	}
 
 	public function getYepPage(Request $request, $hash)
@@ -93,6 +93,7 @@ class YepsController extends Controller {
 				foreach($yep->tagsObj as $tag){
 					array_push($tags, $tag->tag_name);
 				}
+				$yep->vote_count = $yep->votes->count();
 				$yep->tags = $tags;
 			}
 		} else  {
@@ -106,6 +107,7 @@ class YepsController extends Controller {
 						array_push($tags, $tag->tag_name);
 					}
 					$yep->tags = $tags;
+					$yep->vote_count = $yep->upvotes();
 				}
 				return $res;
 			});
