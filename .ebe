@@ -33,3 +33,7 @@ option_settings:
     value: 5c6167095ce3987081efad0612ad9003
   - option_name: GOOGLE_SERVER_KEY
     value: AIzaSyCkbMrhK5j4Ovzna2GPRPX_IJnz4oizUK4
+  - option_name: REDIS_HOST
+    value: globalcache.fkjvwm.0001.usw2.cache.amazonaws.com
+  - option_name: WEBCLIENT_ROOT
+    value: http://app.yeplive.com 

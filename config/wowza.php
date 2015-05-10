@@ -33,6 +33,12 @@ return [
 		'hls' => 'http://52.24.223.236:1935/hdfvr/',
 		'streamer' => 'http://52.24.223.236'	
 	],
+	'cloudfront_stream' => [
+		//http://[buttfront-domain-name]/[application]/[appInstance]/[streamName]/playlist.m3u8
+		'hls' => 'http://[buttfront-domain-name]/[application]/[appInstance]/[streamName]/playlist.m3u8',
+		//http://[buttfront-domain-name]/[application]/[appInstance]/[streamName]/manifest.f4m
+		'hds' => 'http://[buttfront-domain-name]/[application]/[appInstance]/[streamName]/manifest.f4m'
+	],
 	'cloudfront' => [
 		'static' => 'http://dwvjlx2oulfs.cloudfront.net/'
 	],

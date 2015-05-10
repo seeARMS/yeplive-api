@@ -181,12 +181,18 @@ class YepsController extends Controller {
 	
 		$yep->vod_enable = false;
 
+		/* CONFIGURATION FOR CLOUDFRONT
+			$yep->stream_url = \Config::get('wowza.cloudfront_stream.hls');
+			$yep->stream_url = \Config::get('wowza.cloudfront_stream.hds');
+		*/
+
 		if(! $params['is_web'])
 		{
 			$yep->is_web = 0;
 			$yep->upload_url = \Config::get('wowza.rtmp.upload_mobile').$yep->stream_name;
 			//$yep->stream_url = \Config::get('wowza.android.rtsp').$yep->stream_name;
-			$yep->stream_url = \Config::get('wowza.android.rtsp_backup').$yep->stream_name;
+//			$yep->stream_url = \Config::get('wowza.android.rtsp_backup').$yep->stream_name;
+			$yep->stream_url = \Config::get('wowza.android.hls_backup').$yep->stream_name;
 			$yep->stream_hls = \Config::get('wowza.android.rtmp_backup').$yep->stream_name;			
 		} else {
 			$yep->is_web = 1;
