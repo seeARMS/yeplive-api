@@ -787,6 +787,19 @@ class YepsController extends Controller {
 		return response()->json(["success" => 1, "id" => $id]);
 	}
 
+	public function userFollowerYeps(Request $request)
+	{
+		$user = \JWTAuth::parseToken()->toUser();
+
+		if(! $user){
+			return \App\Errors::unauthorized();	
+		}
+
+		$yeps = $user->queryFollowerYeps();
+
+		return response()->json(['yeps' => $yeps]);
+	}
+
 	private function completeYep($yep)
 	{
 		$yep -> vod_enable = true;

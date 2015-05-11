@@ -191,6 +191,7 @@ class Yep extends Model{
 			->get();
 	}
 
+
 	public static function sortingAlgorithm($yeps)
 	{
 		$yeps->sort(function($a, $b){

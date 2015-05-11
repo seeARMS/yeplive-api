@@ -122,6 +122,9 @@ Route::group(['prefix' => 'api/v1'//,
 		Route::post('yeps', [
 			'uses' => 'YepsController@store'
 		]);
+		Route::get('friends/yeps',[
+			'uses' => 'YepsController@userFollowerYeps'
+		]);
 		Route::put('yeps/{id}', [
 			'uses' => 'YepsController@update'
 		]);

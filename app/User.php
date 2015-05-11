@@ -411,6 +411,18 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		];
 	}
 
+	public function queryFollowerYeps()
+	{
+		$following = $this->following();//->yeps();
+		$yeps = [];
+		foreach($following as $follow)
+		{
+			$currentYeps = $follow->yeps();
+			array_push($yeps, $currentYeps);
+		}
+		return $yeps;
+	}
+
 	public function isPopular()
 	{
 		return	self::followerCount() > 50;
