@@ -140,11 +140,17 @@ class YepsController extends Controller {
 			$currentUser = \JWTAuth::parseToken()->toUser();
 			$users = $currentUser->following();
 			$yeps->each(function($yep) use ($users){
+				$is_follower = false;
 				foreach($users as $user)
 				{
 					if($yep->user->user_id === $user->user_id){
 						$yep->user->is_following = 1;
+						$is_follower = true;
 					}
+				}
+				if(! $is_follower)
+				{
+					$yep->user->is_following = 0;
 				}
 			});
 		} catch(\Exception $e){
