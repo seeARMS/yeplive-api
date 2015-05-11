@@ -415,10 +415,26 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	{
 		$following = $this->following();//->yeps();
 		$yeps = [];
+		$timeAgo = \Carbon\Carbon::now()->subDay();
 		foreach($following as $follow)
 		{
-			$currentYeps = $follow->yeps();
-			array_push($yeps, $currentYeps);
+			$currentYeps = $follow->yeps()
+				->where('staging','=',0)
+				->where('created_at','>',$timeAgo)
+				->orderBy('vod_enable','asc')
+				->orderBy('views','desc')
+				->orderBy('created_at','desc')
+				->get();
+			$currentYeps->each(function($yep){
+				$tags = [];
+				foreach($yep->tagsObj as $tag){
+					array_push($tags, $tag->tag_name);
+				}
+				$yep->vote_count = $yep->votes->count();
+				$yep->tags = $tags;
+				array_push($yeps, $yep);
+				
+			});
 		}
 		return $yeps;
 	}
