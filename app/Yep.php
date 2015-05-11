@@ -91,9 +91,29 @@ class Yep extends Model{
 		return ['success' => $report];
 		
 	}
-
+//ALLOW UP TO 5 VOTES
 	public function vote($user)
 	{
+		if($user)
+		{
+			$vote_count = $user->votes
+				->where('yep_id',$this->id)
+				->count();
+
+			if($vote_count < 5){
+				$voteParams = [
+					'yep_id' => $this->id,
+					'vote' => 1,
+					'user_id' => $user->user_id
+				];
+				$vote = Vote::create($voteParams);
+				return ['id' => $this->id, 'success'=>1, 'vote_count' => $this->upvotes()];
+			} else {
+				return ['id' => $this->id, 'success'=>0, 'vote_count' => $this->upvotes()];
+			}
+		}
+
+		/* OLD CODE
 		if($user)
 		{
 			$vote = Vote::where('user_id',$user->user_id)
@@ -127,6 +147,7 @@ class Yep extends Model{
 		} else{
 			return [ 'error' => 'no user specified'];
 		}	
+		*/
 	}
 
 	public function my_vote($user)
