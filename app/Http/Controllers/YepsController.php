@@ -387,6 +387,7 @@ class YepsController extends Controller {
 		if($request->has('staging'))
 		{
 			$yep -> staging = $params['staging'];
+			$yep->start_time = time();
 		}
 		
 		if($request->has('title'))

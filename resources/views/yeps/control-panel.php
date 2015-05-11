@@ -18,13 +18,14 @@
 <script>
 var yeps = [];
 $(function(){
-	function getYeps(){
+	function getYeps(cb){
 		$.get('/api/v1/yeps').then(function(res){
 			res.yeps.forEach(function(data){
 				yeps.push(new Yep(data));
 			});
+			cb(null, yeps);
 		}, function(err){
-
+			cb(err);	
 		});
 	}
 

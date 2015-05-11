@@ -22,7 +22,13 @@ class Yep extends Model{
 		'isMobile',
 		'user_id',
 		'upload_url',
-		'votes'
+		'votes',
+		'tagsObj',
+		'tags_obj',
+		'description',
+		'channel_id',
+		'location',
+		'marker_url'
 	];
 
 	 protected $dates = ['deleted_at'];
