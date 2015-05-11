@@ -23,6 +23,7 @@ class YepsController extends Controller {
 
 	public function controlPanel()
 	{	
+		$res = \Auth::basic();
 		return view('yeps.control-panel');
 	}
 
@@ -135,7 +136,19 @@ class YepsController extends Controller {
 				return $res;
 			});
 		}
-
+		try{
+			$currentUser = \JWTAuth::parseToken()->toUser();
+			$users = $currentUser->following();
+			$yeps->each(function($yep) use ($users){
+				foreach($users as $user)
+				{
+					if($yep->user->user_id === $user->user_id){
+						$yep->user->is_following = 1;
+					}
+				}
+			});
+		} catch(\Exception $e){
+		}
 
 		return response()->json(['yeps' => $yeps], 200);
 	}
